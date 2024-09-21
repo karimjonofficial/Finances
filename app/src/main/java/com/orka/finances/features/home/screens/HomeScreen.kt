@@ -25,17 +25,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.orka.finances.features.home.data.models.CategoryModel
-import com.orka.finances.features.home.viewmodels.HomeScreenViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel) {
+fun HomeScreen() {
     Scaffold(
         topBar = { HomeScreenTopBar() },
         floatingActionButton = { HomeScreenFloatingActionButton() }
     ) { innerPadding ->
-        val uiState = viewModel.uiState
-
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
@@ -50,7 +46,7 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 columns = GridCells.Fixed(3)
             ) {
-                items(uiState.value.categories) {
+                items(listOf("Product1", "Product2", "Product3")) {
                     CategoryButton(it)
                 }
             }
@@ -85,7 +81,7 @@ fun HomeScreenTopBar() {
 }
 
 @Composable
-fun CategoryButton(category: CategoryModel) {
+fun CategoryButton(category: String) {
     Card(
         modifier = Modifier
             .size(140.dp)
@@ -95,7 +91,7 @@ fun CategoryButton(category: CategoryModel) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(category.name)
+            Text(category)
         }
     }
 }

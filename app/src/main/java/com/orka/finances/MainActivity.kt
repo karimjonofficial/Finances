@@ -19,8 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinancesTheme {
-                val homeScreenViewModel = HomeScreenViewModel()
-                HomeScreen(homeScreenViewModel)
+                HomeScreen()
             }
         }
     }
