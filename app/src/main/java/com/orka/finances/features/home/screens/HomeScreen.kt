@@ -18,7 +18,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -27,28 +26,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HomeScreen() {
-    Scaffold(
-        topBar = { HomeScreenTopBar() },
-        floatingActionButton = { HomeScreenFloatingActionButton() }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            Text(
-                text = "Categories",
-                modifier = Modifier.padding(start = 16.dp)
-            )
+fun HomeScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            text = "Categories",
+            modifier = Modifier.padding(start = 16.dp)
+        )
 
-            LazyVerticalGrid(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                columns = GridCells.Fixed(3)
-            ) {
-                items(listOf("Product1", "Product2", "Product3")) {
-                    CategoryButton(it)
-                }
+        LazyVerticalGrid(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            columns = GridCells.Fixed(3)
+        ) {
+            items(listOf("Product1", "Product2", "Product3")) {
+                CategoryButton(it)
             }
         }
     }
@@ -85,7 +77,7 @@ fun CategoryButton(category: String) {
     Card(
         modifier = Modifier
             .size(140.dp)
-            .clickable {  }
+            .clickable { }
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
