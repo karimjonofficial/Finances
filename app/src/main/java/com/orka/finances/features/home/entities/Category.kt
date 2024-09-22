@@ -1,7 +1,7 @@
 package com.orka.finances.features.home.entities
 
 open class Category(private val id: Int, private var name: String) {
-    fun toDto(): CategoryDto {
+    fun getData(): CategoryDto {
         return CategoryDto(id, name)
     }
 

@@ -13,7 +13,7 @@ class CategoryTest {
 
     @Test
     fun returnsCorrectDto() {
-        val actual = category.toDto()
+        val actual = category.getData()
         assertEquals(dto, actual)
     }
     
@@ -21,7 +21,7 @@ class CategoryTest {
     fun renamesCorrectly() {
         val expected = "MyCategory"
         category.rename(expected)
-        val actual = category.toDto().name
+        val actual = category.getData().name
 
         assertEquals(expected, actual)
     }

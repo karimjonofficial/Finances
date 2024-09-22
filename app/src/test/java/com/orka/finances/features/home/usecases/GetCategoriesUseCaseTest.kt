@@ -7,26 +7,26 @@ import com.orka.finances.lib.errors.data.NullDataSourceError
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class AddCategoryUseCaseTest {
+class GetCategoriesUseCaseTest {
     @Test
-    fun returnsWhatGiven() {
-        val datasource = CategoriesDataSourceStub()
-        val useCase = AddCategoryUseCase(datasource)
+    fun getCategories() {
+        val dataSource = DummyCategoriesDataSource()
+        val usecase = GetCategoriesUseCase(dataSource)
 
-        val categoryName = "New category"
-        val pair = useCase.invoke(categoryName)
+        val expected: List<Category> = emptyList()
+        val pair = usecase.invoke()
         val actual = pair.first
 
-        assertEquals(categoryName, actual.getData().name)
+        assertEquals(expected, actual)
     }
 }
 
-private class CategoriesDataSourceStub : CategoriesDataSource {
+class DummyCategoriesDataSource : CategoriesDataSource {
     override fun getCategories(): Pair<List<Category>, DataSourceError> {
         return Pair(emptyList(), NullDataSourceError)
     }
 
     override fun addCategory(name: String): Pair<Category, DataSourceError> {
-        return Pair(Category(id = 0, name = name), NullDataSourceError)
+        TODO("Not yet implemented")
     }
 }
