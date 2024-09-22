@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.orka.finances.features.home.screens.HomeScreen
 import com.orka.finances.features.home.screens.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.screens.HomeScreenTopBar
+import com.orka.finances.features.home.viewmodels.HomeScreenViewModel
 
 @Composable
 fun FinancesAppScreen(modifier: Modifier = Modifier) {
@@ -16,7 +17,12 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
         topBar = { HomeScreenTopBar() },
         floatingActionButton = { HomeScreenFloatingActionButton() }
     ) { innerPadding ->
-        HomeScreen(modifier = Modifier.padding(innerPadding))
+        val homeScreenViewModel = HomeScreenViewModel()
+
+        HomeScreen(
+            modifier = Modifier.padding(innerPadding),
+            viewModel = homeScreenViewModel
+        )
     }
 }
 
