@@ -1,4 +1,4 @@
-package com.orka.finances.features.home.screens
+package com.orka.finances.features.home.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,8 +24,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.orka.finances.features.home.components.CategoryButton
-import com.orka.finances.features.home.viewmodels.HomeScreenViewModel
+import com.orka.finances.features.home.presentation.components.CategoryButton
+import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.lib.components.Spacer16
 import com.orka.finances.lib.components.Spacer8
 
