@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
 import com.orka.finances.features.home.presentation.screens.HomeScreen
-import com.orka.finances.features.home.presentation.screens.HomeScreenFloatingActionButton
-import com.orka.finances.features.home.presentation.screens.HomeScreenTopBar
+import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
+import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 
 @Composable
