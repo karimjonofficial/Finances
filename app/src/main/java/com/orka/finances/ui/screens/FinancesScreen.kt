@@ -19,6 +19,7 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
         floatingActionButton = { HomeScreenFloatingActionButton() }
     ) { innerPadding ->
         val dataSource = CategoriesInMemoryDataSource()
+        dataSource.loadInitialData()
         val homeScreenViewModel = HomeScreenViewModel(dataSource)
 
         HomeScreen(

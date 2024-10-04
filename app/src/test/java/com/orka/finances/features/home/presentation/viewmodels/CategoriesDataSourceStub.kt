@@ -13,5 +13,4 @@ internal class CategoriesDataSourceStub : CategoriesDataSource {
     override fun addCategory(name: String): Pair<String, DataSourceError> {
         return Pair("", UnknownDataSourceError())
     }
-
 }

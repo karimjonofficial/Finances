@@ -6,6 +6,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
 import com.orka.finances.features.home.presentation.screens.parts.AddCategoryLayout
 import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.Title
@@ -27,9 +29,25 @@ fun HomeScreen(
         AddCategoryLayout(
             text = text.value,
             onTextChanged = { text.value = it },
-            addCategory = { viewModel.addCategory(it) }
+            onClick = {
+                viewModel.addCategory(text.value)
+                text.value = ""
+            }
         )
         Spacer16()
         CategoriesList(productsList.value)
     }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+private fun HomeScreenPreview() {
+    val viewModel = HomeScreenViewModel(
+        CategoriesInMemoryDataSource()
+    )
+
+    HomeScreen(Modifier, viewModel)
 }

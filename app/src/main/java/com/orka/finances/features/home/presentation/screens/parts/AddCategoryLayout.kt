@@ -14,7 +14,7 @@ import com.orka.finances.lib.components.Spacer8
 internal fun AddCategoryLayout(
     text: String,
     onTextChanged: (String) -> Unit,
-    addCategory: (String) -> Unit
+    onClick: () -> Unit
 ) {
     Row(Modifier.padding(horizontal = 16.dp)) {
         TextField(
@@ -26,12 +26,7 @@ internal fun AddCategoryLayout(
 
         Spacer8()
 
-        Button(
-            onClick = {
-                addCategory(text)
-                onTextChanged("")
-            }
-        ) {
+        Button(onClick = onClick) {
             Text("Add")
         }
     }

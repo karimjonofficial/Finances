@@ -12,5 +12,4 @@ internal class DummyCategoriesDataSource : CategoriesDataSource {
     override fun addCategory(name: String): Pair<String, DataSourceError> {
         return Pair(name, NullDataSourceError)
     }
-
 }

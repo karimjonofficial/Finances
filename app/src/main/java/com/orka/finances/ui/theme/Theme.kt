@@ -262,6 +262,7 @@ fun FinancesTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
+                dynamicLightColorScheme(context)
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
@@ -270,7 +271,7 @@ fun FinancesTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = lightScheme, // put colorScheme to change scheme to dynamic one
         typography = Typography,
         content = content
     )
