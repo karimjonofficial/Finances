@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Finances</string>
+    <string name="remember_me">Meni eslab qol</string>
+    <string name="forgot_password">Parolni yoddan chiqardingizmi?</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="enter_to_account">Hisobga kirish</string>
+    <string name="enter">Kirish</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -26,7 +27,11 @@ fun CategoryButton(category: String) {
             modifier = Modifier.fillMaxSize().padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = category, maxLines = 2)
+            Text(
+                text = category,
+                maxLines = 2,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
