@@ -6,4 +6,9 @@
     <string name="username">Username</string>
     <string name="enter_to_account">Hisobga kirish</string>
     <string name="enter">Kirish</string>
+    <string name="home_screen_title_text">Categories</string>
+    <string name="search">Search</string>
+    <string name="good_morning">Xayrli tong 👋</string>
+    <string name="karimjon_dev">Karimjon Dev</string>
+    <string name="scan_a_qr_code">Scan a qr code</string>
 </resources>
