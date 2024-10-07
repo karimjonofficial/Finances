@@ -7,10 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
+import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
+import com.orka.finances.lib.components.Spacer16
 
 @Composable
 fun HomeScreen(
@@ -18,7 +21,10 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel
 ) {
     Column(modifier = modifier) {
-        val productsList = viewModel.categories.collectAsState()
+        val categories = viewModel.categories.collectAsState()
+
+        Spacer16()
+        CategoriesList(modifier = Modifier.padding(horizontal = 8.dp), categories = categories.value)
     }
 }
 
