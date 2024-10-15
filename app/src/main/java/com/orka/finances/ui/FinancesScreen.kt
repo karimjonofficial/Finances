@@ -1,4 +1,4 @@
-package com.orka.finances.ui.screens
+package com.orka.finances.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -13,7 +13,10 @@ import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.features.login.screens.LoginScreen
+import com.orka.finances.features.login.data.source.local.InMemoryLoginDataSource
+import com.orka.finances.features.login.presentation.screens.LoginScreen
+import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import com.orka.finances.ui.navigation.Navigation
 
 @Composable
 fun FinancesAppScreen(modifier: Modifier = Modifier) {
@@ -21,25 +24,35 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = Navigation.Login,
         modifier = modifier
     ) {
-        composable("login") {
-            AppScaffold(
-                modifier = modifier
-            ) { innerPadding ->
+        composable<Navigation.Login> {
+            AppScaffold(modifier = modifier) { innerPadding ->
+                val loginDataSource = InMemoryLoginDataSource()
+
+                val loginViewModel = LoginScreenViewModel(
+                    dataSource = loginDataSource,
+                    passScreen = {
+                        navController.navigate(Navigation.Home) {
+                            popUpTo(Navigation.Login) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
+
                 LoginScreen(
                     modifier = Modifier.padding(innerPadding),
-                    enterClick = { navController.navigate("home") }
+                    viewModel = loginViewModel
                 )
             }
         }
 
-        composable("home") {
+        composable<Navigation.Home> {
             AppScaffold(
-                modifier = modifier,
                 topBar = { HomeScreenTopBar() },
-                floatingActionButton = { HomeScreenFloatingActionButton() }
+                floatingActionButton = { HomeScreenFloatingActionButton() },
+                modifier = modifier,
             ) { innerPadding ->
                 val dataSource = CategoriesInMemoryDataSource()
                 dataSource.loadInitialData()

@@ -5,5 +5,5 @@ import com.orka.finances.lib.errors.data.sources.DataSourceError
 
 interface CategoriesDataSource {
     fun getCategories(): Pair<List<Category>, DataSourceError>
-    fun addCategory(name: String, imageRes: Int, description: String): Pair<Category, DataSourceError>
+    fun addCategory(name: String, iconName: String = "", description: String = ""): Pair<Category?, DataSourceError>
 }

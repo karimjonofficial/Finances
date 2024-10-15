@@ -2,6 +2,7 @@ package com.orka.finances.features.home.presentation.viewmodels
 
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
+import com.orka.finances.features.home.data.sources.local.categoriesList
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,13 +11,13 @@ class HomeScreenViewModelTest {
 
     @Test
     fun shouldAddNewCategory() {
-        val dataSource = DummyCategoriesDataSource()
+        val dataSource: CategoriesDataSource = DummyCategoriesDataSource()
         val viewModel = createViewModel(dataSource)
         val expected = "New Category"
 
         viewModel.addCategory(expected)
 
-        assertEquals(expected, viewModel.categories.value.last())
+        assertEquals(expected, viewModel.categories.value.last().name)
     }
 
     @Test
@@ -25,7 +26,7 @@ class HomeScreenViewModelTest {
         dataSource.loadInitialData()
         val viewModel = createViewModel(dataSource)
 
-        assertEquals(3, viewModel.categories.value.size)
+        assertEquals(categoriesList.size, viewModel.categories.value.size)
     }
 
     @Test

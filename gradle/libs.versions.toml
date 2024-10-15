@@ -1,6 +1,6 @@
 [versions]
-agp = "8.7.0"
-kotlin = "2.0.20"
+agp = "8.7.1"
+kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -9,7 +9,7 @@ kotlinxSerializationJson = "1.7.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeBom = "2024.09.03"
-jetbrainsKotlinJvm = "2.0.20"
+jetbrainsKotlinJvm = "2.0.21"
 uiTextGoogleFonts = "1.7.3"
 navigationCompose = "2.8.2"
 

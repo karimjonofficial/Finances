@@ -1,6 +1,5 @@
 package com.orka.finances.features.home.presentation.viewmodels
 
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.ViewModel
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
@@ -14,18 +13,23 @@ class HomeScreenViewModel(private val dataSource: CategoriesDataSource) : ViewMo
 
     init {
         val pair = dataSource.getCategories()
+
         if(pair.second == NullDataSourceError) {
-            _categories.value = pair.first.toList()
+            _categories.value = pair.first
+        } else {
+            _categories.value = emptyList()
         }
     }
 
-    fun addCategory(name: String, @DrawableRes imageRes: Int, description: String) {
-        val pair = dataSource.addCategory(name, imageRes, description)
+    fun addCategory(name: String, iconName: String = "", description: String = "") {
+        val pair = dataSource.addCategory(name, iconName, description)
 
         if(pair.second == NullDataSourceError) {
-            val list = _categories.value.toMutableList()
-            list.add(pair.first)
-            _categories.value = list
+            pair.first?.let {
+                val list = _categories.value.toMutableList()
+                list.add(it)
+                _categories.value = list
+            }
         }
     }
 }

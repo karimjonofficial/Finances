@@ -1,6 +1,5 @@
-package com.orka.finances.features.login.screens
+package com.orka.finances.features.login.presentation.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,29 +27,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.orka.finances.R
-import com.orka.finances.lib.components.Spacer16
-import com.orka.finances.lib.components.Spacer8
+import com.orka.finances.features.login.data.source.local.InMemoryLoginDataSource
+import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import com.orka.finances.lib.components.VerticalSpacer
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    enterClick: () -> Unit
+    viewModel: LoginScreenViewModel
 ) {
     Column(
         modifier = modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val usernameText = rememberSaveable { mutableStateOf("") }
-        val passwordText = rememberSaveable { mutableStateOf("") }
-        val shouldRemember = rememberSaveable { mutableStateOf(false) }
-        val isPasswordVisible = rememberSaveable { mutableStateOf(false) }
+        val username = rememberSaveable { mutableStateOf("") }
+        val password = rememberSaveable { mutableStateOf("") }
+        val remember = rememberSaveable { mutableStateOf(false) }
+        val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
-        Spacer16(times = 2)
+        val visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
+
+        VerticalSpacer(32)
 
         Icon(
             modifier = Modifier.size(100.dp),
@@ -58,81 +62,84 @@ fun LoginScreen(
             contentDescription = null
         )
 
-        Spacer16()
+        VerticalSpacer(16)
 
         Text(
             text = stringResource(R.string.enter_to_account),
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Spacer16()
+        VerticalSpacer(16)
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth().height(60.dp),
             singleLine = true,
-            value = usernameText.value,
+            value = username.value,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Person,
                     contentDescription = null
                 )
             },
-            onValueChange = { usernameText.value = it },
+            onValueChange = { username.value = it },
             label = {
                 Text(stringResource(R.string.username))
             }
         )
 
-        Spacer8()
+        VerticalSpacer(8)
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth().height(60.dp),
             singleLine = true,
-            value = passwordText.value,
+            value = password.value,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Lock,
                     contentDescription = null
                 )
             },
-            visualTransformation = if (isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = visualTransformation,
             trailingIcon = {
                 IconButton(
-                    onClick = { isPasswordVisible.value = !isPasswordVisible.value }
+                    onClick = { passwordVisible.value = !passwordVisible.value }
                 ) {
                     Icon(
-                        painter = painterResource(if (isPasswordVisible.value) R.drawable.visibility else R.drawable.visibility_off),
+                        painter = painterResource(
+                            id = if (passwordVisible.value) R.drawable.visibility else R.drawable.visibility_off
+                        ),
                         contentDescription = null
                     )
                 }
             },
-            onValueChange = { passwordText.value = it },
+            onValueChange = { password.value = it },
             label = {
                 Text(stringResource(R.string.password))
             }
         )
 
-        Spacer8()
+        VerticalSpacer(8)
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { shouldRemember.value = !shouldRemember.value }
-        ) {
-            Checkbox(checked = shouldRemember.value, onCheckedChange = { shouldRemember.value = it })
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(checked = remember.value, onCheckedChange = { remember.value = it })
             Spacer(Modifier.width(8.dp))
             Text(stringResource(R.string.remember_me))
         }
 
-        Spacer8()
+        VerticalSpacer(8)
 
         Button(
             modifier = Modifier.fillMaxWidth().height(58.dp),
-            onClick = { enterClick() }
+            onClick = { viewModel.authorize(username.value, password.value) }
         ) {
-            Text(stringResource(R.string.enter))
+            Text(
+                text = stringResource(R.string.enter),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
 
-        Spacer8()
+        VerticalSpacer(8)
 
         Text(stringResource(R.string.forgot_password))
     }
@@ -141,10 +148,11 @@ fun LoginScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
+    val viewModel = LoginScreenViewModel(InMemoryLoginDataSource(), {})
     Scaffold { innerPadding ->
         LoginScreen(
             modifier = Modifier.padding(innerPadding).fillMaxSize(),
-            enterClick = {}
+            viewModel = viewModel
         )
     }
 }

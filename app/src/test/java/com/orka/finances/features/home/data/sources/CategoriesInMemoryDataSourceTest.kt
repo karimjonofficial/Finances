@@ -1,6 +1,7 @@
 package com.orka.finances.features.home.data.sources
 
 import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
+import com.orka.finances.features.home.data.sources.local.categoriesList
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +24,7 @@ class CategoriesInMemoryDataSourceTest {
     fun addCategoryShouldReturnCategoryName() {
         val expected = "New Category"
         val actual = source.addCategory(expected).first
-        assertEquals(expected, actual)
+        assertEquals(expected, actual.name)
     }
 
     @Test
@@ -37,7 +38,7 @@ class CategoriesInMemoryDataSourceTest {
     @Test
     fun shouldLoadData() {
         source.loadInitialData()
-        assertEquals(3, source.getCategories().first.size)
+        assertEquals(categoriesList.size, source.getCategories().first.size)
     }
 }
 

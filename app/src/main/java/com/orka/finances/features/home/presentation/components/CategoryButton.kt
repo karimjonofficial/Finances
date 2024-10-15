@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.orka.finances.R
 import com.orka.finances.features.home.models.Category
 
 @Composable
@@ -35,12 +36,12 @@ fun CategoryButton(
                 .size(60.dp)
                 .clip(CircleShape)
                 .background(
-                    color = Color(0x22101010)
+                    color = Color(0xFFECECEC)
                 )
                 .clickable {  }
         ) {
             Image(
-                painter = painterResource(category.imageRes),
+                painter = painterResource(id = convertToImage(category.iconName) ?: R.drawable.chair),
                 contentDescription = category.name,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -49,7 +50,12 @@ fun CategoryButton(
             )
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = category.name, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+        Spacer(Modifier.height(4.dp))
+
+        Text(
+            text = category.name,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
