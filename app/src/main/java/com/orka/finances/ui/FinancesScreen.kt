@@ -1,13 +1,18 @@
 package com.orka.finances.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
@@ -56,11 +61,26 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
             ) { innerPadding ->
                 val dataSource = CategoriesInMemoryDataSource()
                 dataSource.loadInitialData()
-                val homeScreenViewModel = HomeScreenViewModel(dataSource)
+
+                val homeScreenViewModel = HomeScreenViewModel(
+                    dataSource = dataSource,
+                    passScreen = { navController.navigate(Navigation.Products(it)) }
+                )
 
                 HomeScreen(
                     modifier = Modifier.padding(innerPadding),
                     viewModel = homeScreenViewModel
+                )
+            }
+        }
+
+        composable<Navigation.Products> {
+            val products: Navigation.Products = it.toRoute()
+
+            Box(Modifier.fillMaxSize()) {
+                Text(
+                    text = products.categoryId.toString(),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }

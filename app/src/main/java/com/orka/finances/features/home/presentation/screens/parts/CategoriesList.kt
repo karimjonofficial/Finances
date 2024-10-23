@@ -13,15 +13,17 @@ import com.orka.finances.features.home.presentation.components.CategoryButton
 @Composable
 internal fun CategoriesList(
     modifier: Modifier = Modifier,
-    categories: List<Category>
+    categories: List<Category>,
+    categoryClick: (Category) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(24.dp),
-        columns = GridCells.Fixed(4)
+        horizontalArrangement = Arrangement.SpaceBetween,
+        columns = GridCells.Fixed(2)
     ) {
-        items(categories) {
-            CategoryButton(category = it)
+        items(items = categories, key = { it.id }) { it ->
+            CategoryButton(category = it, click = { categoryClick(it) })
         }
     }
 }

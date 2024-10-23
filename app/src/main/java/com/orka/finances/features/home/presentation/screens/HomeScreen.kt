@@ -94,8 +94,9 @@ fun HomeScreen(
         VerticalSpacer(16)
 
         CategoriesList(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            categories = categories.value
+            modifier = Modifier.padding(horizontal = 32.dp),
+            categories = categories.value,
+            categoryClick = { viewModel.selectCategory(it) }
         )
     }
 }
@@ -108,7 +109,7 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     val dataSource = CategoriesInMemoryDataSource()
     dataSource.loadInitialData()
-    val viewModel = HomeScreenViewModel(dataSource)
+    val viewModel = HomeScreenViewModel(dataSource) {}
 
     Scaffold(
         topBar = { HomeScreenTopBar() },

@@ -1,12 +1,12 @@
 package com.orka.finances.features.home.models
 
-import kotlinx.serialization.SerialName
+import androidx.annotation.DrawableRes
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Category(
-    @SerialName("id") val id: Int,
-    @SerialName("name") val name: String,
-    @SerialName("icon") val iconName: String = "",
-    @SerialName("description") val description: String = "",
+    val id: Int,
+    val name: String,
+    @DrawableRes val iconRes: Int,
+    val description: String = "",
 )

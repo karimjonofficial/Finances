@@ -7,8 +7,11 @@ import com.orka.finances.lib.errors.data.sources.NullDataSourceError
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class HomeScreenViewModel(private val dataSource: CategoriesDataSource) : ViewModel() {
-    private val _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
+class HomeScreenViewModel(
+    private val dataSource: CategoriesDataSource,
+    private val passScreen: (Int) -> Unit
+) : ViewModel() {
+    private val _categories = MutableStateFlow(emptyList<Category>())
     val categories: StateFlow<List<Category>> = _categories
 
     init {
@@ -31,5 +34,9 @@ class HomeScreenViewModel(private val dataSource: CategoriesDataSource) : ViewMo
                 _categories.value = list
             }
         }
+    }
+
+    fun selectCategory(category: Category) {
+        passScreen(category.id)
     }
 }

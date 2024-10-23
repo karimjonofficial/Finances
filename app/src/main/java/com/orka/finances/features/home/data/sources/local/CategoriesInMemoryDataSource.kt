@@ -1,12 +1,12 @@
 package com.orka.finances.features.home.data.sources.local
 
+import com.orka.finances.features.home.data.models.CategoryModel
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
-import com.orka.finances.features.home.models.Category
 import com.orka.finances.lib.errors.data.sources.DataSourceError
 import com.orka.finances.lib.errors.data.sources.NullDataSourceError
 
 class CategoriesInMemoryDataSource(
-    private val categories: MutableList<Category> = emptyList<Category>().toMutableList()
+    private val categories: MutableList<CategoryModel> = emptyList<CategoryModel>().toMutableList()
 ) : CategoriesDataSource {
     private var lastId: Int = 0
 
@@ -16,12 +16,12 @@ class CategoriesInMemoryDataSource(
         }
     }
 
-    override fun getCategories(): Pair<List<Category>, DataSourceError> {
+    override suspend fun get(): Pair<List<CategoryModel>, DataSourceError> {
         return Pair(categories.toList(), NullDataSourceError)
     }
 
-    override fun addCategory(name: String, iconName: String, description: String): Pair<Category, DataSourceError> {
-        val category = Category(lastId++, name, iconName, description)
+    override suspend fun add(name: String, iconName: String, description: String): Pair<CategoryModel, DataSourceError> {
+        val category = CategoryModel(lastId++, name, iconName, description)
         categories.add(category)
         return Pair(category, NullDataSourceError)
     }
@@ -29,7 +29,12 @@ class CategoriesInMemoryDataSource(
     fun loadInitialData() {
         categories.addAll(
             categoriesList.map {
-                Category(id = lastId++, name = it, iconName =  "chair", description = it)
+                CategoryModel(
+                    id = lastId++,
+                    name = it,
+                    iconName = "chair",
+                    description = it
+                )
             }
         )
     }
