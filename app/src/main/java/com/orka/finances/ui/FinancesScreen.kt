@@ -41,7 +41,6 @@ fun FinancesAppScreen(
 
                 val loginViewModel = LoginScreenViewModel(
                     dataSource = loginDataSource,
-                    amphibiansDataSource = appContainer.amphibiansDataSource,
                     passScreen = {
                         navController.navigate(Navigation.Home) {
                             popUpTo(Navigation.Login) { inclusive = true }
