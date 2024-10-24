@@ -6,6 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.finances.R
 import com.orka.finances.features.home.models.Category
@@ -28,7 +32,7 @@ fun CategoryButton(
     click: (Category) -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable { click(category) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -37,10 +41,9 @@ fun CategoryButton(
                 .size(60.dp)
                 .clip(CircleShape)
                 .background(color = Color(0xFFECECEC))
-                .clickable { click(category) }
         ) {
             Image(
-                painter = painterResource(id = convertToImage(category.iconName) ?: R.drawable.chair),
+                painter = painterResource(id = category.iconRes),
                 contentDescription = category.name,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -49,11 +52,26 @@ fun CategoryButton(
             )
         }
 
-        HorizontalSpacer(8)
+        HorizontalSpacer(16)
 
         Text(
+            modifier = Modifier.weight(1f),
             text = category.name,
             style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryButtonPreview() {
+    val category = Category(1, "Chair", R.drawable.chair)
+
+    Box(Modifier.fillMaxSize().background(Color.White).padding(horizontal = 32.dp)) {
+        CategoryButton(
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+            category = category,
+            click = {}
         )
     }
 }

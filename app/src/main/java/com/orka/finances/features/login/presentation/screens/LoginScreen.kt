@@ -124,7 +124,7 @@ fun LoginScreen(
 
         Button(
             modifier = Modifier.fillMaxWidth().height(58.dp),
-            onClick = { viewModel.authorize(username.value, password.value) }
+            onClick = { viewModel.login(username.value, password.value) }
         ) {
             Text(
                 text = stringResource(R.string.enter),

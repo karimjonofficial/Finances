@@ -13,18 +13,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.orka.finances.features.home.data.sources.local.CategoriesInMemoryDataSource
+import com.orka.finances.AppContainer
+import com.orka.finances.features.home.data.sources.local.InMemoryCategoriesDataSource
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.features.login.data.source.local.InMemoryLoginDataSource
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import com.orka.finances.ui.navigation.Navigation
 
 @Composable
-fun FinancesAppScreen(modifier: Modifier = Modifier) {
+fun FinancesAppScreen(
+    modifier: Modifier = Modifier,
+    appContainer: AppContainer
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -34,10 +37,11 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
     ) {
         composable<Navigation.Login> {
             AppScaffold(modifier = modifier) { innerPadding ->
-                val loginDataSource = InMemoryLoginDataSource()
+                val loginDataSource = appContainer.loginDataSource
 
                 val loginViewModel = LoginScreenViewModel(
                     dataSource = loginDataSource,
+                    amphibiansDataSource = appContainer.amphibiansDataSource,
                     passScreen = {
                         navController.navigate(Navigation.Home) {
                             popUpTo(Navigation.Login) { inclusive = true }
@@ -59,7 +63,7 @@ fun FinancesAppScreen(modifier: Modifier = Modifier) {
                 floatingActionButton = { HomeScreenFloatingActionButton() },
                 modifier = modifier,
             ) { innerPadding ->
-                val dataSource = CategoriesInMemoryDataSource()
+                val dataSource = InMemoryCategoriesDataSource()
                 dataSource.loadInitialData()
 
                 val homeScreenViewModel = HomeScreenViewModel(

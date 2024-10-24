@@ -16,7 +16,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            val app = application as FinancesApplication
+            val appContainer = app.container
             val view = LocalView.current
+
             if (!view.isInEditMode) {
                 val window = (view.context as Activity).window
                 val insetsController = WindowCompat.getInsetsController(window, view)
@@ -26,7 +29,7 @@ class MainActivity : ComponentActivity() {
             }
 
             FinancesTheme {
-                FinancesAppScreen()
+                FinancesAppScreen(appContainer = appContainer)
             }
         }
     }
