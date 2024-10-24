@@ -1,9 +1,9 @@
 package com.orka.finances
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.orka.finances.features.login.data.source.LoginDataSource
-import com.orka.finances.features.login.data.source.network.LoginApiService
-import com.orka.finances.features.login.data.source.network.RemoteLoginDataSource
+import com.orka.finances.features.login.data.sources.LoginDataSource
+import com.orka.finances.features.login.data.sources.network.LoginApiService
+import com.orka.finances.features.login.data.sources.network.RemoteLoginDataSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit

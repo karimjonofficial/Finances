@@ -1,4 +1,4 @@
-package com.orka.finances.features.login.data.source
+package com.orka.finances.features.login.data.sources
 
 import com.orka.finances.features.login.data.models.UserCredentials
 

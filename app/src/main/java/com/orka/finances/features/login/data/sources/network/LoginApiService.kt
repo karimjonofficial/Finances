@@ -1,4 +1,4 @@
-package com.orka.finances.features.login.data.source.network
+package com.orka.finances.features.login.data.sources.network
 
 import com.orka.finances.features.login.data.models.UserCredentials
 import retrofit2.http.Field
@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface LoginApiService {
     @POST("token/")
     @FormUrlEncoded
-    suspend fun access(
+    suspend fun getCredentials(
         @Field("username") username: String,
         @Field("password") password: String
     ): UserCredentials?

@@ -1,7 +1,7 @@
-package com.orka.finances.features.login.data.source.local
+package com.orka.finances.features.login.data.sources.local
 
 import com.orka.finances.features.login.data.models.UserCredentials
-import com.orka.finances.features.login.data.source.LoginDataSource
+import com.orka.finances.features.login.data.sources.LoginDataSource
 
 class InMemoryLoginDataSource : LoginDataSource {
     override suspend fun getCredentials(username: String, password: String): UserCredentials? {
