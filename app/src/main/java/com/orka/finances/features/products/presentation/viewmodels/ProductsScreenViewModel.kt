@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class ProductsScreenViewModel(
     private val categoryId: Int,
-    private val dataSource: ProductsDataSource
+    private val dataSource: ProductsDataSource,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(emptyList<Product>())
@@ -16,6 +16,6 @@ class ProductsScreenViewModel(
 
     init {
         val products = dataSource.get(categoryId)
-        _uiState.value = products
+        products?.let { _uiState.value = it }
     }
 }

@@ -5,9 +5,6 @@ import com.orka.finances.features.home.data.models.toCategory
 import com.orka.finances.features.home.data.models.toModel
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.errors.data.sources.DataSourceError
-import com.orka.finances.lib.errors.data.sources.NullDataSourceError
-import com.orka.finances.lib.errors.data.sources.UnknownDataSourceError
 
 class InMemoryCategoriesDataSource(
     private val categories: MutableList<CategoryModel> = emptyList<CategoryModel>().toMutableList()
@@ -33,17 +30,17 @@ class InMemoryCategoriesDataSource(
         )
     }
 
-    override suspend fun get(): Pair<List<Category>, DataSourceError> {
-        return Pair(categories.map { toCategory(it) }.toList(), NullDataSourceError)
+    override suspend fun get(): List<Category> {
+        return categories.map { toCategory(it) }.toList()
     }
 
-    override suspend fun add(category: Category): Pair<Category, DataSourceError> {
+    override suspend fun add(category: Category): Category {
         try {
             val model = toModel(category.copy(id = lastId++))
             categories.add(model)
-            return Pair(toCategory(model), NullDataSourceError)
+            return toCategory(model)
         } catch (e: Exception) {
-            return Pair(category, UnknownDataSourceError())
+            return category
         }
     }
 }

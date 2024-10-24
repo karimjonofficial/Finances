@@ -30,7 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.orka.finances.R
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
-import com.orka.finances.lib.components.VerticalSpacer
+import com.orka.finances.lib.VerticalSpacer
 
 @Composable
 fun LoginScreen(

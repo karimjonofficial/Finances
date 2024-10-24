@@ -38,6 +38,12 @@ internal fun CategoriesList(
 @Preview
 @Composable
 private fun CategoriesListPreview() {
+    val categoriesList = listOf(
+        Category(1, "Mebel", R.drawable.cupboard),
+        Category(2, "Stol", R.drawable.table),
+        Category(3, "Stul", R.drawable.chair),
+    )
+
     Box(Modifier.fillMaxSize().background(Color.White).padding(24.dp)) {
         CategoriesList(
             modifier = Modifier.fillMaxSize(),
@@ -46,9 +52,3 @@ private fun CategoriesListPreview() {
         )
     }
 }
-
-val categoriesList = listOf(
-    Category(1, "Mebel", R.drawable.cupboard),
-    Category(2, "Stol", R.drawable.table),
-    Category(3, "Stul", R.drawable.chair),
-)

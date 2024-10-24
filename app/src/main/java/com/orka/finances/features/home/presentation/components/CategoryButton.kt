@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.finances.R
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.components.HorizontalSpacer
+import com.orka.finances.lib.HorizontalSpacer
 
 @Composable
 fun CategoryButton(

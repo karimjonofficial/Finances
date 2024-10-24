@@ -35,7 +35,7 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.components.VerticalSpacer
+import com.orka.finances.lib.VerticalSpacer
 
 @Composable
 fun HomeScreen(

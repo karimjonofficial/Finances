@@ -19,17 +19,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.orka.finances.features.products.models.Product
-import com.orka.finances.lib.components.HorizontalSpacer
-import com.orka.finances.lib.components.VerticalSpacer
+import com.orka.finances.lib.HorizontalSpacer
+import com.orka.finances.lib.VerticalSpacer
 
 @Composable
 fun ProductCard(
     modifier: Modifier = Modifier,
     product: Product
 ) {
-
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
-
         Box(
             modifier = Modifier
                 .size(140.dp)
@@ -54,7 +52,6 @@ fun ProductCard(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-
             Text(
                 modifier = Modifier.weight(1f),
                 text = product.price.toString(),
@@ -64,7 +61,6 @@ fun ProductCard(
             HorizontalSpacer(8)
 
             Box(modifier = Modifier.clip(RoundedCornerShape(4.dp))) {
-
                 Text(
                     text = "${product.amount} left",
                     style = MaterialTheme.typography.labelSmall
@@ -87,9 +83,7 @@ private fun ProductCardPreview() {
     )
 
     Surface {
-
         Box {
-
             ProductCard(
                 modifier = Modifier.size(200.dp).align(Alignment.Center),
                 product = product

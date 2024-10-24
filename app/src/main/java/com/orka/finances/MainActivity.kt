@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.orka.finances.ui.FinancesAppScreen
 import com.orka.finances.ui.theme.FinancesTheme
 
 class MainActivity : ComponentActivity() {
