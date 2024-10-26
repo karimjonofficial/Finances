@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.google.gson)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

@@ -35,7 +35,9 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.VerticalSpacer
+import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.UserCredentialsDataSource
+import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
 fun HomeScreen(
@@ -51,7 +53,7 @@ fun HomeScreen(
 
     Column(modifier = modifier) {
 
-        val categories = viewModel.categories.collectAsState()
+        val categories = viewModel.uiState.collectAsState()
         val searchText = rememberSaveable { mutableStateOf("") }
         val focusRequester = remember { FocusRequester() }
 
@@ -107,14 +109,25 @@ fun HomeScreen(
 )
 @Composable
 private fun HomeScreenPreview() {
+    val credentialsDataSource = DummyCredentialsDataSource()
     val dataSource = InMemoryCategoriesDataSource()
     dataSource.loadInitialData()
-    val viewModel = HomeScreenViewModel(dataSource) {}
+    val viewModel = HomeScreenViewModel(dataSource, credentialsDataSource) {}
 
     Scaffold(
         topBar = { HomeScreenTopBar() },
         floatingActionButton = { HomeScreenFloatingActionButton() }
     ) {
         HomeScreen(Modifier.padding(it), viewModel)
+    }
+}
+
+private class DummyCredentialsDataSource : UserCredentialsDataSource {
+    override suspend fun getCredentials(): UserCredentials {
+        return UserCredentials("token", "refresh")
+    }
+
+    override fun setCredentials(credentials: UserCredentials) {
+        TODO("Not yet implemented")
     }
 }

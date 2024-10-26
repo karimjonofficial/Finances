@@ -1,39 +1,18 @@
-package com.orka.finances.login.viewmodels
+package com.orka.finances.features.login.viewmodels
 
-import com.orka.finances.features.login.data.models.UserCredentials
+import com.orka.finances.MainDispatcherRule
+import com.orka.finances.lib.data.UserCredentials
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
 
 private const val BLANK = "  "
 private const val USERNAME = "admin"
 private const val PASSWORD = "123"
 private const val ACCESS = "access"
 private const val REFRESH = "refresh"
-
-class MainDispatcherRule @OptIn(ExperimentalCoroutinesApi::class) constructor(
-    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),
-) : TestWatcher() {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun starting(description: Description) {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun finished(description: Description) {
-        Dispatchers.resetMain()
-    }
-}
 
 class LoginScreenViewModelTest {
     @get:Rule

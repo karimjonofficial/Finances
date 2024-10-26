@@ -1,10 +1,10 @@
-package com.orka.finances.features.login.data.models
+package com.orka.finances.lib.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserCredentials(
-    @SerialName("access") val access: String,
+    @SerialName("access") val token: String,
     @SerialName("refresh") val refresh: String
 )

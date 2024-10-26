@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,12 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.orka.finances.R
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.HorizontalSpacer
+import com.orka.finances.lib.ui.HorizontalSpacer
 
 @Composable
 fun CategoryButton(
@@ -43,7 +43,7 @@ fun CategoryButton(
                 .background(color = Color(0xFFECECEC))
         ) {
             Image(
-                painter = painterResource(id = category.iconRes),
+                imageVector = Icons.Filled.Star,
                 contentDescription = category.name,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -65,7 +65,7 @@ fun CategoryButton(
 @Preview
 @Composable
 private fun CategoryButtonPreview() {
-    val category = Category(1, "Chair", R.drawable.chair)
+    val category = Category(1, "Chair")
 
     Box(Modifier.fillMaxSize().background(Color.White).padding(horizontal = 32.dp)) {
         CategoryButton(

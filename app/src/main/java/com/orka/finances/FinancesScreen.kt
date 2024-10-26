@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.orka.finances.features.home.data.sources.local.InMemoryCategoriesDataSource
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
@@ -25,7 +24,7 @@ import com.orka.finances.ui.navigation.Navigation
 @Composable
 fun FinancesAppScreen(
     modifier: Modifier = Modifier,
-    appContainer: AppContainer
+    container: AppContainer
 ) {
     val navController = rememberNavController()
 
@@ -36,7 +35,7 @@ fun FinancesAppScreen(
     ) {
         composable<Navigation.Login> {
             AppScaffold(modifier = modifier) { innerPadding ->
-                val loginDataSource = appContainer.loginDataSource
+                val loginDataSource = container.loginDataSource
 
                 val loginViewModel = LoginScreenViewModel(
                     dataSource = loginDataSource,
@@ -61,12 +60,12 @@ fun FinancesAppScreen(
                 floatingActionButton = { HomeScreenFloatingActionButton() },
                 modifier = modifier,
             ) { innerPadding ->
-                val dataSource = InMemoryCategoriesDataSource()
-                dataSource.loadInitialData()
+                val dataSource = container.categoriesDataSource
 
                 val homeScreenViewModel = HomeScreenViewModel(
                     dataSource = dataSource,
-                    passScreen = { navController.navigate(Navigation.Products(it)) }
+                    passScreen = { navController.navigate(Navigation.Products(it)) },
+                    credentialsSource = container.credentialsSource
                 )
 
                 HomeScreen(
@@ -87,7 +86,8 @@ fun FinancesAppScreen(
             }
         }
     }
-
+    //TODO view models are not kept
+    //TODO view models are created two times every change of destination
 }
 
 @Composable

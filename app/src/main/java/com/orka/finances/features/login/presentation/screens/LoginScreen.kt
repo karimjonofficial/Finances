@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,10 +28,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.finances.R
+import com.orka.finances.features.login.data.sources.local.InMemoryLoginDataSource
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
-import com.orka.finances.lib.VerticalSpacer
+import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
 fun LoginScreen(
@@ -66,7 +69,9 @@ fun LoginScreen(
         VerticalSpacer(16)
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().height(60.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
             singleLine = true,
             value = username.value,
             leadingIcon = {
@@ -84,7 +89,9 @@ fun LoginScreen(
         VerticalSpacer(8)
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().height(60.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
             singleLine = true,
             value = password.value,
             leadingIcon = {
@@ -123,7 +130,9 @@ fun LoginScreen(
         VerticalSpacer(8)
 
         Button(
-            modifier = Modifier.fillMaxWidth().height(58.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(58.dp),
             onClick = { viewModel.login(username.value, password.value) }
         ) {
             Text(
@@ -135,5 +144,19 @@ fun LoginScreen(
         VerticalSpacer(8)
 
         Text(stringResource(R.string.forgot_password))
+    }
+}
+
+@Preview
+@Composable
+private fun LoginScreenPreview() {
+    val dataSource = InMemoryLoginDataSource()
+    val viewModel = LoginScreenViewModel(dataSource){}
+
+    Scaffold {
+        LoginScreen(
+            modifier = Modifier.padding(it),
+            viewModel = viewModel
+        )
     }
 }

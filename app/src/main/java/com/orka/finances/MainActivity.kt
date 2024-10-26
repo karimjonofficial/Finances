@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
             }
 
             FinancesTheme {
-                FinancesAppScreen(appContainer = appContainer)
+                FinancesAppScreen(container = appContainer)
             }
         }
     }

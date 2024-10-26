@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.orka.finances.features.products.models.Product
-import com.orka.finances.lib.HorizontalSpacer
-import com.orka.finances.lib.VerticalSpacer
+import com.orka.finances.lib.ui.HorizontalSpacer
+import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
 fun ProductCard(
