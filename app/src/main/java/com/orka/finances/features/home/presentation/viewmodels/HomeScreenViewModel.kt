@@ -18,17 +18,7 @@ class HomeScreenViewModel(
     private val _uiState = MutableStateFlow(emptyList<Category>())
     val uiState: StateFlow<List<Category>> = _uiState
 
-    private var count = 0
-
-    init {
-        count++
-        log("init: $count")
-        fetchData()
-    }
-
-    private fun fetchData() {
-        val message = "fetchData"
-        log(message)
+    fun fetchData() {
         viewModelScope.launch {
             val credentials = credentialsSource.getCredentials()
             _uiState.value = dataSource.get(credentials!!.token) ?: emptyList()

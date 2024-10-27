@@ -19,7 +19,6 @@ import androidx.navigation.toRoute
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
-import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import com.orka.finances.lib.data.UserCredentials
@@ -33,33 +32,26 @@ fun FinancesAppScreen(
     container: AppContainer
 ) {
     val navController = rememberNavController()
-    val credentials = rememberSaveable {
-        mutableStateOf<UserCredentials?>(null)
-    }
-
+    val credentials = rememberSaveable { mutableStateOf<UserCredentials?>(null) }
     val loaded = rememberSaveable { mutableStateOf(false) }
 
     if(!loaded.value) {
         LaunchedEffect(Unit) {
             credentials.value = container.credentialsSource.getCredentials()
-            log("LaunchedEffect", "Token: ${credentials.value?.token ?: "Null"}")
             loaded.value = true
+
         }
     } else {
         //TODO These messes should be contained in view model or smth else
         //TODO Don't forget writing tests for this logic
 
         var startDestination: Navigation = Navigation.Login
-        log("Load data", "Loaded")
 
         credentials.value?.let {
             if (it.token.isNotBlank()) {
                 startDestination = Navigation.Home
-                log("Navigation change", "Destination: $startDestination")
             }
         }
-
-        log("Start NavHost", "Destination: $startDestination")
 
         NavHost(
             navController = navController,
@@ -67,8 +59,6 @@ fun FinancesAppScreen(
             modifier = modifier
         ) {
             composable<Navigation.Login> {
-                log("Navigation", "Login")
-
                 AppScaffold(modifier = modifier) { innerPadding ->
                     val loginDataSource = container.loginDataSource
 
@@ -90,20 +80,14 @@ fun FinancesAppScreen(
             }
 
             composable<Navigation.Home> {
-                log("Navigation", "Home")
-
                 AppScaffold(
                     topBar = { HomeScreenTopBar() },
                     floatingActionButton = { HomeScreenFloatingActionButton() },
                     modifier = modifier,
                 ) { innerPadding ->
-                    val dataSource = container.categoriesDataSource
-
-                    val homeScreenViewModel = HomeScreenViewModel(
-                        dataSource = dataSource,
-                        passScreen = { navController.navigate(Navigation.Products(it)) },
-                        credentialsSource = container.credentialsSource
-                    )
+                    val homeScreenViewModel = container.getHomeScreenViewModel {
+                        navController.navigate(Navigation.Products(it))
+                    }
 
                     HomeScreen(
                         modifier = Modifier.padding(innerPadding),
@@ -113,8 +97,6 @@ fun FinancesAppScreen(
             }
 
             composable<Navigation.Products> {
-                log("Navigation", "Products")
-
                 val products: Navigation.Products = it.toRoute()
 
                 Box(Modifier.fillMaxSize()) {

@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +51,8 @@ fun HomeScreen(
         focusManager.clearFocus()
         onDispose { }
     }
+
+    LaunchedEffect(Unit) { viewModel.fetchData() }
 
     Column(modifier = modifier) {
 
@@ -117,9 +120,7 @@ private fun HomeScreenPreview() {
     Scaffold(
         topBar = { HomeScreenTopBar() },
         floatingActionButton = { HomeScreenFloatingActionButton() }
-    ) {
-        HomeScreen(Modifier.padding(it), viewModel)
-    }
+    ) { HomeScreen(Modifier.padding(it), viewModel) }
 }
 
 private class DummyCredentialsDataSource : UserCredentialsDataSource {

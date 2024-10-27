@@ -11,6 +11,7 @@ import androidx.room.Update
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.orka.finances.features.home.data.sources.network.CategoriesApiService
 import com.orka.finances.features.home.data.sources.network.RemoteCategoriesDataSource
+import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.data.sources.network.LoginApiService
 import com.orka.finances.features.login.data.sources.network.RemoteLoginDataSource
@@ -30,26 +31,33 @@ class AppContainer(private val context: Context) {
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(BASE_URL).build()
 
-    private inline fun <reified T> createByRetrofit(): Lazy<T> {
-        return lazy { retrofit.create<T>() }
-    }
-
-    private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
     private val categoriesApiService: CategoriesApiService by createByRetrofit<CategoriesApiService>()
-
+    private val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
+    private var homeScreenViewModel: HomeScreenViewModel? = null
+    private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
     private val userDataDao: UserDataDao by lazy {
         FinancesDb.getDatabase(context).userDataDao()
     }
-
-    val credentialsSource: UserCredentialsDataSource by lazy { LocalUserCredentialsDataSource(userDataDao) }
-
+    val credentialsSource: UserCredentialsDataSource by lazy {
+        LocalUserCredentialsDataSource(userDataDao)
+    }
     val loginDataSource: LoginDataSource by lazy {
         RemoteLoginDataSource(loginApiService) {
             credentialsSource.setCredentials(UserCredentials(it.token, it.refresh))
         }
     }
 
-    val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
+    fun getHomeScreenViewModel(navigate: (Int) -> Unit): HomeScreenViewModel {
+        return homeScreenViewModel ?: HomeScreenViewModel(
+            dataSource = categoriesDataSource,
+            credentialsSource = credentialsSource,
+            passScreen = navigate
+        ).also { homeScreenViewModel = it }
+    }
+
+    private inline fun <reified T> createByRetrofit(): Lazy<T> {
+        return lazy { retrofit.create<T>() }
+    }
 }
 
 private class LocalUserCredentialsDataSource(private val userDataDao: UserDataDao) : UserCredentialsDataSource {
@@ -118,5 +126,3 @@ private abstract class FinancesDb : RoomDatabase() {
         }
     }
 }
-
-//TODO Store credentials in db
