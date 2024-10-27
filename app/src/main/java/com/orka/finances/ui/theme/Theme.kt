@@ -272,6 +272,7 @@ fun FinancesTheme(
 
     MaterialTheme(
         colorScheme = lightScheme, // put colorScheme to change scheme to dynamic one
+        shapes = shapes,
         typography = Typography,
         content = content
     )

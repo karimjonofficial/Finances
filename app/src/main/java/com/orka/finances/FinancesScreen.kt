@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -19,6 +22,9 @@ import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopB
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.log.Log
+import com.orka.finances.lib.log.formatTag
 import com.orka.finances.ui.navigation.Navigation
 
 @Composable
@@ -27,67 +33,105 @@ fun FinancesAppScreen(
     container: AppContainer
 ) {
     val navController = rememberNavController()
+    val credentials = rememberSaveable {
+        mutableStateOf<UserCredentials?>(null)
+    }
 
-    NavHost(
-        navController = navController,
-        startDestination = Navigation.Login,
-        modifier = modifier
-    ) {
-        composable<Navigation.Login> {
-            AppScaffold(modifier = modifier) { innerPadding ->
-                val loginDataSource = container.loginDataSource
+    val loaded = rememberSaveable { mutableStateOf(false) }
 
-                val loginViewModel = LoginScreenViewModel(
-                    dataSource = loginDataSource,
-                    passScreen = {
-                        navController.navigate(Navigation.Home) {
-                            popUpTo(Navigation.Login) { inclusive = true }
-                            launchSingleTop = true
+    if(!loaded.value) {
+        LaunchedEffect(Unit) {
+            credentials.value = container.credentialsSource.getCredentials()
+            log("LaunchedEffect", "Token: ${credentials.value?.token ?: "Null"}")
+            loaded.value = true
+        }
+    } else {
+        //TODO These messes should be contained in view model or smth else
+        //TODO Don't forget writing tests for this logic
+
+        var startDestination: Navigation = Navigation.Login
+        log("Load data", "Loaded")
+
+        credentials.value?.let {
+            if (it.token.isNotBlank()) {
+                startDestination = Navigation.Home
+                log("Navigation change", "Destination: $startDestination")
+            }
+        }
+
+        log("Start NavHost", "Destination: $startDestination")
+
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = modifier
+        ) {
+            composable<Navigation.Login> {
+                log("Navigation", "Login")
+
+                AppScaffold(modifier = modifier) { innerPadding ->
+                    val loginDataSource = container.loginDataSource
+
+                    val loginViewModel = LoginScreenViewModel(
+                        dataSource = loginDataSource,
+                        passScreen = {
+                            navController.navigate(Navigation.Home) {
+                                popUpTo(Navigation.Login) { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
-                    }
-                )
+                    )
 
-                LoginScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    viewModel = loginViewModel
-                )
+                    LoginScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        viewModel = loginViewModel
+                    )
+                }
             }
-        }
 
-        composable<Navigation.Home> {
-            AppScaffold(
-                topBar = { HomeScreenTopBar() },
-                floatingActionButton = { HomeScreenFloatingActionButton() },
-                modifier = modifier,
-            ) { innerPadding ->
-                val dataSource = container.categoriesDataSource
+            composable<Navigation.Home> {
+                log("Navigation", "Home")
 
-                val homeScreenViewModel = HomeScreenViewModel(
-                    dataSource = dataSource,
-                    passScreen = { navController.navigate(Navigation.Products(it)) },
-                    credentialsSource = container.credentialsSource
-                )
+                AppScaffold(
+                    topBar = { HomeScreenTopBar() },
+                    floatingActionButton = { HomeScreenFloatingActionButton() },
+                    modifier = modifier,
+                ) { innerPadding ->
+                    val dataSource = container.categoriesDataSource
 
-                HomeScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    viewModel = homeScreenViewModel
-                )
+                    val homeScreenViewModel = HomeScreenViewModel(
+                        dataSource = dataSource,
+                        passScreen = { navController.navigate(Navigation.Products(it)) },
+                        credentialsSource = container.credentialsSource
+                    )
+
+                    HomeScreen(
+                        modifier = Modifier.padding(innerPadding),
+                        viewModel = homeScreenViewModel
+                    )
+                }
             }
-        }
 
-        composable<Navigation.Products> {
-            val products: Navigation.Products = it.toRoute()
+            composable<Navigation.Products> {
+                log("Navigation", "Products")
 
-            Box(Modifier.fillMaxSize()) {
-                Text(
-                    text = products.categoryId.toString(),
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                val products: Navigation.Products = it.toRoute()
+
+                Box(Modifier.fillMaxSize()) {
+                    Text(
+                        text = products.categoryId.toString(),
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
         }
     }
-    //TODO view models are not kept
+    //TODO view models are not kept through recomposition
     //TODO view models are created two times every change of destination
+}
+
+private fun log(tag: String, message: String) {
+    Log(formatTag("FinancesScreen", tag), message)
 }
 
 @Composable

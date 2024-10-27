@@ -74,17 +74,25 @@ private class StubCategoriesDataSource : CategoriesDataSource {
 }
 
 private class DummyCredentialsDataSource : UserCredentialsDataSource {
-    override suspend fun getCredentials(): UserCredentials {
+    override fun getCredentials(): UserCredentials {
         return CREDENTIALS
+    }
+
+    override fun setCredentials(credentials: UserCredentials) {
+        TODO("Not yet implemented")
     }
 }
 
 private class SpyCredentialsDataSource : UserCredentialsDataSource {
     val counter = Counter()
 
-    override suspend fun getCredentials(): UserCredentials {
+    override fun getCredentials(): UserCredentials {
         counter.count()
         return CREDENTIALS
+    }
+
+    override fun setCredentials(credentials: UserCredentials) {
+        TODO("Not yet implemented")
     }
 }
 

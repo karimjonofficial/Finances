@@ -25,7 +25,7 @@ import retrofit2.create
 
 private const val BASE_URL = "http://185.204.2.105/api/"
 
-class AppContainer {
+class AppContainer(private val context: Context) {
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(BASE_URL).build()
@@ -37,7 +37,11 @@ class AppContainer {
     private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
     private val categoriesApiService: CategoriesApiService by createByRetrofit<CategoriesApiService>()
 
-    val credentialsSource: UserCredentialsDataSource by lazy { LocalUserCredentialsDataSource() }
+    private val userDataDao: UserDataDao by lazy {
+        FinancesDb.getDatabase(context).userDataDao()
+    }
+
+    val credentialsSource: UserCredentialsDataSource by lazy { LocalUserCredentialsDataSource(userDataDao) }
 
     val loginDataSource: LoginDataSource by lazy {
         RemoteLoginDataSource(loginApiService) {
@@ -48,15 +52,40 @@ class AppContainer {
     val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
 }
 
-private class LocalUserCredentialsDataSource : UserCredentialsDataSource {
+private class LocalUserCredentialsDataSource(private val userDataDao: UserDataDao) : UserCredentialsDataSource {
     private var credentials: UserCredentials? = null
 
-    override suspend fun getCredentials(): UserCredentials {
-        return credentials ?: UserCredentials("token", "refresh")
+    override suspend fun getCredentials(): UserCredentials? {
+        return credentials ?: getCredentialsFromDb()?.also { setCredentials(it) }
     }
 
-    override fun setCredentials(credentials: UserCredentials) {
+    override suspend fun setCredentials(credentials: UserCredentials) {
+        setCredentialsInDb(credentials)
         this.credentials = credentials
+    }
+
+    private suspend fun getCredentialsFromDb(): UserCredentials? {
+        //TODO Write tests
+        val data = userDataDao.getUserData()
+        data?.let {
+            if (it.token?.isNotBlank() == true) {
+                val credentials = UserCredentials(it.token, it.refresh ?: "")
+                return credentials
+            }
+        }
+        return null
+    }
+
+    private suspend fun setCredentialsInDb(credentials: UserCredentials) {
+        //TODO Write tests
+        val data = userDataDao.getUserData()
+        if(data == null) {
+            val new = UserData(0, credentials.token, credentials.refresh)
+            userDataDao.insert(new)
+        } else {
+            val new = data.copy(token = credentials.token, refresh = credentials.refresh)
+            userDataDao.update(new)
+        }
     }
 }
 
@@ -82,11 +111,9 @@ private abstract class FinancesDb : RoomDatabase() {
 
         fun getDatabase(context: Context): FinancesDb {
             return Instance ?: synchronized(this) {
-                Room
-                    .databaseBuilder(context, FinancesDb::class.java, "finances_db")
+                Room.databaseBuilder(context, FinancesDb::class.java, "finances_db")
                     .fallbackToDestructiveMigration()
-                    .build()
-                    .also { Instance = it }
+                    .build().also { Instance = it }
             }
         }
     }

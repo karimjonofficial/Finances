@@ -127,7 +127,7 @@ private class DummyCredentialsDataSource : UserCredentialsDataSource {
         return UserCredentials("token", "refresh")
     }
 
-    override fun setCredentials(credentials: UserCredentials) {
+    override suspend fun setCredentials(credentials: UserCredentials) {
         TODO("Not yet implemented")
     }
 }

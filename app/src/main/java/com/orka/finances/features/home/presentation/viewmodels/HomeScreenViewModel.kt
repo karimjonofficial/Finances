@@ -1,11 +1,11 @@
 package com.orka.finances.features.home.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
 import com.orka.finances.lib.data.UserCredentialsDataSource
+import com.orka.finances.lib.log.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class HomeScreenViewModel(
         log(message)
         viewModelScope.launch {
             val credentials = credentialsSource.getCredentials()
-            _uiState.value = dataSource.get(credentials.token) ?: emptyList()
+            _uiState.value = dataSource.get(credentials!!.token) ?: emptyList()
         }
     }
 
@@ -40,6 +40,6 @@ class HomeScreenViewModel(
     }
 
     private fun log(message: String) {
-        Log.d("FinancesApp.HomeScreenViewModel", message)
+        Log("HomeScreenViewModel", message)
     }
 }

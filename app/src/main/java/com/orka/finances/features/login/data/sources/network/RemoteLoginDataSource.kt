@@ -5,7 +5,7 @@ import com.orka.finances.features.login.data.sources.LoginDataSource
 
 class RemoteLoginDataSource(
     private val apiService: LoginApiService,
-    private val setCredentials: (UserCredentials) -> Unit
+    private val setCredentials: suspend (UserCredentials) -> Unit
 ) : LoginDataSource {
     override suspend fun getCredentials(username: String, password: String): UserCredentials? {
         return try {
