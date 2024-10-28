@@ -15,6 +15,7 @@ import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewMod
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.data.sources.network.LoginApiService
 import com.orka.finances.features.login.data.sources.network.RemoteLoginDataSource
+import com.orka.finances.lib.data.CredentialsDataSource
 import com.orka.finances.lib.data.UserCredentials
 import com.orka.finances.lib.data.UserCredentialsDataSource
 import com.orka.finances.lib.data.UserData
@@ -32,27 +33,41 @@ class AppContainer(private val context: Context) {
         .baseUrl(BASE_URL).build()
 
     private val categoriesApiService: CategoriesApiService by createByRetrofit<CategoriesApiService>()
-    private val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
-    private var homeScreenViewModel: HomeScreenViewModel? = null
+    val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
     private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
     private val userDataDao: UserDataDao by lazy {
         FinancesDb.getDatabase(context).userDataDao()
     }
-    val credentialsSource: UserCredentialsDataSource by lazy {
-        LocalUserCredentialsDataSource(userDataDao)
-    }
     val loginDataSource: LoginDataSource by lazy {
-        RemoteLoginDataSource(loginApiService) {
-            credentialsSource.setCredentials(UserCredentials(it.token, it.refresh))
+        RemoteLoginDataSource(loginApiService) { credentials ->
+            credentialsDataSource.let {
+                if(it == null) {
+                    credentialsDataSource = LocalCredentialsDataSource(credentials)
+                } else  { it.set(credentials) }
+            }
         }
     }
+    var credentialsDataSource: CredentialsDataSource? = null
 
-    fun getHomeScreenViewModel(navigate: (Int) -> Unit): HomeScreenViewModel {
-        return homeScreenViewModel ?: HomeScreenViewModel(
-            dataSource = categoriesDataSource,
-            credentialsSource = credentialsSource,
-            passScreen = navigate
-        ).also { homeScreenViewModel = it }
+    private var homeScreenViewModel: HomeScreenViewModel? = null
+
+    fun getHomeScreenViewModel(credentialsDataSource: CredentialsDataSource, passScreen: (Int) -> Unit): HomeScreenViewModel {
+        var viewModel = homeScreenViewModel
+        if(viewModel == null) {
+            viewModel = HomeScreenViewModel(categoriesDataSource, credentialsDataSource, passScreen)
+            homeScreenViewModel = viewModel
+        }
+        return viewModel
+    }
+
+    suspend fun initialize() {
+        val data = userDataDao.getUserData()
+        data?.let {
+            if(it.token?.isNotBlank() == true) {
+                val credentials = UserCredentials(it.token, it.refresh ?: "")
+                credentialsDataSource = LocalCredentialsDataSource(credentials)
+            }
+        }
     }
 
     private inline fun <reified T> createByRetrofit(): Lazy<T> {
@@ -124,5 +139,15 @@ private abstract class FinancesDb : RoomDatabase() {
                     .build().also { Instance = it }
             }
         }
+    }
+}
+
+class LocalCredentialsDataSource(private var credentials: UserCredentials) : CredentialsDataSource {
+    override fun get(): UserCredentials {
+        return credentials
+    }
+
+    override fun set(credentials: UserCredentials) {
+        this.credentials = credentials
     }
 }

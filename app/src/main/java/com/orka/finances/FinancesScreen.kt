@@ -19,6 +19,7 @@ import androidx.navigation.toRoute
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
+import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import com.orka.finances.lib.data.UserCredentials
@@ -32,25 +33,20 @@ fun FinancesAppScreen(
     container: AppContainer
 ) {
     val navController = rememberNavController()
-    val credentials = rememberSaveable { mutableStateOf<UserCredentials?>(null) }
     val loaded = rememberSaveable { mutableStateOf(false) }
 
     if(!loaded.value) {
         LaunchedEffect(Unit) {
-            credentials.value = container.credentialsSource.getCredentials()
+            container.initialize()
             loaded.value = true
-
         }
     } else {
         //TODO These messes should be contained in view model or smth else
         //TODO Don't forget writing tests for this logic
 
         var startDestination: Navigation = Navigation.Login
-
-        credentials.value?.let {
-            if (it.token.isNotBlank()) {
-                startDestination = Navigation.Home
-            }
+        container.credentialsDataSource?.let {
+            startDestination = Navigation.Home
         }
 
         NavHost(
@@ -85,9 +81,9 @@ fun FinancesAppScreen(
                     floatingActionButton = { HomeScreenFloatingActionButton() },
                     modifier = modifier,
                 ) { innerPadding ->
-                    val homeScreenViewModel = container.getHomeScreenViewModel {
-                        navController.navigate(Navigation.Products(it))
-                    }
+                    val homeScreenViewModel = container.getHomeScreenViewModel(
+                        credentialsDataSource = container.credentialsDataSource
+                    ) { navController.navigate(Navigation.Products(it)) }
 
                     HomeScreen(
                         modifier = Modifier.padding(innerPadding),
