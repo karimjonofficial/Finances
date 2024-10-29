@@ -1,7 +1,7 @@
 package com.orka.finances.features.login.viewmodels
 
 import com.orka.finances.MainDispatcherRule
-import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.Credentials
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import org.junit.Assert.assertEquals
@@ -50,13 +50,13 @@ class LoginScreenViewModelTest {
 }
 
 private class StubLoginDataSource : LoginDataSource {
-    override suspend fun getCredentials(username: String, password: String): UserCredentials {
-        return UserCredentials(ACCESS, REFRESH)
+    override suspend fun getCredentials(username: String, password: String): Credentials {
+        return Credentials(ACCESS, REFRESH)
     }
 }
 
 private class DummyLoginDataSource : LoginDataSource {
-    override suspend fun getCredentials(username: String, password: String): UserCredentials? {
+    override suspend fun getCredentials(username: String, password: String): Credentials? {
         return null
     }
 }

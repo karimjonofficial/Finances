@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
             }
 
             FinancesTheme {
-                FinancesAppScreen(container = appContainer)
+                val viewModel = AppViewModel(appContainer.infoDao)
+                FinancesScreen(container = appContainer, viewModel = viewModel)
             }
         }
     }

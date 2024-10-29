@@ -4,8 +4,7 @@ import com.orka.finances.MainDispatcherRule
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.data.UserCredentials
-import com.orka.finances.lib.data.UserCredentialsDataSource
+import com.orka.finances.lib.data.Credentials
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -13,7 +12,7 @@ import org.junit.Test
 
 private const val TOKEN = "token"
 private const val REFRESH = "refresh"
-private val CREDENTIALS = UserCredentials(TOKEN, REFRESH)
+private val CREDENTIALS = Credentials(TOKEN, REFRESH)
 
 class HomeScreenViewModelTest {
     @get: Rule
@@ -70,29 +69,6 @@ private class StubCategoriesDataSource : CategoriesDataSource {
 
     override suspend fun get(token: String): List<Category> {
         return initialData
-    }
-}
-
-private class DummyCredentialsDataSource : UserCredentialsDataSource {
-    override fun getCredentials(): UserCredentials {
-        return CREDENTIALS
-    }
-
-    override fun setCredentials(credentials: UserCredentials) {
-        TODO("Not yet implemented")
-    }
-}
-
-private class SpyCredentialsDataSource : UserCredentialsDataSource {
-    val counter = Counter()
-
-    override fun getCredentials(): UserCredentials {
-        counter.count()
-        return CREDENTIALS
-    }
-
-    override fun setCredentials(credentials: UserCredentials) {
-        TODO("Not yet implemented")
     }
 }
 

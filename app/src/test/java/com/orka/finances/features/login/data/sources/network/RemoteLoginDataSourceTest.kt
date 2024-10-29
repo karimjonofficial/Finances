@@ -1,6 +1,6 @@
 package com.orka.finances.features.login.data.sources.network
 
-import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.Credentials
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -9,7 +9,7 @@ import org.junit.Test
 private const val USERNAME = "admin"
 private const val PASSWORD = "123"
 private const val FAKE_PASSWORD = "1234"
-private val CREDENTIALS = UserCredentials("access", "token")
+private val CREDENTIALS = Credentials("access", "token")
 
 class RemoteLoginDataSourceTest {
     @Test
@@ -35,13 +35,13 @@ class RemoteLoginDataSourceTest {
 }
 
 private class StubLoginApiService : LoginApiService {
-    override suspend fun getCredentials(username: String, password: String): UserCredentials? {
+    override suspend fun getCredentials(username: String, password: String): Credentials? {
         return if(username == USERNAME && password == PASSWORD) CREDENTIALS else null
     }
 }
 
 private class DummyLoginApiService : LoginApiService {
-    override suspend fun getCredentials(username: String, password: String): UserCredentials? {
+    override suspend fun getCredentials(username: String, password: String): Credentials? {
         TODO("Write tests for setCredentials")
         throw Exception()
     }

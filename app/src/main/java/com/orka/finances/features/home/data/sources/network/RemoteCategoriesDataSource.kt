@@ -6,11 +6,7 @@ import com.orka.finances.features.home.models.Category
 
 class RemoteCategoriesDataSource(private val apiService: CategoriesApiService) : CategoriesDataSource {
     override suspend fun get(token: String): List<Category>? {
-        return try {
-            apiService.get("Bearer $token")
-        } catch(e: Exception) {
-            Log.d("FinancesApp.HTTP", e.message.toString())
-            emptyList()
-        }
+        //TODO Write tests (cause it doesn't return empty list if exception)
+        return apiService.get("Bearer $token")
     }
 }

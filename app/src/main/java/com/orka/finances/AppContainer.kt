@@ -15,11 +15,10 @@ import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewMod
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.data.sources.network.LoginApiService
 import com.orka.finances.features.login.data.sources.network.RemoteLoginDataSource
+import com.orka.finances.lib.data.Credentials
 import com.orka.finances.lib.data.CredentialsDataSource
-import com.orka.finances.lib.data.UserCredentials
-import com.orka.finances.lib.data.UserCredentialsDataSource
-import com.orka.finances.lib.data.UserData
-import com.orka.finances.lib.data.UserDataSource
+import com.orka.finances.lib.data.UserInfo
+import com.orka.finances.lib.data.UserInfoDataSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -33,9 +32,9 @@ class AppContainer(private val context: Context) {
         .baseUrl(BASE_URL).build()
 
     private val categoriesApiService: CategoriesApiService by createByRetrofit<CategoriesApiService>()
-    val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
+    private val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
     private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
-    private val userDataDao: UserDataDao by lazy {
+    val infoDao: UserInfoDao by lazy {
         FinancesDb.getDatabase(context).userDataDao()
     }
     val loginDataSource: LoginDataSource by lazy {
@@ -51,23 +50,38 @@ class AppContainer(private val context: Context) {
 
     private var homeScreenViewModel: HomeScreenViewModel? = null
 
-    fun getHomeScreenViewModel(credentialsDataSource: CredentialsDataSource, passScreen: (Int) -> Unit): HomeScreenViewModel {
+    fun getHomeScreenViewModel(
+        credentialsDataSource: CredentialsDataSource,
+        passScreen: (Int) -> Unit,
+        unauthorize: suspend () -> Unit
+    ): HomeScreenViewModel {
         var viewModel = homeScreenViewModel
         if(viewModel == null) {
-            viewModel = HomeScreenViewModel(categoriesDataSource, credentialsDataSource, passScreen)
+            viewModel = HomeScreenViewModel(
+                dataSource = categoriesDataSource,
+                credentialsDataSource = credentialsDataSource,
+                passScreen = passScreen,
+                unauthorize = unauthorize
+            )
+
             homeScreenViewModel = viewModel
         }
         return viewModel
     }
 
     suspend fun initialize() {
-        val data = userDataDao.getUserData()
+        val data = infoDao.select()
         data?.let {
             if(it.token?.isNotBlank() == true) {
-                val credentials = UserCredentials(it.token, it.refresh ?: "")
+                val credentials = Credentials(it.token, it.refresh ?: "")
                 credentialsDataSource = LocalCredentialsDataSource(credentials)
             }
         }
+    }
+
+    suspend fun unauthorize() {
+        infoDao.unauthorize()
+        credentialsDataSource = null
     }
 
     private inline fun <reified T> createByRetrofit(): Lazy<T> {
@@ -75,58 +89,24 @@ class AppContainer(private val context: Context) {
     }
 }
 
-private class LocalUserCredentialsDataSource(private val userDataDao: UserDataDao) : UserCredentialsDataSource {
-    private var credentials: UserCredentials? = null
-
-    override suspend fun getCredentials(): UserCredentials? {
-        return credentials ?: getCredentialsFromDb()?.also { setCredentials(it) }
-    }
-
-    override suspend fun setCredentials(credentials: UserCredentials) {
-        setCredentialsInDb(credentials)
-        this.credentials = credentials
-    }
-
-    private suspend fun getCredentialsFromDb(): UserCredentials? {
-        //TODO Write tests
-        val data = userDataDao.getUserData()
-        data?.let {
-            if (it.token?.isNotBlank() == true) {
-                val credentials = UserCredentials(it.token, it.refresh ?: "")
-                return credentials
-            }
-        }
-        return null
-    }
-
-    private suspend fun setCredentialsInDb(credentials: UserCredentials) {
-        //TODO Write tests
-        val data = userDataDao.getUserData()
-        if(data == null) {
-            val new = UserData(0, credentials.token, credentials.refresh)
-            userDataDao.insert(new)
-        } else {
-            val new = data.copy(token = credentials.token, refresh = credentials.refresh)
-            userDataDao.update(new)
-        }
-    }
-}
-
 @Dao
-private interface UserDataDao : UserDataSource {
+interface UserInfoDao : UserInfoDataSource {
     @Insert
-    override suspend fun insert(userData: UserData)
+    override suspend fun insert(userData: UserInfo)
 
     @Update
-    override suspend fun update(userData: UserData)
+    override suspend fun update(userData: UserInfo)
 
     @Query("select * from info where id = 1")
-    override suspend fun getUserData(): UserData?
+    override suspend fun select(): UserInfo?
+
+    @Query("update info set token = null, refresh = null where id = 1")
+    override suspend fun unauthorize()
 }
 
-@Database(entities = [UserData::class], version = 1, exportSchema = false)
+@Database(entities = [UserInfo::class], version = 1, exportSchema = false)
 private abstract class FinancesDb : RoomDatabase() {
-    abstract fun userDataDao(): UserDataDao
+    abstract fun userDataDao(): UserInfoDao
 
     companion object {
         @Volatile
@@ -142,12 +122,3 @@ private abstract class FinancesDb : RoomDatabase() {
     }
 }
 
-class LocalCredentialsDataSource(private var credentials: UserCredentials) : CredentialsDataSource {
-    override fun get(): UserCredentials {
-        return credentials
-    }
-
-    override fun set(credentials: UserCredentials) {
-        this.credentials = credentials
-    }
-}

@@ -1,6 +1,6 @@
 package com.orka.finances.features.login.data.sources.network
 
-import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.Credentials
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -11,5 +11,5 @@ interface LoginApiService {
     suspend fun getCredentials(
         @Field("username") username: String,
         @Field("password") password: String
-    ): UserCredentials?
+    ): Credentials?
 }

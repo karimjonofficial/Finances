@@ -23,7 +23,7 @@ import com.orka.finances.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun HomeScreenTopBar() {
+internal fun HomeScreenTopBar(scanClick: () -> Unit) {
     TopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -51,7 +51,7 @@ internal fun HomeScreenTopBar() {
             }
         },
         actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { scanClick() }) {
                 Icon(
                     painter = painterResource(R.drawable.qr_code_scanner),
                     contentDescription = stringResource(R.string.scan_a_qr_code)

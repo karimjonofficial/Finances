@@ -1,7 +1,7 @@
 package com.orka.finances.features.login.data.sources
 
-import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.Credentials
 
 interface LoginDataSource {
-    suspend fun getCredentials(username: String, password: String): UserCredentials?
+    suspend fun getCredentials(username: String, password: String): Credentials?
 }

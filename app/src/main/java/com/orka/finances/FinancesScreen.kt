@@ -1,3 +1,5 @@
+@file:JvmName("FinancesScreenKt")
+
 package com.orka.finances
 
 import androidx.compose.foundation.layout.Box
@@ -7,9 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -19,112 +19,91 @@ import androidx.navigation.toRoute
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
-import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
-import com.orka.finances.lib.data.UserCredentials
-import com.orka.finances.lib.log.Log
-import com.orka.finances.lib.log.formatTag
 import com.orka.finances.ui.navigation.Navigation
 
 @Composable
-fun FinancesAppScreen(
+fun FinancesScreen(
     modifier: Modifier = Modifier,
-    container: AppContainer
+    container: AppContainer,
+    viewModel: AppViewModel
 ) {
-    val navController = rememberNavController()
-    val loaded = rememberSaveable { mutableStateOf(false) }
+    val uiState = viewModel.uiState.collectAsState()
 
-    if(!loaded.value) {
-        LaunchedEffect(Unit) {
-            container.initialize()
-            loaded.value = true
-        }
-    } else {
-        //TODO These messes should be contained in view model or smth else
-        //TODO Don't forget writing tests for this logic
+    when(val authState = uiState.value) {
 
-        var startDestination: Navigation = Navigation.Login
-        container.credentialsDataSource?.let {
-            startDestination = Navigation.Home
-        }
+        AuthenticationState.Initial -> viewModel.initialize()
 
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = modifier
-        ) {
-            composable<Navigation.Login> {
-                AppScaffold(modifier = modifier) { innerPadding ->
-                    val loginDataSource = container.loginDataSource
+        AuthenticationState.UnAuthorized -> {
+            AppScaffold(modifier = modifier) { innerPadding ->
+                val loginDataSource = container.loginDataSource
 
-                    val loginViewModel = LoginScreenViewModel(
-                        dataSource = loginDataSource,
-                        passScreen = {
-                            navController.navigate(Navigation.Home) {
-                                popUpTo(Navigation.Login) { inclusive = true }
-                                launchSingleTop = true
-                            }
-                        }
-                    )
+                val loginViewModel = LoginScreenViewModel(
+                    dataSource = loginDataSource,
+                    setCredentials = { viewModel.setCredentials(it) }
+                )
 
-                    LoginScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = loginViewModel
-                    )
-                }
+                LoginScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    viewModel = loginViewModel
+                )
             }
+        }
 
-            composable<Navigation.Home> {
-                AppScaffold(
-                    topBar = { HomeScreenTopBar() },
-                    floatingActionButton = { HomeScreenFloatingActionButton() },
-                    modifier = modifier,
-                ) { innerPadding ->
-                    val homeScreenViewModel = container.getHomeScreenViewModel(
-                        credentialsDataSource = container.credentialsDataSource
-                    ) { navController.navigate(Navigation.Products(it)) }
+        is AuthenticationState.Authorized -> {
+            val navController = rememberNavController()
 
-                    HomeScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = homeScreenViewModel
-                    )
+            NavHost(
+                navController = navController,
+                startDestination = Navigation.Home,
+                modifier = modifier
+            ) {
+                composable<Navigation.Home> {
+                    AppScaffold(
+                        topBar = { HomeScreenTopBar { viewModel.unauthorize() } },
+                        floatingActionButton = { HomeScreenFloatingActionButton() },
+                        modifier = modifier,
+                    ) { innerPadding ->
+                        val homeScreenViewModel = container.getHomeScreenViewModel(
+                            credentialsDataSource = authState.credentialsDataSource,
+                            passScreen = { navController.navigate(Navigation.Products(it)) },
+                            unauthorize = { viewModel.unauthorize() }
+                        )
+
+                        HomeScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            viewModel = homeScreenViewModel
+                        )
+                    }
                 }
-            }
 
-            composable<Navigation.Products> {
-                val products: Navigation.Products = it.toRoute()
+                composable<Navigation.Products> {
+                    val products: Navigation.Products = it.toRoute()
 
-                Box(Modifier.fillMaxSize()) {
-                    Text(
-                        text = products.categoryId.toString(),
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    Box(Modifier.fillMaxSize()) {
+                        Text(
+                            text = products.categoryId.toString(),
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }
     }
-    //TODO view models are not kept through recomposition
-    //TODO view models are created two times every change of destination
-}
-
-private fun log(tag: String, message: String) {
-    Log(formatTag("FinancesScreen", tag), message)
 }
 
 @Composable
 private fun AppScaffold(
     modifier: Modifier = Modifier,
-    topBar: @Composable (() -> Unit)? = null,
-    bottomBar: @Composable (() -> Unit)? = null,
-    floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit,
+    topBar: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
+    content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        topBar = topBar ?: {},
-        bottomBar = bottomBar ?: {},
-        floatingActionButton = floatingActionButton ?: {},
-        modifier = modifier
+        modifier = modifier,
+        topBar = topBar,
+        floatingActionButton = floatingActionButton
     ) { innerPadding ->
         content(innerPadding)
     }

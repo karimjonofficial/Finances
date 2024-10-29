@@ -36,8 +36,8 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.data.UserCredentials
-import com.orka.finances.lib.data.UserCredentialsDataSource
+import com.orka.finances.lib.data.CredentialsDataSource
+import com.orka.finances.lib.data.Credentials
 import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
@@ -115,20 +115,20 @@ private fun HomeScreenPreview() {
     val credentialsDataSource = DummyCredentialsDataSource()
     val dataSource = InMemoryCategoriesDataSource()
     dataSource.loadInitialData()
-    val viewModel = HomeScreenViewModel(dataSource, credentialsDataSource) {}
+    val viewModel = HomeScreenViewModel(dataSource, credentialsDataSource, {}) {}
 
     Scaffold(
-        topBar = { HomeScreenTopBar() },
+        topBar = { HomeScreenTopBar {} },
         floatingActionButton = { HomeScreenFloatingActionButton() }
     ) { HomeScreen(Modifier.padding(it), viewModel) }
 }
 
-private class DummyCredentialsDataSource : UserCredentialsDataSource {
-    override suspend fun getCredentials(): UserCredentials {
-        return UserCredentials("token", "refresh")
+private class DummyCredentialsDataSource : CredentialsDataSource {
+    override fun get(): Credentials {
+        return Credentials("token", "refresh")
     }
 
-    override suspend fun setCredentials(credentials: UserCredentials) {
+    override fun set(credentials: Credentials) {
         TODO("Not yet implemented")
     }
 }

@@ -1,12 +1,12 @@
 package com.orka.finances.features.login.data.sources.local
 
-import com.orka.finances.lib.data.UserCredentials
+import com.orka.finances.lib.data.Credentials
 import com.orka.finances.features.login.data.sources.LoginDataSource
 
 class InMemoryLoginDataSource : LoginDataSource {
-    override suspend fun getCredentials(username: String, password: String): UserCredentials? {
+    override suspend fun getCredentials(username: String, password: String): Credentials? {
         return if(username == "admin" && password == "123")
-            UserCredentials("token", "access")
+            Credentials("token", "access")
         else null
     }
 }
