@@ -1,9 +1,10 @@
 package com.orka.finances.features.login.viewmodels
 
+import com.orka.finances.Counter
 import com.orka.finances.MainDispatcherRule
-import com.orka.finances.lib.data.Credentials
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import com.orka.finances.lib.data.credentials.Credentials
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -21,37 +22,34 @@ class LoginScreenViewModelTest {
     @Test
     fun emptyInput() {
         val dataSource = DummyLoginDataSource()
-        val viewModel = LoginScreenViewModel(dataSource) { spyPassScreen() }
-        val count = calls
+        val counter = Counter()
+        val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
+        val count = counter.count
 
         viewModel.login(BLANK, BLANK)
-        assertEquals(count, calls)
+        assertEquals(count, counter.count)
     }
 
     @Test
     fun noPassIfUserNotFound() {
         val dataSource = DummyLoginDataSource()
-        val viewModel = LoginScreenViewModel(dataSource) { spyPassScreen() }
-        val count = calls
+        val counter = Counter()
+        val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
+        val count = counter.count
 
         viewModel.login(USERNAME, PASSWORD)
-        assertEquals(count, calls)
+        assertEquals(count, counter.count)
     }
 
     @Test
     fun passScreenIfUserFound() {
         val dataSource = StubLoginDataSource()
-        val viewModel = LoginScreenViewModel(dataSource) { spyPassScreen() }
-        val count = calls
+        val counter = Counter()
+        val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
+        val count = counter.count
 
         viewModel.login(USERNAME, PASSWORD)
-        assertEquals(count + 1, calls)
-    }
-}
-
-private class StubLoginDataSource : LoginDataSource {
-    override suspend fun getCredentials(username: String, password: String): Credentials {
-        return Credentials(ACCESS, REFRESH)
+        assertEquals(count + 1, counter.count)
     }
 }
 
@@ -61,7 +59,8 @@ private class DummyLoginDataSource : LoginDataSource {
     }
 }
 
-var calls = 0
-private fun spyPassScreen() {
-    calls++
+private class StubLoginDataSource : LoginDataSource {
+    override suspend fun getCredentials(username: String, password: String): Credentials {
+        return Credentials(ACCESS, REFRESH)
+    }
 }

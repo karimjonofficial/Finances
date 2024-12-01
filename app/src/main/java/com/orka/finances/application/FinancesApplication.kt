@@ -1,4 +1,4 @@
-package com.orka.finances
+package com.orka.finances.application
 
 import android.app.Application
 

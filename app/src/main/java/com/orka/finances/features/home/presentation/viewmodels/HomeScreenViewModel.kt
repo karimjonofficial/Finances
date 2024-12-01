@@ -2,14 +2,13 @@ package com.orka.finances.features.home.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.network.HttpException
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.data.CredentialsDataSource
-import com.orka.finances.lib.log.Log
+import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class HomeScreenViewModel(
     private val dataSource: CategoriesDataSource,
@@ -26,18 +25,12 @@ class HomeScreenViewModel(
                 val credentials = credentialsDataSource.get()
                 _uiState.value = dataSource.get(credentials.token) ?: emptyList()
             } catch(e: HttpException) {
-                if(e.message?.contains("Unauthorized") == true) {
-                    unauthorize()
-                }
+                if(e.response.code == 401) { unauthorize() }
             }
         }
     }
 
     fun selectCategory(category: Category) {
         passScreen(category.id)
-    }
-
-    private fun log(message: String) {
-        Log("HomeScreenViewModel", message)
     }
 }

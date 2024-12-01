@@ -1,7 +1,7 @@
-package com.orka.finances
+package com.orka.finances.lib.data.credentials.local
 
-import com.orka.finances.lib.data.Credentials
-import com.orka.finances.lib.data.CredentialsDataSource
+import com.orka.finances.lib.data.credentials.Credentials
+import com.orka.finances.lib.data.credentials.CredentialsDataSource
 
 class LocalCredentialsDataSource(private var credentials: Credentials) : CredentialsDataSource {
     override fun get(): Credentials {

@@ -36,8 +36,8 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.data.CredentialsDataSource
-import com.orka.finances.lib.data.Credentials
+import com.orka.finances.lib.data.credentials.CredentialsDataSource
+import com.orka.finances.lib.data.credentials.Credentials
 import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
@@ -129,6 +129,6 @@ private class DummyCredentialsDataSource : CredentialsDataSource {
     }
 
     override fun set(credentials: Credentials) {
-        TODO("Not yet implemented")
+
     }
 }

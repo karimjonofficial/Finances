@@ -1,6 +1,6 @@
 package com.orka.finances.features.login.data.sources.network
 
-import com.orka.finances.lib.data.Credentials
+import com.orka.finances.lib.data.credentials.Credentials
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

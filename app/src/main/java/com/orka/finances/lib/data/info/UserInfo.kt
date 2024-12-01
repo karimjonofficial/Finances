@@ -1,4 +1,4 @@
-package com.orka.finances.lib.data
+package com.orka.finances.lib.data.info
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

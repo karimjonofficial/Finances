@@ -1,6 +1,6 @@
 @file:JvmName("FinancesScreenKt")
 
-package com.orka.finances
+package com.orka.finances.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.orka.finances.application.AppContainer
 import com.orka.finances.features.home.presentation.screens.HomeScreen
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar

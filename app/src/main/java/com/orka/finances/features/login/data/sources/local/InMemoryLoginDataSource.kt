@@ -1,6 +1,6 @@
 package com.orka.finances.features.login.data.sources.local
 
-import com.orka.finances.lib.data.Credentials
+import com.orka.finances.lib.data.credentials.Credentials
 import com.orka.finances.features.login.data.sources.LoginDataSource
 
 class InMemoryLoginDataSource : LoginDataSource {

@@ -7,6 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.orka.finances.application.FinancesApplication
+import com.orka.finances.ui.AppViewModel
+import com.orka.finances.ui.FinancesScreen
 import com.orka.finances.ui.theme.FinancesTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +31,7 @@ class MainActivity : ComponentActivity() {
             }
 
             FinancesTheme {
-                val viewModel = AppViewModel(appContainer.infoDao)
+                val viewModel = AppViewModel(appContainer.userInfoDataSource)
                 FinancesScreen(container = appContainer, viewModel = viewModel)
             }
         }

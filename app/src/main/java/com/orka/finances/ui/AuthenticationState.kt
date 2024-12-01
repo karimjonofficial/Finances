@@ -1,6 +1,6 @@
-package com.orka.finances
+package com.orka.finances.ui
 
-import com.orka.finances.lib.data.CredentialsDataSource
+import com.orka.finances.lib.data.credentials.CredentialsDataSource
 
 sealed class AuthenticationState {
     data object Initial : AuthenticationState()

@@ -1,4 +1,4 @@
-package com.orka.finances.lib.data
+package com.orka.finances.lib.data.credentials
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
