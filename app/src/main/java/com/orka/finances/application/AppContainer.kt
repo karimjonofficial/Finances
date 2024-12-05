@@ -60,7 +60,7 @@ class AppContainer(private val context: Context) {
         userInfoDataSource.unauthorize()
     }
 
-    private inline fun <reified T> createByRetrofit(): Lazy<T> {
+    private inline fun <reified T : Any> createByRetrofit(): Lazy<T> {
         return lazy { retrofit.create<T>() }
     }
 }

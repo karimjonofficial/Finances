@@ -1,54 +1,43 @@
 package com.orka.finances.features.login.data.sources.network
 
-import com.orka.finances.lib.data.credentials.Credentials
+import com.orka.finances.CREDENTIAL
+import com.orka.finances.BAD_PASSWORD
+import com.orka.finances.PASSWORD
+import com.orka.finances.USERNAME
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
-
-private const val USERNAME = "admin"
-private const val PASSWORD = "123"
-private const val FAKE_PASSWORD = "1234"
-private val CREDENTIALS = Credentials("access", "token")
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class RemoteLoginDataSourceTest {
-    @Test
-    fun returnNullIfFails() = runBlocking {
-        val apiService = DummyLoginApiService()
+
+    abstract class MockApiServiceContext {
+        private val apiService = MockLoginApiService()
         val dataSource = RemoteLoginDataSource(apiService)
-        var thrown = false
-        try {
-            dataSource.getCredentials(USERNAME, PASSWORD)
-        } catch(e: Exception) {
-            thrown = true
+    }
+
+    @Test
+    fun `data source should throw an exception`() = runTest {
+        val apiService = StubLoginApiService()
+        val dataSource = RemoteLoginDataSource(apiService)
+
+        assertThrows<Exception> { dataSource.getCredentials(USERNAME, PASSWORD) }
+    }
+
+    @Nested
+    inner class MockApiServiceContextImpl : MockApiServiceContext() {
+        @Test
+        fun returnNullIfNoSuchUsers() = runBlocking {
+            assertNull(dataSource.getCredentials(USERNAME, BAD_PASSWORD))
         }
-        assertTrue(thrown)
-    }
 
-    @Test
-    fun returnNullIfNoSuchUsers() = runBlocking {
-        val apiService = StubLoginApiService()
-        val dataSource = RemoteLoginDataSource(apiService)
-        assertNull(dataSource.getCredentials(USERNAME, FAKE_PASSWORD))
-    }
-
-    @Test
-    fun returnCredentialsIfCorrectInput() = runBlocking {
-        val apiService = StubLoginApiService()
-        val dataSource = RemoteLoginDataSource(apiService)
-        assertEquals(CREDENTIALS, dataSource.getCredentials(USERNAME, PASSWORD))
+        @Test
+        fun returnCredentialsIfCorrectInput() = runBlocking {
+            assertEquals(CREDENTIAL, dataSource.getCredentials(USERNAME, PASSWORD))
+        }
     }
 }
 
-private class StubLoginApiService : LoginApiService {
-    override suspend fun getCredentials(username: String, password: String): Credentials? {
-        return if(username == USERNAME && password == PASSWORD) CREDENTIALS else null
-    }
-}
-
-private class DummyLoginApiService : LoginApiService {
-    override suspend fun getCredentials(username: String, password: String): Credentials? {
-        throw Exception()
-    }
-}

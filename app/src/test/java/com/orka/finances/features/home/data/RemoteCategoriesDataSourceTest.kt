@@ -1,14 +1,13 @@
 package com.orka.finances.features.home.data
 
-import com.orka.finances.features.home.data.sources.network.CategoriesApiService
+import com.orka.finances.TOKEN
 import com.orka.finances.features.home.data.sources.network.RemoteCategoriesDataSource
-import com.orka.finances.features.home.models.Category
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
-
-private const val TOKEN = "token"
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class RemoteCategoriesDataSourceTest {
     @Test
@@ -21,32 +20,13 @@ class RemoteCategoriesDataSourceTest {
     }
 
     @Test
-    fun throwsWhenRequestFailed() = runBlocking {
-        var thrown = false
+    fun throwsWhenRequestFailed() = runTest {
+        val apiService = StubCategoriesApiService()
+        val dataSource = RemoteCategoriesDataSource(apiService)
 
-        try {
-            val apiService = DummyCategoriesApiService()
-            val dataSource = RemoteCategoriesDataSource(apiService)
+        assertThrows<Exception> {
             dataSource.get(TOKEN)
-        } catch(e: Exception) {
-            thrown = true
-        }
-
-        assertTrue(thrown)
-    }
-
-    class DummyCategoriesApiService : CategoriesApiService {
-        override suspend fun get(token: String): List<Category> {
-            throw Exception()
-        }
-    }
-
-    private class SpyCategoriesApiService : CategoriesApiService {
-        var token = ""
-
-        override suspend fun get(token: String): List<Category> {
-            this.token = token
-            return emptyList()
         }
     }
 }
+

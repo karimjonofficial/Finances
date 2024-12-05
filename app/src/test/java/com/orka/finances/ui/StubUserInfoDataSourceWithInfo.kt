@@ -1,9 +1,12 @@
 package com.orka.finances.ui
 
+import com.orka.finances.ID
+import com.orka.finances.REFRESH
+import com.orka.finances.TOKEN
 import com.orka.finances.lib.data.info.UserInfo
 import com.orka.finances.lib.data.info.UserInfoDataSource
 
-class StubUserInfoDataSource : UserInfoDataSource {
+class StubUserInfoDataSourceWithInfo : UserInfoDataSource {
     override suspend fun insert(userData: UserInfo) {
         TODO("Not yet implemented")
     }
@@ -13,7 +16,7 @@ class StubUserInfoDataSource : UserInfoDataSource {
     }
 
     override suspend fun select(): UserInfo {
-        return UserInfo(0, "token", "access")
+        return UserInfo(ID, TOKEN, REFRESH)
     }
 
     override suspend fun unauthorize() {

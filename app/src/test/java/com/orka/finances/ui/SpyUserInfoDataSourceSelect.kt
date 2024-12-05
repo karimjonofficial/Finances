@@ -5,7 +5,7 @@ import com.orka.finances.lib.data.info.UserInfo
 import com.orka.finances.lib.data.info.UserInfoDataSource
 
 class SpyUserInfoDataSourceSelect : UserInfoDataSource {
-    val counter = Counter()
+    var called = false
 
     override suspend fun insert(userData: UserInfo) {
         TODO("Not yet implemented")
@@ -16,7 +16,7 @@ class SpyUserInfoDataSourceSelect : UserInfoDataSource {
     }
 
     override suspend fun select(): UserInfo? {
-        counter.count()
+        called = true
         return null
     }
 

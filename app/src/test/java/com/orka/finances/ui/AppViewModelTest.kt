@@ -1,26 +1,17 @@
 package com.orka.finances.ui
 
-import com.orka.finances.MainDispatcherRule
-import com.orka.finances.lib.data.credentials.Credentials
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Rule
-import org.junit.Test
+import com.orka.finances.CREDENTIAL
+import com.orka.finances.MainDispatcherContext
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 
-private val CREDENTIALS = Credentials("token", "access")
-class AppViewModelTest {
-    @get: Rule
-    val mainDispatcherRule = MainDispatcherRule()
+class AppViewModelTest : MainDispatcherContext() {
 
-    @Test
-    fun fetchesUserInfoFromDbInInit() {
+    abstract class SpyDataSourceSelectWithViewModelContext {
         val dataSource = SpyUserInfoDataSourceSelect()
-        val count = dataSource.counter.count
         val viewModel = AppViewModel(dataSource)
-
-        viewModel.initialize()
-
-        assertEquals(count + 1, dataSource.counter.count)
     }
 
     @Test
@@ -47,7 +38,7 @@ class AppViewModelTest {
 
     @Test
     fun setsStateAuthorizedIfCredentialsExist() {
-        val dataSource = StubUserInfoDataSource()
+        val dataSource = StubUserInfoDataSourceWithInfo()
         val viewModel = AppViewModel(dataSource)
 
         viewModel.initialize()
@@ -56,16 +47,19 @@ class AppViewModelTest {
         assertTrue(state is AuthenticationState.Authorized)
     }
 
-    @Test
-    fun getsUserInfo() {
-        val dataSource = SpyUserInfoDataSourceSelect()
-        val viewModel = AppViewModel(dataSource)
-        val count = dataSource.counter.count
+    @Nested
+    inner class SpyDataSourceSelectWithViewModelContextImpl : SpyDataSourceSelectWithViewModelContext() {
 
-        viewModel.setCredentials(CREDENTIALS)
+        @Test
+        fun fetchesUserInfoFromDbInInit() {
+            viewModel.initialize()
+            assertTrue(dataSource.called)
+        }
 
-        assertEquals(count + 1, dataSource.counter.count)
+        @Test
+        fun getsUserInfo() {
+            viewModel.setCredentials(CREDENTIAL)
+            assertTrue(dataSource.called)
+        }
     }
-
-    //TODO Write tests for setCredentials
 }
