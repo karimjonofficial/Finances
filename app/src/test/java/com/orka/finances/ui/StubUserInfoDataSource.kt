@@ -12,7 +12,7 @@ class StubUserInfoDataSource : UserInfoDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun select(): UserInfo? {
+    override suspend fun select(): UserInfo {
         return UserInfo(0, "token", "access")
     }
 

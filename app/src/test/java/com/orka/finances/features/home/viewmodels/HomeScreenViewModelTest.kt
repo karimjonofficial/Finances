@@ -1,7 +1,5 @@
 package com.orka.finances.features.home.viewmodels
 
-import coil3.network.HttpException
-import coil3.network.NetworkResponse
 import com.orka.finances.Counter
 import com.orka.finances.MainDispatcherRule
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
@@ -10,9 +8,14 @@ import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewMod
 import com.orka.finances.lib.data.credentials.Credentials
 import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
+import okio.BufferedSource
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import retrofit2.HttpException
+import retrofit2.Response
 
 private const val TOKEN = "token"
 private const val REFRESH = "refresh"
@@ -103,8 +106,7 @@ private class DummyCategoriesDataSource : CategoriesDataSource {
 
 private class ThrowingCategoriesDataSource : CategoriesDataSource {
     override suspend fun get(token: String): List<Category>? {
-        val exception = HttpException(NetworkResponse(401))
-        throw exception
+        throw HttpException(Response.error<String>(401, NullResponseBody()))
     }
 }
 
@@ -114,4 +116,19 @@ private class StubCategoriesDataSource : CategoriesDataSource {
     override suspend fun get(token: String): List<Category> {
         return initialData
     }
+}
+
+private class NullResponseBody : ResponseBody() {
+    override fun contentLength(): Long {
+        return 0
+    }
+
+    override fun contentType(): MediaType? {
+        return null
+    }
+
+    override fun source(): BufferedSource {
+        TODO("Not implemented yet")
+    }
+
 }
