@@ -20,10 +20,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.finances.R
 import com.orka.finances.features.login.data.sources.local.InMemoryLoginDataSource
+import com.orka.finances.features.login.presentation.viewmodel.LoginScreenState
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import com.orka.finances.lib.ui.VerticalSpacer
 
@@ -44,6 +47,7 @@ fun LoginScreen(
         modifier = modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val uiState = viewModel.uiState.collectAsState()
         val username = rememberSaveable { mutableStateOf("") }
         val password = rememberSaveable { mutableStateOf("") }
         val remember = rememberSaveable { mutableStateOf(false) }
@@ -144,6 +148,18 @@ fun LoginScreen(
         VerticalSpacer(8)
 
         Text(stringResource(R.string.forgot_password))
+
+        val state = uiState.value
+        if(state is LoginScreenState.Failed) {
+
+            VerticalSpacer(16)
+            Text(text = state.message, color = Color.Red)
+
+            username.value = ""
+            password.value = ""
+            remember.value = false
+            passwordVisible.value = false
+        }
     }
 }
 

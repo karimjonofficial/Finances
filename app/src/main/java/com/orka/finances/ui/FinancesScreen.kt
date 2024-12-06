@@ -34,7 +34,7 @@ fun FinancesScreen(
 
     when(val authState = uiState.value) {
 
-        AuthenticationState.Initial -> viewModel.initialize()
+        AuthenticationState.Initial -> viewModel.initUserInfo()
 
         AuthenticationState.UnAuthorized -> {
             AppScaffold(modifier = modifier) { innerPadding ->

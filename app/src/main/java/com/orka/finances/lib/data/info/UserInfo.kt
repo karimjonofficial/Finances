@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "info")
 data class UserInfo(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo("token") val token: String?,
-    @ColumnInfo("refresh") val refresh: String?
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo("token") val token: String? = null,
+    @ColumnInfo("refresh") val refresh: String? = null
 )

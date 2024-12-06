@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.finances.lib.data.credentials.Credentials
 import com.orka.finances.lib.data.credentials.local.LocalCredentialsDataSource
+import com.orka.finances.lib.data.info.UserInfo
 import com.orka.finances.lib.data.info.UserInfoDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ class AppViewModel(
     private val _uiState = MutableStateFlow<AuthenticationState>(AuthenticationState.Initial)
     val uiState = _uiState.asStateFlow()
 
-    fun initialize() {
+    fun initUserInfo() {
         viewModelScope.launch {
             val info = getUserInfo()
             if(info != null) {
@@ -28,17 +29,24 @@ class AppViewModel(
     }
 
     fun setCredentials(credentials: Credentials) {
-        //TODO Reorganize and redesign it. When the info is null it should get info using credentials and set the info.
-        // When state is authorized then no nullable info allowed.
         viewModelScope.launch {
             val info = getUserInfo()
-            info?.let {
-                userInfoDataSource.update(
-                    it.copy(token = credentials.token, refresh = credentials.refresh)
-                )
+            if(info != null) {
+                updateUserInfo(info, credentials)
+            } else {
+                userInfoDataSource.insert(UserInfo(token = credentials.token, refresh = credentials.refresh))
             }
             setStateAuthorized(LocalCredentialsDataSource(credentials))
         }
+    }
+
+    private suspend fun updateUserInfo(
+        it: UserInfo,
+        credentials: Credentials
+    ) {
+        userInfoDataSource.update(
+            it.copy(token = credentials.token, refresh = credentials.refresh)
+        )
     }
 
     fun unauthorize() {

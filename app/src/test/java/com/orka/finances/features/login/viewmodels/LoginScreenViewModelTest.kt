@@ -7,7 +7,15 @@ import com.orka.finances.PASSWORD
 import com.orka.finances.USERNAME
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenState
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -21,27 +29,89 @@ class LoginScreenViewModelTest : MainDispatcherContext() {
             val count = counter.count
             val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
         }
+
+        abstract class WithStubDataSourceWithNoCredentials : CounterContext() {
+            val dataSource = StubLoginDataSourceWithNoCredentials()
+        }
+    }
+    abstract class StubDataSourceWithNoCredentialsContext {
+        private val dataSource = StubLoginDataSourceWithNoCredentials()
+        val viewModel = LoginScreenViewModel(dataSource) {}
+    }
+    abstract class ThrowingStubDataSourceContext {
+        private val dataSource = ThrowingStubLoginDataSource()
+        val viewModel = LoginScreenViewModel(dataSource) {}
     }
 
     @Test
-    fun hasBasicStateWhenCreated() {
+    fun hasInitialStateWhenCreated() {
         val dataSource = DummyLoginDataSource()
         val viewModel = LoginScreenViewModel(dataSource) {}
-        val state = viewModel.uiState.value
+        val state = getState(viewModel)
 
-        assertEquals(state, LoginScreenState())
+        assertEquals(state, LoginScreenState.Initial)
+    }
+
+    @Nested
+    inner class ThrowingStubDataSourceContextImpl : ThrowingStubDataSourceContext() {
+
+        @Test
+        fun setsStateFailedWhenThrow() {
+            viewModel.login(USERNAME, PASSWORD)
+            assertTrue(getState(viewModel) is LoginScreenState.Failed)
+        }
+
+        @Test
+        fun resetsFailureStateAutoInThreeSecWhenThrow() = runTest {
+            viewModel.login(USERNAME, PASSWORD)
+            val state = withContext(Dispatchers.Default) {
+                delay(4000)
+                getState(viewModel)
+            }
+            assertEquals(state, LoginScreenState.Initial)
+        }
+    }
+
+    @Nested
+    inner class StubDataSourceWithNoCredentialsContextImpl : StubDataSourceWithNoCredentialsContext() {
+
+        @Test
+        fun setsStateFailedWhenUserNotFound() {
+            viewModel.login(USERNAME, PASSWORD)
+            assertTrue(getState(viewModel) is LoginScreenState.Failed)
+        }
+
+        @Test
+        fun resetsFailureState() {
+            viewModel.login(USERNAME, PASSWORD)
+            viewModel.resetState()
+            assertEquals(getState(viewModel), LoginScreenState.Initial)
+        }
+
+        @Test
+        fun resetsFailureStateAutoInThreeSecWhenUserNotFound() = runTest {
+            viewModel.login(USERNAME, PASSWORD)
+            val state = withContext(Dispatchers.Default) {
+                delay(4000)
+                getState(viewModel)
+            }
+            assertEquals(state, LoginScreenState.Initial)
+        }
     }
 
     @Nested
     inner class CounterContextImpl : CounterContext() {
 
-        @Test
-        fun notSetCredentialsIfUserNotFound() {
-            val dataSource = StubLoginDataSourceWithNoCredentials()
-            val count = counter.count
-            val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
-            viewModel.login(USERNAME, PASSWORD)
-            assertEquals(count, counter.count)
+        @Nested
+        inner class WithEmptyStubDataSource : WithStubDataSourceWithNoCredentials() {
+
+            @Test
+            fun notSetCredentialsIfUserNotFound() {
+                val count = counter.count
+                val viewModel = LoginScreenViewModel(dataSource) { counter.count() }
+                viewModel.login(USERNAME, PASSWORD)
+                assertEquals(count, counter.count)
+            }
         }
 
         @Nested
@@ -62,3 +132,4 @@ class LoginScreenViewModelTest : MainDispatcherContext() {
     }
 }
 
+private fun getState(viewModel: LoginScreenViewModel) = viewModel.uiState.value

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.lib.data.credentials.Credentials
 import com.orka.finances.lib.log.Log
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ class LoginScreenViewModel(
     private val setCredentials: (Credentials) -> Unit
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginScreenState())
+    private val _uiState = MutableStateFlow<LoginScreenState>(LoginScreenState.Initial)
     val uiState = _uiState.asStateFlow()
 
     fun login(username: String, password: String) {
@@ -28,16 +29,28 @@ class LoginScreenViewModel(
             val credentials = dataSource.getCredentials(username, password)
             if (credentials != null) {
                 setCredentials(credentials)
-                log("Credentials", credentials.token)
             } else {
-                log("NoCredentials", "Not exists")
+                _uiState.value = LoginScreenState.Failed("No such users found")
+                resetStateDelayed()
             }
-        } catch(e:Exception) {
-
+        } catch(e: Exception) {
+            _uiState.value = LoginScreenState.Failed("Check the internet connection")
+            resetStateDelayed()
         }
+    }
+
+    private suspend fun resetStateDelayed() {
+        delay(3000)
+        resetState()
     }
 
     private fun log(tag: String, message: String) {
         Log(".LoginScreenViewModel.$tag", message)
+    }
+
+    fun resetState() {
+        if(_uiState.value is LoginScreenState.Failed) {
+            _uiState.value = LoginScreenState.Initial
+        }
     }
 }

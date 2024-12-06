@@ -13,16 +13,9 @@ class AppViewModelTest : MainDispatcherContext() {
         val dataSource = SpyUserInfoDataSourceSelect()
         val viewModel = AppViewModel(dataSource)
     }
-
-    @Test
-    fun setsStateUnauthorizedIfNoInfo() {
-        val dataSource = StubUserInfoDataSourceWithNoInfo()
+    abstract class StubDataSourceWithNoInfoContext {
+        private val dataSource = StubUserInfoDataSourceWithNoInfo()
         val viewModel = AppViewModel(dataSource)
-
-        viewModel.initialize()
-        val state = viewModel.uiState.value
-
-        assertEquals(AuthenticationState.UnAuthorized, state)
     }
 
     @Test
@@ -30,7 +23,7 @@ class AppViewModelTest : MainDispatcherContext() {
         val dataSource = StubUserInfoDataSourceWithNoToken()
         val viewModel = AppViewModel(dataSource)
 
-        viewModel.initialize()
+        viewModel.initUserInfo()
         val state = viewModel.uiState.value
 
         assertEquals(AuthenticationState.UnAuthorized, state)
@@ -41,10 +34,32 @@ class AppViewModelTest : MainDispatcherContext() {
         val dataSource = StubUserInfoDataSourceWithInfo()
         val viewModel = AppViewModel(dataSource)
 
-        viewModel.initialize()
+        viewModel.initUserInfo()
         val state = viewModel.uiState.value
 
         assertTrue(state is AuthenticationState.Authorized)
+    }
+
+    @Test
+    fun insertsSetCredentialsCalledWhenNoInfo() {
+        val dataSource = SpyUserInfoDataSourceOfInsert()
+        val viewModel = AppViewModel(dataSource)
+
+        viewModel.setCredentials(CREDENTIAL)
+
+        assertTrue(dataSource.called)
+    }
+
+    @Nested
+    inner class StubDataSourceWithNoInfoContextImpl : StubDataSourceWithNoInfoContext() {
+
+        @Test
+        fun setsStateUnauthorizedIfNoInfo() {
+            viewModel.initUserInfo()
+            val state = viewModel.uiState.value
+
+            assertEquals(AuthenticationState.UnAuthorized, state)
+        }
     }
 
     @Nested
@@ -52,7 +67,7 @@ class AppViewModelTest : MainDispatcherContext() {
 
         @Test
         fun fetchesUserInfoFromDbInInit() {
-            viewModel.initialize()
+            viewModel.initUserInfo()
             assertTrue(dataSource.called)
         }
 
