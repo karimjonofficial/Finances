@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.lib.data.credentials.Credentials
-import com.orka.finances.lib.log.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
