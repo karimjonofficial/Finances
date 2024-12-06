@@ -44,10 +44,6 @@ class LoginScreenViewModel(
         resetState()
     }
 
-    private fun log(tag: String, message: String) {
-        Log(".LoginScreenViewModel.$tag", message)
-    }
-
     fun resetState() {
         if(_uiState.value is LoginScreenState.Failed) {
             _uiState.value = LoginScreenState.Initial

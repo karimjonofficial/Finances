@@ -8,10 +8,7 @@ import com.orka.finances.USERNAME
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenState
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
