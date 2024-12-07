@@ -11,14 +11,13 @@ class InMemoryCategoriesDataSource : CategoriesDataSource {
 
     private var lastId = 20
 
-    override suspend fun get(token: String): List<Category> {
+    override suspend fun get(): List<Category> {
         return categories
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category {
+    override suspend fun add(name: String, description: String): Category {
         val category = Category(lastId++, name, description)
         categories.add(category)
         return category
     }
-
 }

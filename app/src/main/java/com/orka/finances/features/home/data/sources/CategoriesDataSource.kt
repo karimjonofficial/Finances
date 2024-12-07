@@ -3,6 +3,6 @@ package com.orka.finances.features.home.data.sources
 import com.orka.finances.features.home.models.Category
 
 interface CategoriesDataSource {
-    suspend fun get(token: String): List<Category>?
-    suspend fun add(token: String, name: String, description: String): Category?
+    suspend fun get(): List<Category>?
+    suspend fun add(name: String, description: String): Category?
 }

@@ -24,19 +24,19 @@ class RemoteLoginDataSourceTest {
         val apiService = StubLoginApiService()
         val dataSource = RemoteLoginDataSource(apiService)
 
-        assertThrows<Exception> { dataSource.getCredentials(USERNAME, PASSWORD) }
+        assertThrows<Exception> { dataSource.getCredential(USERNAME, PASSWORD) }
     }
 
     @Nested
     inner class MockApiServiceContextImpl : MockApiServiceContext() {
         @Test
         fun returnNullIfNoSuchUsers() = runBlocking {
-            assertNull(dataSource.getCredentials(USERNAME, BAD_PASSWORD))
+            assertNull(dataSource.getCredential(USERNAME, BAD_PASSWORD))
         }
 
         @Test
         fun returnCredentialsIfCorrectInput() = runBlocking {
-            assertEquals(CREDENTIAL, dataSource.getCredentials(USERNAME, PASSWORD))
+            assertEquals(CREDENTIAL, dataSource.getCredential(USERNAME, PASSWORD))
         }
     }
 }

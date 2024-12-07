@@ -3,11 +3,11 @@ package com.orka.finances.ui
 import com.orka.finances.lib.data.info.UserInfo
 import com.orka.finances.lib.data.info.UserInfoDataSource
 
-class SpyUserInfoDataSourceOfInsert : UserInfoDataSource {
+class SpyUserInfoDataSourceOfSelect : UserInfoDataSource {
     var called = false
 
     override suspend fun insert(userData: UserInfo) {
-        called = true
+        TODO("Not yet implemented")
     }
 
     override suspend fun update(userData: UserInfo) {
@@ -15,11 +15,11 @@ class SpyUserInfoDataSourceOfInsert : UserInfoDataSource {
     }
 
     override suspend fun select(): UserInfo? {
+        called = true
         return null
     }
 
     override suspend fun unauthorize() {
         TODO("Not yet implemented")
     }
-
 }

@@ -8,11 +8,11 @@ class SpyCategoriesDataSourceForAdd : CategoriesDataSource {
 
     val counter = Counter()
 
-    override suspend fun get(token: String): List<Category> {
+    override suspend fun get(): List<Category> {
         return emptyList()
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category {
+    override suspend fun add(name: String, description: String): Category {
         counter.count()
         return Category(0, name, "description")
     }

@@ -3,13 +3,14 @@ package com.orka.finances.application
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.orka.finances.application.database.FinancesDb
+import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.data.sources.network.CategoriesApiService
 import com.orka.finances.features.home.data.sources.network.RemoteCategoriesDataSource
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
 import com.orka.finances.features.login.data.sources.LoginDataSource
 import com.orka.finances.features.login.data.sources.network.LoginApiService
 import com.orka.finances.features.login.data.sources.network.RemoteLoginDataSource
-import com.orka.finances.lib.data.credentials.CredentialsDataSource
+import com.orka.finances.lib.data.credentials.Credential
 import com.orka.finances.lib.data.info.UserInfoDataSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,7 +25,11 @@ class AppContainer(private val context: Context) {
         .baseUrl(BASE_URL).build()
 
     private val categoriesApiService: CategoriesApiService by createByRetrofit<CategoriesApiService>()
-    private val categoriesDataSource = RemoteCategoriesDataSource(categoriesApiService)
+
+    private fun getCategoriesDataSource(credential: Credential): CategoriesDataSource {
+        return RemoteCategoriesDataSource(categoriesApiService, credential)
+    }
+
     private val loginApiService: LoginApiService by createByRetrofit<LoginApiService>()
 
     val userInfoDataSource: UserInfoDataSource by lazy {
@@ -38,15 +43,14 @@ class AppContainer(private val context: Context) {
     private var homeScreenViewModel: HomeScreenViewModel? = null
 
     fun getHomeScreenViewModel(
-        credentialsDataSource: CredentialsDataSource,
+        credential: Credential,
         passScreen: (Int) -> Unit,
         unauthorize: suspend () -> Unit
     ): HomeScreenViewModel {
         var viewModel = homeScreenViewModel
         if(viewModel == null) {
             viewModel = HomeScreenViewModel(
-                dataSource = categoriesDataSource,
-                credentialsDataSource = credentialsDataSource,
+                dataSource = getCategoriesDataSource(credential),
                 passScreen = passScreen,
                 unauthorize = unauthorize
             )

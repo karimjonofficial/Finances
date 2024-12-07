@@ -1,7 +1,7 @@
 package com.orka.finances
 
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.data.credentials.Credentials
+import com.orka.finances.lib.data.credentials.Credential
 
 const val ID = 1
 const val USERNAME = "username"
@@ -14,5 +14,5 @@ const val UNAUTHORIZED_STATUS_CODE = 401
 const val NAME = "name"
 const val DESCRIPTION = "description"
 
-val CREDENTIAL = Credentials(TOKEN, REFRESH)
+val CREDENTIAL = Credential(TOKEN, REFRESH)
 val CATEGORY = Category(ID, NAME, DESCRIPTION)

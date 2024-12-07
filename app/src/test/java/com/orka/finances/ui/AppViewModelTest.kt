@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class AppViewModelTest : MainDispatcherContext() {
 
     abstract class SpyDataSourceSelectWithViewModelContext {
-        val dataSource = SpyUserInfoDataSourceSelect()
+        val dataSource = SpyUserInfoDataSourceOfSelect()
         val viewModel = AppViewModel(dataSource)
     }
     abstract class StubDataSourceWithNoInfoContext {

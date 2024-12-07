@@ -6,11 +6,11 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 class ThrowingHttpExceptionStubCategoriesDataSource : CategoriesDataSource {
-    override suspend fun get(token: String): List<Category>? {
+    override suspend fun get(): List<Category>? {
         throw HttpException(Response.error<String>(501, NullResponseBody))
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category? {
+    override suspend fun add(name: String, description: String): Category? {
         throw HttpException(Response.error<String>(501, NullResponseBody))
     }
 }

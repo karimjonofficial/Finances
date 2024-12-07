@@ -36,8 +36,6 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.data.credentials.Credentials
-import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
@@ -111,22 +109,11 @@ fun HomeScreen(
 )
 @Composable
 private fun HomeScreenPreview() {
-    val credentialsDataSource = DummyCredentialsDataSource()
     val dataSource = InMemoryCategoriesDataSource()
-    val viewModel = HomeScreenViewModel(dataSource, credentialsDataSource, {}) {}
+    val viewModel = HomeScreenViewModel(dataSource, {}) {}
 
     Scaffold(
         topBar = { HomeScreenTopBar {} },
         floatingActionButton = { HomeScreenFloatingActionButton {} }
     ) { HomeScreen(Modifier.padding(it), viewModel) }
-}
-
-private class DummyCredentialsDataSource : CredentialsDataSource {
-    override fun get(): Credentials {
-        return Credentials("token", "refresh")
-    }
-
-    override fun set(credentials: Credentials) {
-
-    }
 }

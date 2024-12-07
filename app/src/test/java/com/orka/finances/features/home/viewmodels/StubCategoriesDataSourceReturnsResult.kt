@@ -5,11 +5,11 @@ import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
 
 class StubCategoriesDataSourceReturnsResult : CategoriesDataSource {
-    override suspend fun get(token: String): List<Category> {
+    override suspend fun get(): List<Category> {
         return listOf(CATEGORY)
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category {
+    override suspend fun add(name: String, description: String): Category {
         return CATEGORY
     }
 }

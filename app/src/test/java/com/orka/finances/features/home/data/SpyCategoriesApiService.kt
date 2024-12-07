@@ -4,14 +4,18 @@ import com.orka.finances.features.home.data.sources.network.CategoriesApiService
 import com.orka.finances.features.home.models.Category
 
 class SpyCategoriesApiService : CategoriesApiService {
-    var token = ""
+    var authorizationHeader = ""
+    var postCalled = false
+    var getCalled = false
 
-    override suspend fun get(token: String): List<Category> {
-        this.token = token
+    override suspend fun get(authorizationHeader: String): List<Category> {
+        getCalled = true
+        this.authorizationHeader = authorizationHeader
         return emptyList()
     }
 
-    override suspend fun post(token: String, name: String, description: String): Category? {
-        TODO("Not yet implemented")
+    override suspend fun post(authHeader: String, name: String, description: String): Category? {
+        postCalled = true
+        return null
     }
 }

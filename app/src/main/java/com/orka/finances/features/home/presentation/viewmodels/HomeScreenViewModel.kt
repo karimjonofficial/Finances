@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
-import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import com.orka.finances.lib.resources.HttpStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +12,6 @@ import retrofit2.HttpException
 
 class HomeScreenViewModel(
     private val dataSource: CategoriesDataSource,
-    private val credentialsDataSource: CredentialsDataSource,
     private val passScreen: (Int) -> Unit,
     private val unauthorize: suspend () -> Unit
 ) : ViewModel() {
@@ -23,8 +21,7 @@ class HomeScreenViewModel(
     fun fetchData() {
         viewModelScope.launch {
             try {
-                val credentials = credentialsDataSource.get()
-                _uiState.value = dataSource.get(credentials.token) ?: emptyList()
+                _uiState.value = dataSource.get() ?: emptyList()
             } catch (e: HttpException) {
                 if (e.code() == HttpStatus.Unauthorized.code) {
                     unauthorize()
@@ -41,7 +38,7 @@ class HomeScreenViewModel(
         if (name.isNotBlank()) {
             viewModelScope.launch {
                 try {
-                    if(dataSource.add(credentialsDataSource.get().token, name, description) != null)
+                    if(dataSource.add(name, description) != null)
                         fetchData()
                 } catch (e: HttpException) {
                     if(e.code() == HttpStatus.Unauthorized.code) {

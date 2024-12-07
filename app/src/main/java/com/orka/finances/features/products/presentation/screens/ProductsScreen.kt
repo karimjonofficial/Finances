@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.orka.finances.features.products.data.sources.local.InMemoryProductsDataSource
 import com.orka.finances.features.products.presentation.viewmodels.ProductsScreenViewModel
-import com.orka.finances.lib.data.credentials.Credentials
-import com.orka.finances.lib.data.credentials.local.LocalCredentialsDataSource
 
 @Composable
 fun ProductsScreen(
@@ -26,8 +24,7 @@ fun ProductsScreen(
 private fun ProductsScreenPreview() {
     val categoryId = 1
     val productsDataSource = InMemoryProductsDataSource()
-    val credentialsDataSource = LocalCredentialsDataSource(Credentials("token", "refresh"))
-    val productsScreenViewModel = ProductsScreenViewModel(categoryId, productsDataSource, credentialsDataSource)
+    val productsScreenViewModel = ProductsScreenViewModel(categoryId, productsDataSource)
     Scaffold { innerPadding ->
         ProductsScreen(
             modifier = Modifier.padding(innerPadding),

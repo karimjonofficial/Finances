@@ -2,8 +2,7 @@ package com.orka.finances.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.orka.finances.lib.data.credentials.Credentials
-import com.orka.finances.lib.data.credentials.local.LocalCredentialsDataSource
+import com.orka.finances.lib.data.credentials.Credential
 import com.orka.finances.lib.data.info.UserInfo
 import com.orka.finances.lib.data.info.UserInfoDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,31 +20,28 @@ class AppViewModel(
             val info = getUserInfo()
             if(info != null) {
                 if(info.token?.isNotBlank() == true) {
-                    val credentials = Credentials(info.token, info.refresh ?: "")
-                    setStateAuthorized(LocalCredentialsDataSource(credentials))
+                    val credential = Credential(info.token, info.refresh ?: "")
+                    setStateAuthorized(credential)
                 } else { setStateUnauthorized() }
             } else { setStateUnauthorized() }
         }
     }
 
-    fun setCredentials(credentials: Credentials) {
+    fun setCredentials(credential: Credential) {
         viewModelScope.launch {
             val info = getUserInfo()
             if(info != null) {
-                updateUserInfo(info, credentials)
+                updateUserInfo(info, credential)
             } else {
-                userInfoDataSource.insert(UserInfo(token = credentials.token, refresh = credentials.refresh))
+                userInfoDataSource.insert(UserInfo(token = credential.token, refresh = credential.refresh))
             }
-            setStateAuthorized(LocalCredentialsDataSource(credentials))
+            setStateAuthorized(credential)
         }
     }
 
-    private suspend fun updateUserInfo(
-        it: UserInfo,
-        credentials: Credentials
-    ) {
+    private suspend fun updateUserInfo(it: UserInfo, credential: Credential) {
         userInfoDataSource.update(
-            it.copy(token = credentials.token, refresh = credentials.refresh)
+            it.copy(token = credential.token, refresh = credential.refresh)
         )
     }
 
@@ -58,8 +54,8 @@ class AppViewModel(
 
     private suspend fun getUserInfo() = userInfoDataSource.select()
 
-    private fun setStateAuthorized(credentialsDataSource: LocalCredentialsDataSource) {
-        _uiState.value = AuthenticationState.Authorized(credentialsDataSource)
+    private fun setStateAuthorized(credential: Credential) {
+        _uiState.value = AuthenticationState.Authorized(credential)
     }
 
     private fun setStateUnauthorized() {

@@ -46,7 +46,7 @@ fun FinancesScreen(
 
                 val loginViewModel = LoginScreenViewModel(
                     dataSource = loginDataSource,
-                    setCredentials = { viewModel.setCredentials(it) }
+                    setCredential = { viewModel.setCredentials(it) }
                 )
 
                 LoginScreen(
@@ -74,7 +74,7 @@ fun FinancesScreen(
                         modifier = modifier,
                     ) { innerPadding ->
                         val homeScreenViewModel = container.getHomeScreenViewModel(
-                            credentialsDataSource = authState.credentialsDataSource,
+                            credential = authState.credential,
                             passScreen = { navController.navigate(Navigation.Products(it)) },
                             unauthorize = { viewModel.unauthorize() }
                         )

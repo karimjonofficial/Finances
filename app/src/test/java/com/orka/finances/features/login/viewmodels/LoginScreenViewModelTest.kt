@@ -70,7 +70,7 @@ class LoginScreenViewModelTest : MainDispatcherContext() {
     }
 
     @Nested
-    inner class StubDataSourceWithNoCredentialsContextImpl : StubDataSourceWithNoCredentialsContext() {
+    inner class StubDataSourceWithNoCredentialContextImpl : StubDataSourceWithNoCredentialsContext() {
 
         @Test
         fun setsStateFailedWhenUserNotFound() {
@@ -117,6 +117,18 @@ class LoginScreenViewModelTest : MainDispatcherContext() {
             @Test
             fun emptyInput() {
                 viewModel.login(BLANK_LINE, BLANK_LINE)
+                assertEquals(count, counter.count)
+            }
+
+            @Test
+            fun `When username blank, no calls`() {
+                viewModel.login(BLANK_LINE, PASSWORD)
+                assertEquals(count, counter.count)
+            }
+
+            @Test
+            fun `When password blank, no calls`() {
+                viewModel.login(USERNAME, BLANK_LINE)
                 assertEquals(count, counter.count)
             }
 

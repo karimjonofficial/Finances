@@ -11,13 +11,13 @@ import retrofit2.http.POST
 interface CategoriesApiService {
     @Headers("accept: application/json")
     @GET("v1/categories/")
-    suspend fun get(@Header("Authorization") token: String): List<Category>?
+    suspend fun get(@Header("Authorization") authorizationHeader: String): List<Category>?
 
     @Headers("accept: application/json")
     @FormUrlEncoded
     @POST("v1/categories/")
     suspend fun post(
-        @Header("Authorization") token: String,
+        @Header("Authorization") authHeader: String,
         @Field("name") name: String,
         @Field("description") description: String
     ): Category?

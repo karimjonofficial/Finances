@@ -8,11 +8,11 @@ import com.orka.finances.features.home.models.Category
 
 class StubCategoriesDataSourceWithData :
     CategoriesDataSource {
-    override suspend fun get(token: String): List<Category> {
+    override suspend fun get(): List<Category> {
         return listOf(Category(ID, NAME, DESCRIPTION))
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category? {
+    override suspend fun add(name: String, description: String): Category? {
         TODO("Not yet implemented")
     }
 }
