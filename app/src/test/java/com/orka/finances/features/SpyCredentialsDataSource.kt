@@ -1,4 +1,4 @@
-package com.orka.finances.features.home.viewmodels
+package com.orka.finances.features
 
 import com.orka.finances.CREDENTIAL
 import com.orka.finances.Counter

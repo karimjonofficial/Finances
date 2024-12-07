@@ -15,7 +15,7 @@ class InMemoryCategoriesDataSource : CategoriesDataSource {
         return categories
     }
 
-    override suspend fun add(token: String, name: String, description: String): Category? {
+    override suspend fun add(token: String, name: String, description: String): Category {
         val category = Category(lastId++, name, description)
         categories.add(category)
         return category

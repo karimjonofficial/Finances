@@ -1,9 +1,6 @@
 package com.orka.finances.features.home.viewmodels
 
 import com.orka.finances.CATEGORY
-import com.orka.finances.DESCRIPTION
-import com.orka.finances.ID
-import com.orka.finances.NAME
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
 
