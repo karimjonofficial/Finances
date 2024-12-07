@@ -10,4 +10,8 @@ class SpyCategoriesDataSource : CategoriesDataSource {
         called = true
         return emptyList()
     }
+
+    override suspend fun add(token: String, name: String, description: String): Category? {
+        TODO("Not yet implemented")
+    }
 }

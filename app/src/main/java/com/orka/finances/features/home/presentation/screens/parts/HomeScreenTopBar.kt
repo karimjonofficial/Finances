@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -38,14 +39,12 @@ internal fun HomeScreenTopBar(scanClick: () -> Unit) {
                 Column {
                     Text(
                         text = stringResource(R.string.good_morning),
-                        fontSize = 13.sp,
-                        lineHeight = 15.sp
+                        style = MaterialTheme.typography.bodyMedium
                     )
 
                     Text(
                         text = stringResource(R.string.karimjon_dev),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 }
             }

@@ -7,4 +7,8 @@ class RemoteCategoriesDataSource(private val apiService: CategoriesApiService) :
     override suspend fun get(token: String): List<Category>? {
         return apiService.get("Bearer $token")
     }
+
+    override suspend fun add(token: String, name: String, description: String): Category? {
+        return apiService.post("Bearer $token", name, description)
+    }
 }

@@ -5,11 +5,14 @@ package com.orka.finances.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -18,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.orka.finances.application.AppContainer
 import com.orka.finances.features.home.presentation.screens.HomeScreen
+import com.orka.finances.features.home.presentation.screens.parts.AddCategoryDialog
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.login.presentation.screens.LoginScreen
@@ -61,9 +65,12 @@ fun FinancesScreen(
                 modifier = modifier
             ) {
                 composable<Navigation.Home> {
+
+                    val dialogVisible = rememberSaveable { mutableStateOf(false) }
+
                     AppScaffold(
                         topBar = { HomeScreenTopBar { viewModel.unauthorize() } },
-                        floatingActionButton = { HomeScreenFloatingActionButton() },
+                        floatingActionButton = { HomeScreenFloatingActionButton { dialogVisible.value = true } },
                         modifier = modifier,
                     ) { innerPadding ->
                         val homeScreenViewModel = container.getHomeScreenViewModel(
@@ -71,6 +78,17 @@ fun FinancesScreen(
                             passScreen = { navController.navigate(Navigation.Products(it)) },
                             unauthorize = { viewModel.unauthorize() }
                         )
+
+                        if(dialogVisible.value) {
+                            AddCategoryDialog(
+                                modifier = Modifier.fillMaxWidth(),
+                                dismissRequest = { dialogVisible.value = false },
+                                addClick = { name, description ->
+                                    homeScreenViewModel.addCategory(name, description)
+                                    dialogVisible.value = false
+                                }
+                            )
+                        }
 
                         HomeScreen(
                             modifier = Modifier.padding(innerPadding),

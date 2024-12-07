@@ -10,4 +10,8 @@ class SpyCategoriesApiService : CategoriesApiService {
         this.token = token
         return emptyList()
     }
+
+    override suspend fun post(token: String, name: String, description: String): Category? {
+        TODO("Not yet implemented")
+    }
 }

@@ -36,8 +36,8 @@ import com.orka.finances.features.home.presentation.screens.parts.CategoriesList
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.home.presentation.viewmodels.HomeScreenViewModel
-import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import com.orka.finances.lib.data.credentials.Credentials
+import com.orka.finances.lib.data.credentials.CredentialsDataSource
 import com.orka.finances.lib.ui.VerticalSpacer
 
 @Composable
@@ -46,6 +46,9 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel
 ) {
     val focusManager = LocalFocusManager.current
+    val uiState = viewModel.uiState.collectAsState()
+    val searchText = rememberSaveable { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
 
     DisposableEffect(Unit) {
         focusManager.clearFocus()
@@ -55,10 +58,6 @@ fun HomeScreen(
     LaunchedEffect(Unit) { viewModel.fetchData() }
 
     Column(modifier = modifier) {
-
-        val categories = viewModel.uiState.collectAsState()
-        val searchText = rememberSaveable { mutableStateOf("") }
-        val focusRequester = remember { FocusRequester() }
 
         VerticalSpacer(16)
 
@@ -100,7 +99,7 @@ fun HomeScreen(
 
         CategoriesList(
             modifier = Modifier.padding(horizontal = 32.dp),
-            categories = categories.value,
+            categories = uiState.value,
             categoryClick = { viewModel.selectCategory(it) }
         )
     }
@@ -114,12 +113,11 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     val credentialsDataSource = DummyCredentialsDataSource()
     val dataSource = InMemoryCategoriesDataSource()
-    dataSource.loadInitialData()
     val viewModel = HomeScreenViewModel(dataSource, credentialsDataSource, {}) {}
 
     Scaffold(
         topBar = { HomeScreenTopBar {} },
-        floatingActionButton = { HomeScreenFloatingActionButton() }
+        floatingActionButton = { HomeScreenFloatingActionButton {} }
     ) { HomeScreen(Modifier.padding(it), viewModel) }
 }
 

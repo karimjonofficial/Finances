@@ -2,13 +2,15 @@ package com.orka.finances.features.home.viewmodels
 
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
+import retrofit2.HttpException
+import retrofit2.Response
 
-class StubCategoriesDataSourceWithNoData : CategoriesDataSource {
+class ThrowingHttpExceptionStubCategoriesDataSource : CategoriesDataSource {
     override suspend fun get(token: String): List<Category>? {
-        return null
+        throw HttpException(Response.error<String>(501, NullResponseBody))
     }
 
     override suspend fun add(token: String, name: String, description: String): Category? {
-        TODO("Not yet implemented")
+        throw HttpException(Response.error<String>(501, NullResponseBody))
     }
 }

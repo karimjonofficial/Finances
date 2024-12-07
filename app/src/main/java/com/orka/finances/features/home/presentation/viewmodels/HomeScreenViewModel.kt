@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.orka.finances.features.home.data.sources.CategoriesDataSource
 import com.orka.finances.features.home.models.Category
 import com.orka.finances.lib.data.credentials.CredentialsDataSource
+import com.orka.finances.lib.resources.HttpStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,13 +25,9 @@ class HomeScreenViewModel(
             try {
                 val credentials = credentialsDataSource.get()
                 _uiState.value = dataSource.get(credentials.token) ?: emptyList()
-            } catch(e: Exception) {
-                when(e) {
-                    is HttpException -> {
-                        if (e.code() == 401) {
-                            unauthorize()
-                        }
-                    }
+            } catch (e: HttpException) {
+                if (e.code() == HttpStatus.Unauthorized.code) {
+                    unauthorize()
                 }
             }
         }
@@ -38,5 +35,20 @@ class HomeScreenViewModel(
 
     fun selectCategory(category: Category) {
         passScreen(category.id)
+    }
+
+    fun addCategory(name: String, description: String) {
+        if (name.isNotBlank()) {
+            viewModelScope.launch {
+                try {
+                    if(dataSource.add(credentialsDataSource.get().token, name, description) != null)
+                        fetchData()
+                } catch (e: HttpException) {
+                    if(e.code() == HttpStatus.Unauthorized.code) {
+                        unauthorize()
+                    }
+                }
+            }
+        }
     }
 }

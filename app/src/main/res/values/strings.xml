@@ -11,4 +11,9 @@
     <string name="good_morning">Xayrli tong 👋</string>
     <string name="karimjon_dev">Karimjon Dev</string>
     <string name="scan_a_qr_code">Scan a qr code</string>
+    <string name="add">Qo\'shish</string>
+    <string name="add_a_category">Kategoriya qo\'shish</string>
+    <string name="name">Nomi</string>
+    <string name="description">Izoh</string>
+    <string name="fill_lines_to_add_a_new_category">Yangi kategoriya qo\'shish uchun quyidagi maydonlarni to\'diring:</string>
 </resources>

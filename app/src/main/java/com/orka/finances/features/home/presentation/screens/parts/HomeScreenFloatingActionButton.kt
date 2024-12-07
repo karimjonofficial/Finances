@@ -7,8 +7,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 
 @Composable
-internal fun HomeScreenFloatingActionButton() {
-    FloatingActionButton(onClick = {}) {
+internal fun HomeScreenFloatingActionButton(
+    click: () -> Unit
+) {
+    FloatingActionButton(onClick = { click() }) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = "Add"

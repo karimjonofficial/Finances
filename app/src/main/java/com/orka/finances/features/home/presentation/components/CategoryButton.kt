@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +33,7 @@ fun CategoryButton(
     click: (Category) -> Unit
 ) {
     Row(
-        modifier = modifier.clickable { click(category) },
+        modifier = modifier.clip(RoundedCornerShape(percent = 50)).clickable { click(category) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -57,8 +58,10 @@ fun CategoryButton(
         Text(
             modifier = Modifier.weight(1f),
             text = category.name,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyMedium
         )
+
+        HorizontalSpacer(8)
     }
 }
 

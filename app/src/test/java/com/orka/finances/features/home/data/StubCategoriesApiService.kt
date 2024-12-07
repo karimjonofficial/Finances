@@ -7,4 +7,8 @@ class StubCategoriesApiService : CategoriesApiService {
     override suspend fun get(token: String): List<Category> {
         throw Exception()
     }
+
+    override suspend fun post(token: String, name: String, description: String): Category? {
+        TODO("Not yet implemented")
+    }
 }
