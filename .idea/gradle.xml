@@ -10,7 +10,18 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/android" />
+            <option value="$PROJECT_DIR$/android/lib" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/products" />
+            <option value="$PROJECT_DIR$/features/products/data" />
+            <option value="$PROJECT_DIR$/features/products/data/base" />
+            <option value="$PROJECT_DIR$/features/products/presentation" />
+            <option value="$PROJECT_DIR$/features/products/presentation/viewmodels" />
+            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/test" />
+            <option value="$PROJECT_DIR$/test/lib" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

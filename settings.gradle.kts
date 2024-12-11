@@ -11,9 +11,11 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -24,3 +26,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Finances"
 include(":app")
+include(":features:products:presentation:viewmodels")
+include(":features:products:data:base")
+include(":test:lib")
+include(":lib")
+include(":android:lib")

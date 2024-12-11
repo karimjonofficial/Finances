@@ -1,4 +1,4 @@
-@file:JvmName("FinancesScreenKt")
+//@file:JvmName("FinancesScreenKt")
 
 package com.orka.finances.ui
 

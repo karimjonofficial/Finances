@@ -15,7 +15,6 @@ const val BAD_PASSWORD = "fake"
 const val TOKEN = "token"
 const val REFRESH = "access"
 const val BLANK_LINE = "       "
-const val UNAUTHORIZED_STATUS_CODE = 401
 const val NAME = "name"
 const val DESCRIPTION = "description"
 const val PRICE = 0.0
