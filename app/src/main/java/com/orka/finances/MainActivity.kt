@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
             FinancesTheme {
                 val viewModel = AppViewModel(appContainer.userInfoDataSource)
-                FinancesScreen(container = appContainer, viewModel = viewModel)
+                FinancesScreen(container = appContainer, appViewModel = viewModel)
             }
         }
     }

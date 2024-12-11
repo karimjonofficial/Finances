@@ -1,4 +1,4 @@
-package com.orka.finances.features.home.viewmodels
+package com.orka.finances
 
 import okhttp3.MediaType
 import okhttp3.ResponseBody

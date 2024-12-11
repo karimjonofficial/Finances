@@ -12,8 +12,8 @@ import retrofit2.HttpException
 
 class HomeScreenViewModel(
     private val dataSource: CategoriesDataSource,
-    private val passScreen: (Int) -> Unit,
-    private val unauthorize: suspend () -> Unit
+    private val navigate: (Int) -> Unit,
+    private val unauthorize: () -> Unit
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(emptyList<Category>())
     val uiState: StateFlow<List<Category>> = _uiState
@@ -31,7 +31,7 @@ class HomeScreenViewModel(
     }
 
     fun selectCategory(category: Category) {
-        passScreen(category.id)
+        navigate(category.id)
     }
 
     fun addCategory(name: String, description: String) {

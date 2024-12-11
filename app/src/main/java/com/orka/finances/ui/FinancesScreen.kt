@@ -2,18 +2,16 @@
 
 package com.orka.finances.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,19 +24,16 @@ import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloa
 import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
 import com.orka.finances.features.login.presentation.screens.LoginScreen
 import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
+import com.orka.finances.features.stock.presentation.screens.StockScreen
 import com.orka.finances.ui.navigation.Navigation
 
 @Composable
-fun FinancesScreen(
-    modifier: Modifier = Modifier,
-    container: AppContainer,
-    viewModel: AppViewModel
-) {
-    val uiState = viewModel.uiState.collectAsState()
+fun FinancesScreen(modifier: Modifier = Modifier, container: AppContainer, appViewModel: AppViewModel) {
+    val uiState = appViewModel.uiState.collectAsState()
 
     when(val authState = uiState.value) {
 
-        AuthenticationState.Initial -> viewModel.initUserInfo()
+        AuthenticationState.Initial -> appViewModel.initUserInfo()
 
         AuthenticationState.UnAuthorized -> {
             AppScaffold(modifier = modifier) { innerPadding ->
@@ -46,7 +41,7 @@ fun FinancesScreen(
 
                 val loginViewModel = LoginScreenViewModel(
                     dataSource = loginDataSource,
-                    setCredential = { viewModel.setCredentials(it) }
+                    setCredential = { appViewModel.setCredentials(it) }
                 )
 
                 LoginScreen(
@@ -69,14 +64,14 @@ fun FinancesScreen(
                     val dialogVisible = rememberSaveable { mutableStateOf(false) }
 
                     AppScaffold(
-                        topBar = { HomeScreenTopBar { viewModel.unauthorize() } },
+                        topBar = { HomeScreenTopBar { appViewModel.unauthorize() } },
                         floatingActionButton = { HomeScreenFloatingActionButton { dialogVisible.value = true } },
                         modifier = modifier,
                     ) { innerPadding ->
                         val homeScreenViewModel = container.getHomeScreenViewModel(
                             credential = authState.credential,
-                            passScreen = { navController.navigate(Navigation.Products(it)) },
-                            unauthorize = { viewModel.unauthorize() }
+                            navigate = { navController.navigate(Navigation.Stock(it)) },
+                            unauthorize = { appViewModel.unauthorize() }
                         )
 
                         if(dialogVisible.value) {
@@ -97,14 +92,26 @@ fun FinancesScreen(
                     }
                 }
 
-                composable<Navigation.Products> {
-                    val products: Navigation.Products = it.toRoute()
+                composable<Navigation.Stock> {
+                    val destination: Navigation.Stock = it.toRoute()
 
-                    Box(Modifier.fillMaxSize()) {
-                        Text(
-                            text = products.categoryId.toString(),
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                    val stockScreenViewModel = container.getStockScreenViewModel(
+                        credential = authState.credential,
+                        categoryId = destination.categoryId,
+                        navigate = {},
+                        unauthorize = { appViewModel.unauthorize() }
+                    )
+
+                    stockScreenViewModel.fetchData()
+
+                    StockScreen(viewModel = stockScreenViewModel)
+                }
+
+                composable<Navigation.StockItem> {
+                    val destination: Navigation.StockItem = it.toRoute()
+
+                    Surface {
+                        Text(destination.itemId.toString())
                     }
                 }
             }
