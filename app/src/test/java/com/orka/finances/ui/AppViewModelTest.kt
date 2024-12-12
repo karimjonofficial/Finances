@@ -1,6 +1,9 @@
 package com.orka.finances.ui
 
-import com.orka.finances.CREDENTIAL
+import com.orka.lib.CREDENTIAL
+import com.orka.lib.MainDispatcherContext
+import com.orka.viewmodels.AppViewModel
+import com.orka.viewmodels.AuthenticationState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested

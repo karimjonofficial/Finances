@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class RemoteStockDataSourceTest : MainDispatcherContext() {
+internal class RemoteStockDataSourceTest : MainDispatcherContext() {
 
     abstract class SpyStockApiServiceContext {
         val apiService = SpyStockApiService()

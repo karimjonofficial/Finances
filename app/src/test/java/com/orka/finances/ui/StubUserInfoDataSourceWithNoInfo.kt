@@ -1,10 +1,10 @@
 package com.orka.finances.ui
 
-import com.orka.finances.lib.data.info.UserInfo
-import com.orka.finances.lib.data.info.UserInfoDataSource
+import com.orka.data.UserInfo
+import com.orka.data.UserInfoDataSource
 
 class StubUserInfoDataSourceWithNoInfo : UserInfoDataSource {
-    override suspend fun insert(userData: UserInfo) {
+    override suspend fun add(userData: UserInfo) {
         TODO("Not yet implemented")
     }
 
@@ -12,7 +12,7 @@ class StubUserInfoDataSourceWithNoInfo : UserInfoDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun select(): UserInfo? {
+    override suspend fun get(): UserInfo? {
         return null
     }
 

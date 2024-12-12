@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class RemoteLoginDataSourceTest : MainDispatcherContext() {
+internal class RemoteLoginDataSourceTest : MainDispatcherContext() {
 
     abstract class MockApiServiceContext : MainDispatcherContext() {
         private val apiService = MockLoginApiService()

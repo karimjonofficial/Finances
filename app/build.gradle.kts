@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":features:login:presentation:composables"))
     implementation(project(":features:home:presentation:composables"))
     implementation(project(":features:stock:presentation:composables"))
+    testImplementation(project(":main:data"))
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(project(":lib"))
