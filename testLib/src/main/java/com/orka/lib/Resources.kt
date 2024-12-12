@@ -17,8 +17,9 @@ const val REFRESH = "access"
 const val BLANK_LINE = "       "
 const val NAME = "name"
 const val DESCRIPTION = "description"
-const val PRICE = 0.0
+const val PRICE = 1000.0
 const val AMOUNT = 0
+const val IMG_SRC = "url"
 
 val UNAUTHORIZED_EXCEPTION = HttpException(Response.error<String>(HttpStatus.Unauthorized.code, NullResponseBody))
 val HTTP_EXCEPTION = HttpException(Response.error<String>(501, NullResponseBody))

@@ -1,27 +1,29 @@
 package com.orka.viewmodels
 
+import com.orka.lib.BLANK_LINE
 import com.orka.lib.Counter
+import com.orka.lib.IMG_SRC
 import com.orka.lib.MainDispatcherContext
+import com.orka.lib.NAME
+import com.orka.lib.PRICE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ProductsScreenViewModelTest : MainDispatcherContext() {
+
+    abstract class SpyDataSourceContext {
+        val dataSource = SpyProductsDataSource()
+        val viewModel = ProductsScreenViewModel(dataSource) {}
+    }
 
     @Test
     fun `When initialized, has an empty state`() {
         val dataSource = DummyProductsDataSource()
         val viewModel = ProductsScreenViewModel(dataSource) {}
         assertTrue(viewModel.uiState.value.isEmpty())
-    }
-
-    @Test
-    fun `When fetch, call get`() {
-        val dataSource = SpyProductsDataSource()
-        val viewModel = ProductsScreenViewModel(dataSource) {}
-        viewModel.fetch()
-        assertTrue(dataSource.getCalled)
     }
 
     @Test
@@ -58,5 +60,33 @@ class ProductsScreenViewModelTest : MainDispatcherContext() {
         val viewModel = ProductsScreenViewModel(dataSource) { counter.count() }
         viewModel.fetch()
         assertEquals(count, counter.count)
+    }
+
+    @Nested
+    inner class SpySourceContext : SpyDataSourceContext() {
+
+        @Test
+        fun `When fetch, call get`() {
+            viewModel.fetch()
+            assertTrue(dataSource.getCalled)
+        }
+
+        @Test
+        fun `When name is blank, not add`() {
+            viewModel.add(name = BLANK_LINE, price = PRICE, imgSrc = IMG_SRC)
+            assertFalse(dataSource.addCalled)
+        }
+
+        @Test
+        fun `When price is less than zero or equals, not add`() {
+            viewModel.add(name = NAME, price = 0.0, imgSrc = IMG_SRC)
+            assertFalse(dataSource.addCalled)
+        }
+
+        @Test
+        fun `When add success, call fetch`() {
+            viewModel.add(NAME, PRICE, IMG_SRC)
+            assertTrue(dataSource.getCalled)
+        }
     }
 }

@@ -28,5 +28,13 @@ class ProductsScreenViewModel(
             }
         }
     }
+
+    fun add(name: String, price: Double, imgSrc: String) {
+        if(name.isNotBlank() && price > 0) {
+            viewModelScope.launch {
+                dataSource.add(name, price, imgSrc)?.let { fetch() }
+            }
+        }
+    }
 }
 

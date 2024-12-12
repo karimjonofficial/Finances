@@ -8,4 +8,8 @@ class StubProductsDataSourceWithNoData : ProductsDataSource {
         return null
     }
 
+    override suspend fun add(name: String, price: Double, imgSrc: String): Product? {
+        return null
+    }
+
 }
