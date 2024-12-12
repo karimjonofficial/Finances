@@ -1,7 +1,6 @@
 package com.orka.finances.ui
 
 import com.orka.finances.CREDENTIAL
-import com.orka.finances.MainDispatcherContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested

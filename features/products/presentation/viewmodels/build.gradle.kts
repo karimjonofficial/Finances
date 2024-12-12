@@ -39,14 +39,15 @@ tasks.withType<Test> {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.squareup.retrofit)
+    implementation(project(":lib"))
     implementation(project(":features:products:data:base"))
-    implementation(project(":test:lib"))
-    implementation(libs.androidx.lifecycle.viewmodel.android)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
+    testImplementation(project(":testLib"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

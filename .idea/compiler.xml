@@ -2,7 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="Finances.android.androidLib" target="21" />
+      <module name="Finances.features.home.data.remote" target="21" />
+      <module name="Finances.features.home.presentation.newone" target="21" />
       <module name="Finances.features.products.viewmodels" target="21" />
+      <module name="Finances.test.testLib" target="21" />
+      <module name="Kotlin.Finances.test.testLib" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

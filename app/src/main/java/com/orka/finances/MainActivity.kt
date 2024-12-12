@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.orka.finances.application.FinancesApplication
-import com.orka.finances.ui.AppViewModel
 import com.orka.finances.ui.FinancesScreen
 import com.orka.finances.ui.theme.FinancesTheme
 
@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+
             val app = application as FinancesApplication
             val appContainer = app.container
             val view = LocalView.current
@@ -30,9 +31,14 @@ class MainActivity : ComponentActivity() {
                 insetsController.isAppearanceLightStatusBars = true
             }
 
+            WindowInsets
+
             FinancesTheme {
-                val viewModel = AppViewModel(appContainer.userInfoDataSource)
-                FinancesScreen(container = appContainer, appViewModel = viewModel)
+
+                FinancesScreen(
+                    container = appContainer,
+                    appViewModel = appContainer.getAppViewModel()
+                )
             }
         }
     }

@@ -2,53 +2,37 @@
 
 package com.orka.finances.ui
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.orka.finances.application.AppContainer
-import com.orka.finances.features.home.presentation.screens.HomeScreen
-import com.orka.finances.features.home.presentation.screens.parts.AddCategoryDialog
-import com.orka.finances.features.home.presentation.screens.parts.HomeScreenFloatingActionButton
-import com.orka.finances.features.home.presentation.screens.parts.HomeScreenTopBar
-import com.orka.finances.features.login.presentation.screens.LoginScreen
-import com.orka.finances.features.login.presentation.viewmodel.LoginScreenViewModel
-import com.orka.finances.features.stock.presentation.screens.StockScreen
+import com.orka.composables.LoginScreen
+import com.orka.composables.screens.HomeScreen
+import com.orka.composables.screens.StockScreen
+import com.orka.di.AppContainer
 import com.orka.finances.ui.navigation.Navigation
+import com.orka.viewmodels.AppViewModel
+import com.orka.viewmodels.AuthenticationState
 
 @Composable
-fun FinancesScreen(modifier: Modifier = Modifier, container: AppContainer, appViewModel: AppViewModel) {
+fun FinancesScreen(
+    modifier: Modifier = Modifier,
+    container: AppContainer,
+    appViewModel: AppViewModel
+) {
     val uiState = appViewModel.uiState.collectAsState()
 
-    when(val authState = uiState.value) {
+    when (val authState = uiState.value) {
 
         AuthenticationState.Initial -> appViewModel.initUserInfo()
 
         AuthenticationState.UnAuthorized -> {
-            AppScaffold(modifier = modifier) { innerPadding ->
-                val loginDataSource = container.loginDataSource
-
-                val loginViewModel = LoginScreenViewModel(
-                    dataSource = loginDataSource,
-                    setCredential = { appViewModel.setCredentials(it) }
-                )
-
-                LoginScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    viewModel = loginViewModel
-                )
-            }
+            LoginScreen(viewModel = container.getLoginScreenViewModel())
         }
 
         is AuthenticationState.Authorized -> {
@@ -61,35 +45,12 @@ fun FinancesScreen(modifier: Modifier = Modifier, container: AppContainer, appVi
             ) {
                 composable<Navigation.Home> {
 
-                    val dialogVisible = rememberSaveable { mutableStateOf(false) }
+                    val viewModel = container.getHomeScreenViewModel(
+                        credential = authState.credential,
+                        navigate = { navController.navigate(Navigation.Stock(it)) }
+                    )
 
-                    AppScaffold(
-                        topBar = { HomeScreenTopBar { appViewModel.unauthorize() } },
-                        floatingActionButton = { HomeScreenFloatingActionButton { dialogVisible.value = true } },
-                        modifier = modifier,
-                    ) { innerPadding ->
-                        val homeScreenViewModel = container.getHomeScreenViewModel(
-                            credential = authState.credential,
-                            navigate = { navController.navigate(Navigation.Stock(it)) },
-                            unauthorize = { appViewModel.unauthorize() }
-                        )
-
-                        if(dialogVisible.value) {
-                            AddCategoryDialog(
-                                modifier = Modifier.fillMaxWidth(),
-                                dismissRequest = { dialogVisible.value = false },
-                                addClick = { name, description ->
-                                    homeScreenViewModel.addCategory(name, description)
-                                    dialogVisible.value = false
-                                }
-                            )
-                        }
-
-                        HomeScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            viewModel = homeScreenViewModel
-                        )
-                    }
+                    HomeScreen(viewModel = viewModel) { appViewModel.unauthorize() }
                 }
 
                 composable<Navigation.Stock> {
@@ -98,11 +59,8 @@ fun FinancesScreen(modifier: Modifier = Modifier, container: AppContainer, appVi
                     val stockScreenViewModel = container.getStockScreenViewModel(
                         credential = authState.credential,
                         categoryId = destination.categoryId,
-                        navigate = {},
-                        unauthorize = { appViewModel.unauthorize() }
+                        navigate = {}
                     )
-
-                    stockScreenViewModel.fetchData()
 
                     StockScreen(viewModel = stockScreenViewModel)
                 }
@@ -116,21 +74,5 @@ fun FinancesScreen(modifier: Modifier = Modifier, container: AppContainer, appVi
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun AppScaffold(
-    modifier: Modifier = Modifier,
-    topBar: @Composable () -> Unit = {},
-    floatingActionButton: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit
-) {
-    Scaffold(
-        modifier = modifier,
-        topBar = topBar,
-        floatingActionButton = floatingActionButton
-    ) { innerPadding ->
-        content(innerPadding)
     }
 }

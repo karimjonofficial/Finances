@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Navigation {
     @Serializable data object Home : Navigation()
-    @Serializable data class Stock(@SerialName("category_id") val categoryId: Int)
-    @Serializable data class StockItem(@SerialName("item_id") val itemId: Int)
+    @Serializable data class Stock(@SerialName("category_id") val categoryId: Int) : Navigation()
+    @Serializable data class StockItem(@SerialName("item_id") val itemId: Int) : Navigation()
 }
