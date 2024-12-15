@@ -6,15 +6,17 @@ import com.orka.lib.models.Credential
 import retrofit2.Retrofit
 import retrofit2.create
 
-internal class RemoteStockDataSource(
+class RemoteStockDataSource private constructor(
     private val apiService: StockApiService,
     private val credential: Credential
 ) : StockDataSource {
     override suspend fun get(categoryId: Int): List<StockItem>? {
         return apiService.get("Bearer ${credential.token}", categoryId)
     }
-}
 
-fun getStockDataSource(retrofit: Retrofit, credential: Credential): StockDataSource {
-    return RemoteStockDataSource(retrofit.create<StockApiService>(), credential)
+    companion object {
+        fun create(retrofit: Retrofit, credential: Credential): StockDataSource {
+            return RemoteStockDataSource(retrofit.create<StockApiService>(), credential)
+        }
+    }
 }

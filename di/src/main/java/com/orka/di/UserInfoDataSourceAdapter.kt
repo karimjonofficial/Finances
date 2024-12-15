@@ -22,6 +22,6 @@ internal class UserInfoDataSourceAdapter(private val userInfoDao: UserInfoDao) :
     }
 
     override suspend fun unauthorize() {
-        userInfoDao.unauthorize()
+        userInfoDao.deleteCredentials()
     }
 }

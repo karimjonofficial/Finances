@@ -5,7 +5,7 @@ class StubCategoriesApiService : CategoriesApiService {
         throw Exception()
     }
 
-    override suspend fun post(authHeader: String, name: String, description: String): com.orka.base.Category? {
+    override suspend fun post(authorizationHeader: String, name: String, description: String): com.orka.base.Category? {
         TODO("Not yet implemented")
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.orka.composables.R
+import com.orka.ui.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,4 +57,9 @@ internal fun HomeScreenTopBar(scanClick: () -> Unit) {
             }
         }
     )
+}
+
+@Composable
+internal fun HomeScreenTopBar() {
+    TopBar(title = "Finances")
 }

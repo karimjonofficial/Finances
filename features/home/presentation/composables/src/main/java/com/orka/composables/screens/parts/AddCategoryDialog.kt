@@ -21,7 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.orka.composables.R
-import com.orka.lib.ui.VerticalSpacer
+import com.orka.ui.HorizontalSpacer
+import com.orka.ui.VerticalSpacer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,6 +80,18 @@ fun AddCategoryDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
+
+                    TextButton(
+                        onClick = { dismissRequest() }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.cancel),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    HorizontalSpacer(8)
+
                     TextButton(
                         onClick = { addClick(name.value, description.value) }
                     ) {

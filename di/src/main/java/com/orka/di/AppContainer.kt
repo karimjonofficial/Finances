@@ -4,16 +4,19 @@ import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.orka.base.CategoriesDataSource
 import com.orka.base.LoginDataSource
+import com.orka.base.ProductsDataSource
 import com.orka.base.StockDataSource
 import com.orka.data.UserInfoDataSource
 import com.orka.database.FinancesDb
 import com.orka.lib.models.Credential
-import com.orka.network.getCategoriesDataSource
-import com.orka.network.getLoginDataSource
-import com.orka.network.getStockDataSource
+import com.orka.network.FakeRemoteProductsDataSource
+import com.orka.network.RemoteCategoriesDataSource
+import com.orka.network.RemoteLoginDataSource
+import com.orka.network.RemoteStockDataSource
 import com.orka.viewmodels.AppViewModel
 import com.orka.viewmodels.HomeScreenViewModel
 import com.orka.viewmodels.LoginScreenViewModel
+import com.orka.viewmodels.ProductsScreenViewModel
 import com.orka.viewmodels.StockScreenViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,15 +37,8 @@ class AppContainer(private val context: Context) {
     private val userInfoDataSource: UserInfoDataSource by lazy {
         UserInfoDataSourceAdapter(FinancesDb.getDatabase(context).userInfoDao())
     }
-    private val loginDataSource: LoginDataSource by lazy { getLoginDataSource(retrofit) }
 
-    private fun getCategoriesDataSource(credential: Credential): CategoriesDataSource {
-        return getCategoriesDataSource(retrofit, credential)
-    }
-
-    private fun getStockDataSource(credential: Credential): StockDataSource {
-        return getStockDataSource(retrofit, credential)
-    }
+    private val loginDataSource: LoginDataSource by lazy { RemoteLoginDataSource.create(retrofit) }
 
     fun getAppViewModel(): AppViewModel {
         return appViewModel ?: AppViewModel(userInfoDataSource).apply { appViewModel = this }
@@ -62,6 +58,10 @@ class AppContainer(private val context: Context) {
         ). apply { homeViewModel = this }
     }
 
+        private fun getCategoriesDataSource(credential: Credential): CategoriesDataSource {
+            return RemoteCategoriesDataSource.create(retrofit, credential)
+        }
+
     fun getStockScreenViewModel(credential: Credential, categoryId: Int, navigate: (Int) -> Unit): StockScreenViewModel {
         return stockViewModel ?: StockScreenViewModel(
             categoryId = categoryId,
@@ -70,4 +70,20 @@ class AppContainer(private val context: Context) {
             unauthorize = { getAppViewModel().unauthorize() }
         ).apply { stockViewModel = this }
     }
+
+        private fun getStockDataSource(credential: Credential): StockDataSource {
+            return RemoteStockDataSource.create(retrofit, credential)
+        }
+
+    fun getProductsViewModel(categoryId: Int, credential: Credential): ProductsScreenViewModel {
+        return ProductsScreenViewModel(
+            categoryId = categoryId,
+            dataSource = getProductsDataSource(credential),
+            unauthorize = { getAppViewModel().unauthorize() }
+        )
+    }
+
+        private fun getProductsDataSource(credential: Credential): ProductsDataSource {
+            return FakeRemoteProductsDataSource.create(retrofit, credential)
+        }
 }

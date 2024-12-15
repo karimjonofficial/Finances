@@ -5,7 +5,7 @@ import com.orka.lib.models.Credential
 import retrofit2.Retrofit
 import retrofit2.create
 
-internal class RemoteCategoriesDataSource(
+class RemoteCategoriesDataSource private constructor(
     private val apiService: CategoriesApiService,
     private val credential: Credential
 ) : CategoriesDataSource {
@@ -18,9 +18,11 @@ internal class RemoteCategoriesDataSource(
     }
 
     private fun getAuthHeader() = "Bearer ${credential.token}"
-}
 
-fun getCategoriesDataSource(retrofit: Retrofit, credential: Credential): CategoriesDataSource {
-    val api = retrofit.create<CategoriesApiService>()
-    return RemoteCategoriesDataSource(api, credential)
+    companion object {
+        fun create(retrofit: Retrofit, credential: Credential): CategoriesDataSource {
+            val api = retrofit.create<CategoriesApiService>()
+            return RemoteCategoriesDataSource(api, credential)
+        }
+    }
 }

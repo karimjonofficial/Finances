@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(project(":androidLib"))
+    implementation(project(":lib:ui"))
     implementation(project(":features:home:data:base"))
     implementation(project(":features:home:presentation:viewmodels"))
 

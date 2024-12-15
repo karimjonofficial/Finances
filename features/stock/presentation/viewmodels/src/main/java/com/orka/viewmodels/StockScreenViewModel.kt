@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.base.StockDataSource
 import com.orka.base.StockItem
-import com.orka.lib.log.Log
+import com.orka.log.Log
 import com.orka.lib.resources.HttpStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +24,10 @@ class StockScreenViewModel(
         viewModelScope.launch {
             try {
                 _uiState.value = dataSource.get(categoryId) ?: emptyList()
-                Log("StockScreenViewModel.Data.Success", _uiState.value.size.toString())
+                Log(
+                    "StockScreenViewModel.Data.Success",
+                    _uiState.value.size.toString()
+                )
             } catch(e: HttpException) {
                 if(e.code() == HttpStatus.Unauthorized.code) {
                     unauthorize()

@@ -40,7 +40,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.squareup.retrofit)
     implementation(libs.coil.network.okhttp)
     implementation(project(":lib"))
@@ -49,7 +48,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":testLib"))
+    testImplementation(project(":lib:test"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

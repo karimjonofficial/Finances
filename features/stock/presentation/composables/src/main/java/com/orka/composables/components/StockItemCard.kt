@@ -19,12 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.base.Product
 import com.orka.base.StockItem
 import com.orka.composables.R
-import com.orka.lib.ui.VerticalSpacer
+import com.orka.ui.VerticalSpacer
 
 @Composable
 internal fun StockItemCard(
@@ -78,7 +79,7 @@ internal fun StockItemCard(
         }
 
         Text(
-            text = "Tannarx: " + stockItem.product.price.toString(),
+            text = stringResource(R.string.price) + stockItem.product.price.toString(),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -89,13 +90,12 @@ internal fun StockItemCard(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun ProductCardPreview() {
-    val sofaUrl = ""
-        //"https://ergomebel.uz/image/cachewebp/catalog/photos/1051/divan-ergo-chester-1-680x600.webp"
     val product = Product(
         id = 1,
         name = "Product1",
         price = 1000.0,
-        imgSrc = sofaUrl
+        description = "",
+        categoryId = 0
     )
 
     val stockItem = StockItem(1, product, 1, 100)

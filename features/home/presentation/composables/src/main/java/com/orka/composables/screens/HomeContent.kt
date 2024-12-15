@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -35,13 +37,14 @@ import com.orka.composables.data.InMemoryCategoriesDataSource
 import com.orka.composables.screens.parts.CategoriesList
 import com.orka.composables.screens.parts.HomeScreenFloatingActionButton
 import com.orka.composables.screens.parts.HomeScreenTopBar
-import com.orka.lib.ui.VerticalSpacer
+import com.orka.ui.VerticalSpacer
 import com.orka.viewmodels.HomeScreenViewModel
 
 @Composable
 internal fun HomeContent(
     modifier: Modifier = Modifier,
-    viewModel: HomeScreenViewModel
+    viewModel: HomeScreenViewModel,
+    lazyGridState: LazyGridState
 ) {
     val focusManager = LocalFocusManager.current
     val uiState = viewModel.uiState.collectAsState()
@@ -97,6 +100,7 @@ internal fun HomeContent(
 
         CategoriesList(
             modifier = Modifier.padding(horizontal = 32.dp),
+            state = lazyGridState,
             categories = uiState.value,
             categoryClick = { viewModel.selectCategory(it) }
         )
@@ -115,5 +119,5 @@ private fun HomeScreenPreview() {
     Scaffold(
         topBar = { HomeScreenTopBar {} },
         floatingActionButton = { HomeScreenFloatingActionButton {} }
-    ) { HomeContent(Modifier.padding(it), viewModel) }
+    ) { HomeContent(Modifier.padding(it), viewModel, rememberLazyGridState()) }
 }

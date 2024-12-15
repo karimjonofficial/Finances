@@ -55,6 +55,9 @@ dependencies {
     implementation(project(":features:stock:data:base"))
     implementation(project(":features:stock:data:network"))
     implementation(project(":features:stock:presentation:viewmodels"))
+    implementation(project(":features:products:presentation:viewmodels"))
+    implementation(project(":features:products:data:base"))
+    implementation(project(":features:products:data:network"))
 
     testImplementation(libs.junit)
 

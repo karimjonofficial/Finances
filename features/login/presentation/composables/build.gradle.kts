@@ -42,7 +42,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     implementation(project(":lib"))
-    implementation(project(":androidLib"))
+    implementation(project(":lib:ui"))
     implementation(project(":features:login:data:base"))
     implementation(project(":features:login:presentation:viewmodels"))
 

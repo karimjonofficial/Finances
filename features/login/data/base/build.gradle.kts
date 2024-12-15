@@ -17,3 +17,4 @@ kotlin {
 dependencies {
     implementation(project(":lib"))
 }
+

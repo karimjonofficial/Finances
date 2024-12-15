@@ -42,12 +42,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.squareup.retrofit)
     implementation(project(":lib"))
+    implementation(project(":lib:log"))
     implementation(project(":features:products:data:base"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":testLib"))
+    testImplementation(project(":lib:test"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

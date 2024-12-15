@@ -11,7 +11,7 @@ class SpyCategoriesApiService : CategoriesApiService {
         return emptyList()
     }
 
-    override suspend fun post(authHeader: String, name: String, description: String): com.orka.base.Category? {
+    override suspend fun post(authorizationHeader: String, name: String, description: String): com.orka.base.Category? {
         postCalled = true
         return null
     }

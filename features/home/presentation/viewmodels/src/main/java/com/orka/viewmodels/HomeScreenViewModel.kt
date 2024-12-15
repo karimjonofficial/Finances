@@ -3,7 +3,7 @@ package com.orka.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orka.base.Category
-import com.orka.lib.resources.HttpStatus
+import com.orka.lib.resources.HttpStatus.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class HomeScreenViewModel(
             try {
                 _uiState.value = dataSource.get() ?: emptyList()
             } catch (e: HttpException) {
-                if (e.code() == HttpStatus.Unauthorized.code) {
+                if (e.code() == Unauthorized.code) {
                     unauthorize()
                 }
             }
@@ -40,7 +40,7 @@ class HomeScreenViewModel(
                     if(dataSource.add(name, description) != null)
                         fetchData()
                 } catch (e: HttpException) {
-                    if(e.code() == HttpStatus.Unauthorized.code) {
+                    if(e.code() == Unauthorized.code) {
                         unauthorize()
                     }
                 }

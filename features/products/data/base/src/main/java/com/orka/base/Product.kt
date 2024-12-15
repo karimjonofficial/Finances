@@ -8,5 +8,6 @@ data class Product(
     @SerialName("id") val id: Int,
     @SerialName("name") val name: String,
     @SerialName("price") val price: Double,
-    @SerialName("img_src") val imgSrc: String
+    @SerialName("description") val description: String,
+    @SerialName("category") val categoryId: Int
 )

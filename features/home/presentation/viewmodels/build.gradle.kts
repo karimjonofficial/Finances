@@ -44,12 +44,13 @@ dependencies {
     implementation(libs.squareup.retrofit)
     implementation(libs.coil.network.okhttp)
     implementation(project(":lib"))
+    implementation(project(":lib:log"))
     implementation(project(":features:home:data:base"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":testLib"))
+    testImplementation(project(":lib:test"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

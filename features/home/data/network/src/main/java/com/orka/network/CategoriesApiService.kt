@@ -17,7 +17,7 @@ internal interface CategoriesApiService {
     @FormUrlEncoded
     @POST("v1/categories/")
     suspend fun post(
-        @Header("Authorization") authHeader: String,
+        @Header("Authorization") authorizationHeader: String,
         @Field("name") name: String,
         @Field("description") description: String
     ): Category?

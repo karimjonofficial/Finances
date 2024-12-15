@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.orka.composables.LoginScreen
+import com.orka.composables.ProductsScreen
 import com.orka.composables.screens.HomeScreen
 import com.orka.composables.screens.StockScreen
 import com.orka.di.AppContainer
@@ -50,19 +51,37 @@ fun FinancesScreen(
                         navigate = { navController.navigate(Navigation.Stock(it)) }
                     )
 
-                    HomeScreen(viewModel = viewModel) { appViewModel.unauthorize() }
+                    HomeScreen(
+                        viewModel = viewModel,
+                        navigateToProductsScreen = {
+                            navController.navigate(Navigation.Products(1))
+                        }
+                    )
+                }
+
+                composable<Navigation.Products> {
+                    val destination: Navigation.Products = it.toRoute()
+
+                    val viewModel = container.getProductsViewModel(
+                        categoryId = destination.categoryId,
+                        credential = authState.credential
+                    )
+
+                    ProductsScreen(viewModel = viewModel) {
+                        navController.navigate(Navigation.Home)
+                    }
                 }
 
                 composable<Navigation.Stock> {
                     val destination: Navigation.Stock = it.toRoute()
 
-                    val stockScreenViewModel = container.getStockScreenViewModel(
+                    val viewModel = container.getStockScreenViewModel(
                         credential = authState.credential,
                         categoryId = destination.categoryId,
-                        navigate = {}
+                        navigate = { navController.navigate(Navigation.StockItem(it)) }
                     )
 
-                    StockScreen(viewModel = stockScreenViewModel)
+                    StockScreen(viewModel = viewModel)
                 }
 
                 composable<Navigation.StockItem> {

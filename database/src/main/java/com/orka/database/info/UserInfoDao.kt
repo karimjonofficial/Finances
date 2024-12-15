@@ -17,5 +17,5 @@ interface UserInfoDao {
     suspend fun select(): UserInfoModel?
 
     @Query("update info set token = null, refresh = null where id = 1")
-    suspend fun unauthorize()
+    suspend fun deleteCredentials()
 }

@@ -43,12 +43,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(project(":lib"))
+    implementation(project(":lib:log"))
     implementation(project(":features:login:data:base"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":testLib"))
+    testImplementation(project(":lib:test"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
