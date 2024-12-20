@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -36,23 +35,20 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(project(":lib:ui"))
-    implementation(project(":res"))
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.android)
+    implementation(project(":lib"))
+    implementation(project(":lib:log"))
     implementation(project(":http:core"))
-    implementation(project(":unauthorizer"))
-    implementation(project(":models:credentials"))
-    implementation(project(":models:receive"))
     implementation(project(":datasources:receive:core"))
+    implementation(project(":models:receive"))
     implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:history"))
 
     testImplementation(libs.junit)
-    
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(project(":lib:tests"))
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

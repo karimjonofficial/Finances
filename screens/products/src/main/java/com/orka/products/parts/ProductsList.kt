@@ -1,6 +1,5 @@
 package com.orka.products.parts
 
-import android.icu.text.DecimalFormat
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -14,9 +13,9 @@ import com.orka.ui.VerticalSpacer
 internal fun ProductsList(
     modifier: Modifier,
     items: List<Product>,
-    state: LazyListState
+    state: LazyListState,
+    formatCurrency: (Double) -> String
 ) {
-    val format = DecimalFormat("#,###")
 
     LazyColumn(
         modifier = modifier,
@@ -26,7 +25,7 @@ internal fun ProductsList(
         item { VerticalSpacer(16) }
 
         items(items = items) {
-            ProductCard(product = it, format = format)
+            ProductCard(product = it, formatCurrency = formatCurrency)
         }
     }
 }

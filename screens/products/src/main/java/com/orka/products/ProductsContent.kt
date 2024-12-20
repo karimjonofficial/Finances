@@ -11,13 +11,15 @@ import com.orka.products.parts.ProductsList
 fun ProductsContent(
     modifier: Modifier = Modifier,
     viewModel: ProductsScreenViewModel,
-    lazyListState: LazyListState = rememberLazyListState()
+    lazyListState: LazyListState = rememberLazyListState(),
+    formatCurrency: (Double) -> String
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
     ProductsList(
         modifier = modifier,
         items = uiState.value,
-        state = lazyListState
+        state = lazyListState,
+        formatCurrency = formatCurrency
     )
 }

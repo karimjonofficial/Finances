@@ -62,7 +62,8 @@ fun ProductsScreen(
         ProductsContent(
             modifier = Modifier.padding(innerPadding),
             viewModel = viewModel,
-            lazyListState = lazyListState
+            lazyListState = lazyListState,
+            formatCurrency = { it.toString() }
         )
     }
 }

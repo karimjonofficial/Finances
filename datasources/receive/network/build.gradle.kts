@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":datasources:receive:core"))
     implementation(project(":models:receive"))
     implementation(project(":models:credentials"))
+    implementation(project(":models:products"))
 
     testImplementation(libs.junit)
 

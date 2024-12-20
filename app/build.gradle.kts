@@ -87,6 +87,7 @@ dependencies {
     implementation(project(":screens:stock"))
     implementation(project(":screens:products"))
     implementation(project(":screens:warehouse"))
+    implementation(project(":screens:history"))
 
     implementation(project(":viewmodels:core"))
     implementation(project(":viewmodels:main"))
@@ -94,6 +95,8 @@ dependencies {
     implementation(project(":viewmodels:home"))
     implementation(project(":viewmodels:stock"))
     implementation(project(":viewmodels:products"))
+    implementation(project(":viewmodels:history"))
+
     implementation(project(":di"))
     implementation(project(":res"))
     implementation(project(":models:credentials"))

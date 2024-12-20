@@ -35,6 +35,7 @@ fun WarehouseScreen(
     modifier: Modifier = Modifier,
     stockScreenViewModel: StockScreenViewModel,
     productsScreenViewModel: ProductsScreenViewModel,
+    formatCurrency: (Double) -> String
 ) {
 
     val receiveDialogVisible = rememberSaveable { mutableStateOf(false) }
@@ -121,7 +122,10 @@ fun WarehouseScreen(
                     stockScreenViewModel.fetch()
                 }
                 1 -> {
-                    ProductsContent(viewModel = productsScreenViewModel)
+                    ProductsContent(
+                        viewModel = productsScreenViewModel,
+                        formatCurrency = formatCurrency
+                    )
                     productsScreenViewModel.fetch()
                 }
             }

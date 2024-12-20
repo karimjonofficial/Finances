@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseModel(
+data class PostResponseModel(
     @SerialName("id") val id: Int,
 
     @SerialName("datetime")
@@ -16,3 +16,4 @@ data class ResponseModel(
     @SerialName("price") val price: Double,
     @SerialName("comment") val comment: String
 )
+

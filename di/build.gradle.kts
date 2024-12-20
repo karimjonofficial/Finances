@@ -78,6 +78,9 @@ dependencies {
     implementation(project(":datasources:stock:network"))
     implementation(project(":viewmodels:stock"))
 
+
+    implementation(project(":viewmodels:history"))
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)

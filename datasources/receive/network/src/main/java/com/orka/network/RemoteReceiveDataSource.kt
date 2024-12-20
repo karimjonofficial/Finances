@@ -14,6 +14,21 @@ class RemoteReceiveDataSource internal constructor(
 
     private val authorizationHeader = "Bearer ${credential.token}"
 
+    override suspend fun get(): List<Receive>? {
+        return apiService.get(authorizationHeader)?.map {
+            Receive(
+                id = it.id,
+                items = it.items.map { item ->
+                    ReceiveItem(item.product.id, item.amount)
+                },
+                datetime = it.dateTime,
+                price = it.price,
+                comment = it.comment,
+                userId = it.userId,
+            )
+        }
+    }
+
     override suspend fun add(items: List<ReceiveItem>, price: Double, comment: String): Receive? {
         apiService.post(authorizationHeader, RequestModel(items, price.toString(), comment))
         return null

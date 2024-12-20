@@ -1,5 +1,6 @@
 package com.orka.finances.ui
 
+import android.icu.text.DecimalFormat
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.orka.di.AppContainer
 import com.orka.finances.ui.navigation.Navigation
+import com.orka.history.HistoryScreen
 import com.orka.home.HomeScreen
 import com.orka.login.LoginScreen
 import com.orka.main.AuthenticationState
@@ -53,6 +55,12 @@ fun FinancesScreen(
 
         is AuthenticationState.Authorized -> {
             val navController = rememberNavController()
+            val format = DecimalFormat("#,###")
+            val uzs = stringResource(Strings.uzs)
+
+            val formatCurrency: (Double) -> String = {
+                "${format.format(it).replace(",", " ")} $uzs"
+            }
 
             NavHost(
                 navController = navController,
@@ -71,17 +79,11 @@ fun FinancesScreen(
                 }
 
                 composable<Navigation.History> {
-                    Surface {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(Strings.history),
-                                style = MaterialTheme.typography.displayLarge
-                            )
-                        }
-                    }
+                    HistoryScreen(
+                        viewModel = container.historyViewModel(authState.credential),
+                        navigateToHome = { navController.navigate(Navigation.Home)},
+                        formatCurrency = formatCurrency
+                    )
                 }
 
                 composable<Navigation.Warehouse> {
@@ -99,7 +101,8 @@ fun FinancesScreen(
                         productsScreenViewModel = container.productsViewModel(
                             credential = authState.credential,
                             categoryId = destination.categoryId,
-                        )
+                        ),
+                        formatCurrency = formatCurrency
                     )
                 }
 

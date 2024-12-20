@@ -55,6 +55,7 @@
             <option value="$PROJECT_DIR$/unauthorizer" />
             <option value="$PROJECT_DIR$/viewmodels" />
             <option value="$PROJECT_DIR$/viewmodels/core" />
+            <option value="$PROJECT_DIR$/viewmodels/history" />
             <option value="$PROJECT_DIR$/viewmodels/home" />
             <option value="$PROJECT_DIR$/viewmodels/login" />
             <option value="$PROJECT_DIR$/viewmodels/main" />
