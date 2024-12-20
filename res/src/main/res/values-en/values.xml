@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_a_product">Add a new category</string>
+    <string name="fill_lines_to_add_a_new_product">Fill the lines below to add a new category</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
+    <string name="description">Comment</string>
+</resources>

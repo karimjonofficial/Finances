@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_a_product">Maxsulot qo\'shish</string>
+    <string name="fill_lines_to_add_a_new_product">Yangi maxsulot qo\'shish uchun quyidagi maydonlarni to\'ldiring</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="add">Qo\'shish</string>
+    <string name="name">Nomi</string>
+    <string name="price">Narxi</string>
+    <string name="description">Izoh</string>
+    <string name="search">Qidirish</string>
+    <string name="home">Home</string>
+    <string name="products">Products</string>
+    <string name="add_a_category">Add a new category</string>
+    <string name="fill_lines_to_add_a_new_category">Fill the lines below to add a new category</string>
+    <string name="furniture">Furniture</string>
+    <string name="table">Stol</string>
+    <string name="fill_lines_to_receive_a_product">Maxsulotlarni kirim qilish uchun quyidagi maydonlarni to\'ldiring</string>
+    <string name="select_the_product">Select a product</string>
+</resources>

@@ -8,6 +8,7 @@
       <module name="Finances.features.home.presentation.newone" target="21" />
       <module name="Finances.features.products.viewmodels" target="21" />
       <module name="Finances.lib.android" target="21" />
+      <module name="Finances.navigation.impl" target="21" />
       <module name="Finances.test" target="21" />
       <module name="Finances.test.testLib" target="21" />
       <module name="Kotlin.Finances.test.testLib" target="21" />

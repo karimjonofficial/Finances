@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="remember_me">Meni eslab qol</string>
-    <string name="enter">Kirish</string>
-    <string name="forgot_password">Parolni unutdingizmi?</string>
-    <string name="enter_to_account">Akkautga kirish</string>
-</resources>

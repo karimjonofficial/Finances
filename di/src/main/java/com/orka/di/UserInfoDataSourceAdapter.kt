@@ -1,9 +1,9 @@
 package com.orka.di
 
-import com.orka.data.UserInfo
-import com.orka.data.UserInfoDataSource
+import com.orka.core.UserInfoDataSource
 import com.orka.database.info.UserInfoDao
 import com.orka.database.info.UserInfoModel
+import com.orka.info.UserInfo
 
 internal class UserInfoDataSourceAdapter(private val userInfoDao: UserInfoDao) : UserInfoDataSource {
     override suspend fun add(userData: UserInfo) {

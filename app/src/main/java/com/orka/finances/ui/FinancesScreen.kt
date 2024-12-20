@@ -1,39 +1,54 @@
-//@file:JvmName("FinancesScreenKt")
-
 package com.orka.finances.ui
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.orka.composables.LoginScreen
-import com.orka.composables.ProductsScreen
-import com.orka.composables.screens.HomeScreen
-import com.orka.composables.screens.StockScreen
 import com.orka.di.AppContainer
 import com.orka.finances.ui.navigation.Navigation
-import com.orka.viewmodels.AppViewModel
-import com.orka.viewmodels.AuthenticationState
+import com.orka.home.HomeScreen
+import com.orka.login.LoginScreen
+import com.orka.main.AuthenticationState
+import com.orka.main.MainViewModel
+import com.orka.res.Strings
+import com.orka.warehouse.WarehouseScreen
 
 @Composable
 fun FinancesScreen(
     modifier: Modifier = Modifier,
     container: AppContainer,
-    appViewModel: AppViewModel
+    appViewModel: MainViewModel
 ) {
     val uiState = appViewModel.uiState.collectAsState()
 
     when (val authState = uiState.value) {
 
-        AuthenticationState.Initial -> appViewModel.initUserInfo()
+        AuthenticationState.Initial -> {
+            Surface {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = stringResource(Strings.app_is_initializing),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+
+            appViewModel.initUserInfo()
+        }
 
         AuthenticationState.UnAuthorized -> {
-            LoginScreen(viewModel = container.getLoginScreenViewModel())
+            LoginScreen(viewModel = container.loginScreenViewModel())
         }
 
         is AuthenticationState.Authorized -> {
@@ -46,49 +61,61 @@ fun FinancesScreen(
             ) {
                 composable<Navigation.Home> {
 
-                    val viewModel = container.getHomeScreenViewModel(
-                        credential = authState.credential,
-                        navigate = { navController.navigate(Navigation.Stock(it)) }
-                    )
+                    val viewModel = container.homeScreenViewModel(authState.credential) {
+                        navController.navigate(Navigation.Warehouse(it))
+                    }
 
-                    HomeScreen(
-                        viewModel = viewModel,
-                        navigateToProductsScreen = {
-                            navController.navigate(Navigation.Products(1))
-                        }
-                    )
-                }
-
-                composable<Navigation.Products> {
-                    val destination: Navigation.Products = it.toRoute()
-
-                    val viewModel = container.getProductsViewModel(
-                        categoryId = destination.categoryId,
-                        credential = authState.credential
-                    )
-
-                    ProductsScreen(viewModel = viewModel) {
-                        navController.navigate(Navigation.Home)
+                    HomeScreen(viewModel = viewModel) {
+                        navController.navigate(Navigation.History)
                     }
                 }
 
-                composable<Navigation.Stock> {
-                    val destination: Navigation.Stock = it.toRoute()
+                composable<Navigation.History> {
+                    Surface {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(Strings.history),
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
+                    }
+                }
 
-                    val viewModel = container.getStockScreenViewModel(
-                        credential = authState.credential,
-                        categoryId = destination.categoryId,
-                        navigate = { navController.navigate(Navigation.StockItem(it)) }
+                composable<Navigation.Warehouse> {
+
+                    val destination: Navigation.Warehouse = it.toRoute()
+
+                    WarehouseScreen(
+                        stockScreenViewModel = container.stockScreenViewModel(
+                            credential = authState.credential,
+                            categoryId = destination.categoryId,
+                            navigate = { id ->
+                                navController.navigate(Navigation.StockItem(id))
+                            }
+                        ),
+                        productsScreenViewModel = container.productsViewModel(
+                            credential = authState.credential,
+                            categoryId = destination.categoryId,
+                        )
                     )
-
-                    StockScreen(viewModel = viewModel)
                 }
 
                 composable<Navigation.StockItem> {
                     val destination: Navigation.StockItem = it.toRoute()
 
                     Surface {
-                        Text(destination.itemId.toString())
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = destination.itemId.toString(),
+                                style = MaterialTheme.typography.displayLarge
+                            )
+                        }
                     }
                 }
             }

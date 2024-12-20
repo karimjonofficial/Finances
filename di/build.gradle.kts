@@ -42,22 +42,41 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.room.ktx)
-    implementation(project(":lib"))
+    implementation(libs.androidx.navigation.runtime.ktx)
+
+    implementation(project(":viewmodels:core"))
+    implementation(project(":unauthorizer"))
+    implementation(project(":http:core"))
+
+    implementation(project(":models:info"))
+    implementation(project(":models:credentials"))
     implementation(project(":database"))
-    implementation(project(":main:data"))
-    implementation(project(":main:viewmodels"))
-    implementation(project(":features:login:presentation:viewmodels"))
-    implementation(project(":features:login:data:base"))
-    implementation(project(":features:login:data:network"))
-    implementation(project(":features:home:presentation:viewmodels"))
-    implementation(project(":features:home:data:base"))
-    implementation(project(":features:home:data:network"))
-    implementation(project(":features:stock:data:base"))
-    implementation(project(":features:stock:data:network"))
-    implementation(project(":features:stock:presentation:viewmodels"))
-    implementation(project(":features:products:presentation:viewmodels"))
-    implementation(project(":features:products:data:base"))
-    implementation(project(":features:products:data:network"))
+    implementation(project(":datasources:info:core"))
+    implementation(project(":viewmodels:main"))
+
+    implementation(project(":viewmodels:login"))
+    implementation(project(":datasources:credentials:core"))
+    implementation(project(":datasources:credentials:network"))
+
+    implementation(project(":models:receive"))
+    implementation(project(":datasources:receive:core"))
+    implementation(project(":datasources:receive:network"))
+
+
+    implementation(project(":models:categories"))
+    implementation(project(":datasources:categories:core"))
+    implementation(project(":datasources:categories:network"))
+    implementation(project(":viewmodels:home"))
+
+    implementation(project(":models:products"))
+    implementation(project(":datasources:products:core"))
+    implementation(project(":datasources:products:network"))
+    implementation(project(":viewmodels:products"))
+
+    implementation(project(":models:stock"))
+    implementation(project(":datasources:stock:core"))
+    implementation(project(":datasources:stock:network"))
+    implementation(project(":viewmodels:stock"))
 
     testImplementation(libs.junit)
 
