@@ -13,6 +13,9 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/datasources" />
+            <option value="$PROJECT_DIR$/datasources/basket" />
+            <option value="$PROJECT_DIR$/datasources/basket/core" />
+            <option value="$PROJECT_DIR$/datasources/basket/local" />
             <option value="$PROJECT_DIR$/datasources/categories" />
             <option value="$PROJECT_DIR$/datasources/categories/core" />
             <option value="$PROJECT_DIR$/datasources/categories/network" />
@@ -38,6 +41,7 @@
             <option value="$PROJECT_DIR$/lib/tests" />
             <option value="$PROJECT_DIR$/lib/ui" />
             <option value="$PROJECT_DIR$/models" />
+            <option value="$PROJECT_DIR$/models/basket" />
             <option value="$PROJECT_DIR$/models/categories" />
             <option value="$PROJECT_DIR$/models/credentials" />
             <option value="$PROJECT_DIR$/models/info" />
@@ -54,6 +58,7 @@
             <option value="$PROJECT_DIR$/screens/warehouse" />
             <option value="$PROJECT_DIR$/unauthorizer" />
             <option value="$PROJECT_DIR$/viewmodels" />
+            <option value="$PROJECT_DIR$/viewmodels/basket" />
             <option value="$PROJECT_DIR$/viewmodels/core" />
             <option value="$PROJECT_DIR$/viewmodels/history" />
             <option value="$PROJECT_DIR$/viewmodels/home" />
