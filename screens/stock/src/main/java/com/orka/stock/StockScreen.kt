@@ -36,8 +36,8 @@ fun StockScreen(
 
             AddReceiveDialog(
                 dismissRequest = { dialogVisible.value = false },
-                addReceive = { productId, amount, price, comment ->
-                    viewModel.receive(productId, amount, price, comment)
+                addReceive = { product, amount, price, comment ->
+                    viewModel.receive(product.id, amount, price, comment)
                     dialogVisible.value = false
                     viewModel.fetch()
                 },

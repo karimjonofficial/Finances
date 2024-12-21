@@ -1,5 +1,7 @@
 package com.orka.network
 
+import com.orka.core.models.PostResponseModel
+import com.orka.core.models.PostRequestModel
 import com.orka.receive.Receive
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,10 +15,10 @@ internal interface ReceiveApiService {
     @POST("v1/receive/")
     suspend fun post(
         @Header("Authorization") authorizationHeader: String,
-        @Body body: RequestModel
+        @Body body: PostRequestModel
     ): PostResponseModel?
 
     @Headers("accept: application/json", "Content-Type: application/json")
     @GET("v1/receive/")
-    suspend fun get(@Header("Authorization") authorizationHeader: String): List<GetResponseModel>?
+    suspend fun get(@Header("Authorization") authorizationHeader: String): List<Receive>?
 }

@@ -1,4 +1,4 @@
-package com.orka.network
+package com.orka.core.models
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.serializers.InstantIso8601Serializer

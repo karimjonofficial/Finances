@@ -24,7 +24,7 @@ import com.orka.ui.VerticalSpacer
 @Composable
 fun AddReceiveDialog(
     dismissRequest: () -> Unit,
-    addReceive: (Int, Int, Double, String) -> Unit,
+    addReceive: (Product, Int, Double, String) -> Unit,
     products: List<Product>
 ) {
     val productId = rememberSaveable { mutableIntStateOf(0) }
@@ -38,9 +38,12 @@ fun AddReceiveDialog(
         title = stringResource(Strings.receive_new_products),
         supportingText = stringResource(Strings.fill_lines_to_receive_a_product),
         onSuccess = {
-            if(amount.value.isNotBlank() && price.value.isNotBlank()) {
+
+            val product = products.find { it.id == productId.intValue }
+
+            if(product != null && amount.value.isNotBlank() && price.value.isNotBlank()) {
                 addReceive(
-                    productId.intValue,
+                    product,
                     amount.value.toIntOrNull() ?: 0,
                     price.value.toDoubleOrNull() ?: 0.0,
                     comment.value

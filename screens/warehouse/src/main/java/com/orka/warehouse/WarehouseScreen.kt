@@ -10,12 +10,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.orka.products.ProductsContent
@@ -40,32 +43,19 @@ fun WarehouseScreen(
 
     val receiveDialogVisible = rememberSaveable { mutableStateOf(false) }
     val productsDialogVisible = rememberSaveable { mutableStateOf(false) }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     stockScreenViewModel.fetchProducts()
     stockScreenViewModel.fetch()
     productsScreenViewModel.fetch()
 
     AppScaffold(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopBar(
-                title = stringResource(Strings.warehouse),
-                actions = {
-
-                    IconButton(onClick = { productsDialogVisible.value = true }) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = "Add"
-                        )
-                    }
-
-                    IconButton(onClick = { receiveDialogVisible.value = true }) {
-                        Icon(
-                            painter = painterResource(Drawables.download),
-                            contentDescription = stringResource(Strings.receive_new_products)
-                        )
-                    }
-                }
+            WarehouseScreenTopBar(
+                addClick = { productsDialogVisible.value = true },
+                importClick = { receiveDialogVisible.value = true },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
@@ -75,8 +65,8 @@ fun WarehouseScreen(
 
             AddReceiveDialog(
                 dismissRequest = { receiveDialogVisible.value = false },
-                addReceive = { productId, amount, price, comment ->
-                    stockScreenViewModel.receive(productId, amount, price, comment)
+                addReceive = { product, amount, price, comment ->
+                    stockScreenViewModel.receive(product.id, amount, price, comment)
                     receiveDialogVisible.value = false
                     stockScreenViewModel.fetch()
                 },
@@ -84,7 +74,7 @@ fun WarehouseScreen(
             )
         }
 
-        if(productsDialogVisible.value) {
+        if (productsDialogVisible.value) {
             AddProductDialog(
                 dismissRequest = { productsDialogVisible.value = false },
                 addClick = { name, price, description ->
@@ -95,39 +85,85 @@ fun WarehouseScreen(
             )
         }
 
-        val tabIndex = rememberSaveable { mutableIntStateOf(0) }
+        WarehouseScreenContent(
+            modifier = Modifier.padding(innerPadding),
+            stockScreenViewModel = stockScreenViewModel,
+            productsScreenViewModel = productsScreenViewModel,
+            formatCurrency = formatCurrency
+        )
+    }
+}
 
-        Column(modifier = Modifier.padding(innerPadding)) {
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun WarehouseScreenTopBar(
+    addClick: () -> Unit,
+    importClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior
+) {
+    TopBar(
+        title = stringResource(Strings.warehouse),
+        actions = {
 
-            PrimaryTabRow(
-                selectedTabIndex = tabIndex.intValue,
-            ) {
-                Tab(
-                    selected = tabIndex.intValue == 0,
-                    onClick = { tabIndex.intValue = 0 },
-                    text = { Text(stringResource(Strings.warehouse)) }
-                )
-
-                Tab(
-                    selected = tabIndex.intValue == 1,
-                    onClick = { tabIndex.intValue = 1 },
-                    text = { Text(stringResource(Strings.products)) }
+            IconButton(onClick = addClick) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add"
                 )
             }
 
-            when (tabIndex.intValue) {
-                0 -> {
-                    StockContent(viewModel = stockScreenViewModel)
-                    stockScreenViewModel.fetchProducts()
-                    stockScreenViewModel.fetch()
-                }
-                1 -> {
-                    ProductsContent(
-                        viewModel = productsScreenViewModel,
-                        formatCurrency = formatCurrency
-                    )
-                    productsScreenViewModel.fetch()
-                }
+            IconButton(onClick = importClick) {
+                Icon(
+                    painter = painterResource(Drawables.download),
+                    contentDescription = stringResource(Strings.receive_new_products)
+                )
+            }
+        },
+        scrollBehavior = scrollBehavior
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun WarehouseScreenContent(
+    modifier: Modifier,
+    stockScreenViewModel: StockScreenViewModel,
+    productsScreenViewModel: ProductsScreenViewModel,
+    formatCurrency: (Double) -> String
+) {
+    val tabIndex = rememberSaveable { mutableIntStateOf(0) }
+
+    Column(modifier = modifier) {
+
+        PrimaryTabRow(
+            selectedTabIndex = tabIndex.intValue,
+        ) {
+            Tab(
+                selected = tabIndex.intValue == 0,
+                onClick = { tabIndex.intValue = 0 },
+                text = { Text(stringResource(Strings.warehouse)) }
+            )
+
+            Tab(
+                selected = tabIndex.intValue == 1,
+                onClick = { tabIndex.intValue = 1 },
+                text = { Text(stringResource(Strings.products)) }
+            )
+        }
+
+        when (tabIndex.intValue) {
+            0 -> {
+                StockContent(viewModel = stockScreenViewModel)
+                stockScreenViewModel.fetchProducts()
+                stockScreenViewModel.fetch()
+            }
+
+            1 -> {
+                ProductsContent(
+                    viewModel = productsScreenViewModel,
+                    formatCurrency = formatCurrency
+                )
+                productsScreenViewModel.fetch()
             }
         }
     }

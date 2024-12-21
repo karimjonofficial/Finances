@@ -5,9 +5,10 @@ import com.orka.core.HttpService
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
 import com.orka.core.StockDataSource
+import com.orka.core.models.PostRequestModel
+import com.orka.core.models.PostRequestModelItem
 import com.orka.log.Log
 import com.orka.products.Product
-import com.orka.receive.ReceiveItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -32,9 +33,17 @@ class StockScreenViewModel(
     }
 
     fun receive(productId: Int, amount: Int, price: Double, comment: String) {
-        if (productId > 0 && amount > 0 && price > 0.0) {
+        if (amount > 0 && price > 0.0) {
             invoke(
-                request =  { receiveDataSource.add(listOf(ReceiveItem(productId, amount)), price, comment) },
+                request = {
+                    receiveDataSource.add(
+                        PostRequestModel(
+                            items = listOf(PostRequestModelItem(productId, amount)),
+                            price = price.toString(),
+                            comment = comment
+                        )
+                    )
+                },
                 onException = { Log("StockScreenViewModel.Http", it.message ?: "No message") }
             )
         }

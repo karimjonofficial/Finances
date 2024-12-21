@@ -52,6 +52,8 @@ dependencies {
     implementation(project(":viewmodels:products"))
     implementation(project(":viewmodels:stock"))
 
+    implementation(project(":models:products"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
