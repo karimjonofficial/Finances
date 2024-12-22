@@ -11,4 +11,5 @@ interface BasketDataSource {
     fun clear()
     fun get(): Basket
     fun comment(comment: String)
+    fun setPrice(price: Double)
 }

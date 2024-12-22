@@ -83,6 +83,43 @@ class InMemoryBasketDataSourceTest {
             assertEquals(amount + oldAmount, dataSource.get().items[0].amount)
         }
 
+        @Nested
+        inner class BasketItem2Context {
+
+            private val item2 = BasketItem(Product(2, "", 100.0, "", 1), 1)
+
+            @Test
+            fun `When increasing amount index will not change`() {
+                dataSource.add(item)
+                dataSource.add(item2)
+                val index = dataSource.get().items.indexOf(
+                    dataSource.get().items.find {
+                        it.product.id == item.product.id
+                    }
+                )
+
+                dataSource.increase(item.product.id, 1)
+                assertEquals(index, dataSource.get().items.indexOf(dataSource.get().items.find { it.product.id == item.product.id }))
+            }
+
+            @Test
+            fun `When decreasing amount index will not change`() {
+                dataSource.add(item)
+                dataSource.add(item)
+                dataSource.add(item2)
+
+                val index = dataSource.get().items.indexOf(
+                    dataSource.get().items.find {
+                        it.product.id == item.product.id
+                    }
+                )
+
+                dataSource.decrease(item.product.id, 1)
+                assertEquals(index, dataSource.get().items.indexOf(dataSource.get().items.find { it.product.id == item.product.id }))
+            }
+        }
+
+
         @Test
         fun `Throws when increasing product has not been added`() {
             val amount = 1

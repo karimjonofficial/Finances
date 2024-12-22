@@ -29,9 +29,10 @@ class StockScreenViewModel(
 
     override fun fetch() = invoke {
         setState(stockDataSource.get(categoryId) ?: emptyList())
+        fetchProducts()
     }
 
-    fun fetchProducts() = invoke {
+    private fun fetchProducts() = invoke {
         _dialogState.value = productsDataSource.get(categoryId) ?: emptyList()
     }
 
@@ -53,6 +54,7 @@ class StockScreenViewModel(
     }
 
     fun addToBasket(product: Product) {
+        Log("BasketDataSource.${basketDataSource.hashCode()}", "Add")
         basketDataSource.add(BasketItem(product, 1))
     }
 

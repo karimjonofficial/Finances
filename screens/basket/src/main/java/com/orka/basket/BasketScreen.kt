@@ -3,22 +3,19 @@ package com.orka.basket
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.orka.basket.fixtures.BasketDataSourceImpl
+import com.orka.basket.fixtures.HttpServiceImpl
 import com.orka.basket.parts.BasketScreenBottomBar
-import com.orka.basket.parts.BasketScreenContent
-import com.orka.res.Drawables
-import com.orka.res.Strings
+import com.orka.basket.parts.BasketScreenTopBar
+import com.orka.core.Formatter
+import com.orka.core.FormatterImpl
 import com.orka.ui.AppScaffold
-import com.orka.ui.TopBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +24,8 @@ fun BasketScreen(
     modifier: Modifier = Modifier,
     viewModel: BasketScreenViewModel,
     navigateToHome: () -> Unit,
-    navigateToHistory: () -> Unit
+    navigateToHistory: () -> Unit,
+    formatter: Formatter
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -36,20 +34,7 @@ fun BasketScreen(
 
     AppScaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopBar(
-                title = stringResource(Strings.basket),
-                scrollBehavior = scrollBehavior,
-                actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(Drawables.delete_outlined),
-                            contentDescription = stringResource(Strings.clear)
-                        )
-                    }
-                }
-            )
-        },
+        topBar = { BasketScreenTopBar(scrollBehavior) { viewModel.clear() } },
         bottomBar = {
             BasketScreenBottomBar(
                 reloadScreen = {
@@ -63,12 +48,28 @@ fun BasketScreen(
         }
     ) { innerPadding ->
 
-        val uiState = viewModel.uiState.collectAsState()
-
         BasketScreenContent(
             modifier = Modifier.padding(innerPadding),
-            basket = uiState.value,
-            lazyListState = lazyListState
+            viewModel = viewModel,
+            lazyListState = lazyListState,
+            formatter = formatter
         )
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+private fun BasketScreenPreview() {
+    
+    val dataSource = BasketDataSourceImpl()
+
+    BasketScreen(
+        viewModel = BasketScreenViewModel(
+            httpService = HttpServiceImpl(),
+            basketDataSource = dataSource
+        ),
+        navigateToHome = {},
+        navigateToHistory = {},
+        formatter = FormatterImpl()
+    )
 }

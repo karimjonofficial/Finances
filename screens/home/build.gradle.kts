@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":lib:ui"))
     implementation(project(":res"))
     implementation(project(":http:core"))
+    implementation(project(":formatter:core"))
     implementation(project(":unauthorizer"))
     implementation(project(":models:credentials"))
     implementation(project(":models:categories"))

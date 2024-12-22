@@ -45,8 +45,12 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
 
     implementation(project(":unauthorizer"))
-    implementation(project(":http:core"))
     implementation(project(":database"))
+
+    implementation(project(":http:core"))
+
+    implementation(project(":formatter:core"))
+    implementation(project(":formatter:uz"))
 
     implementation(project(":models:info"))
     implementation(project(":models:credentials"))

@@ -38,4 +38,6 @@
     <string name="overall_price">Overall price</string>
     <string name="sell">Sell</string>
     <string name="clear">Clear</string>
+    <string name="edit">Edit</string>
+    <string name="done">Done</string>
 </resources>

@@ -41,9 +41,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
+
     implementation(project(":res"))
     implementation(project(":http:core"))
     implementation(project(":lib:ui"))
+    implementation(project(":formatter:core"))
     implementation(project(":models:credentials"))
     implementation(project(":datasources:credentials:core"))
     implementation(project(":viewmodels:core"))

@@ -6,6 +6,8 @@ import com.orka.core.BasketDataSource
 
 class InMemoryBasketDataSource internal constructor(): BasketDataSource {
 
+    private var profit = 0.0
+
     private val items: MutableList<BasketItem> = emptyList<BasketItem>().toMutableList()
     private var comment: String = ""
 
@@ -36,9 +38,10 @@ class InMemoryBasketDataSource internal constructor(): BasketDataSource {
             if(amount > it.amount) {
                 throw Exception()
             } else {
-                items.remove(it)
                 if(amount < it.amount) {
-                    items.add(it.copy(amount = it.amount - amount))
+                    items[items.indexOf(it)] = it.copy(amount = it.amount - amount)
+                } else {
+                    items.remove(it)
                 }
             }
         } ?: throw Exception()
@@ -46,21 +49,20 @@ class InMemoryBasketDataSource internal constructor(): BasketDataSource {
 
     override fun increase(productId: Int, amount: Int) {
         items.find { it.product.id == productId }?.let {
-            val new = it.copy(amount = it.amount + amount)
-            items.remove(it)
-            items.add(new)
+            items[items.indexOf(it)] = it.copy(amount = it.amount + amount)
         } ?: throw Exception()
     }
 
     override fun clear() {
         items.clear()
         comment = ""
+        profit = 0.0
     }
 
     override fun get(): Basket {
         return Basket(
             items = this.items.toList(),
-            price = calculate(),
+            price = calculate() + profit,
             comment = comment
         )
     }
@@ -71,6 +73,10 @@ class InMemoryBasketDataSource internal constructor(): BasketDataSource {
 
     override fun comment(comment: String) {
         this.comment = comment
+    }
+
+    override fun setPrice(price: Double) {
+        profit =  price - calculate()
     }
 
     companion object {

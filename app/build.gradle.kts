@@ -84,6 +84,8 @@ dependencies {
     implementation(project(":res"))
     implementation(project(":unauthorizer"))
     implementation(project(":lib:ui"))
+    implementation(project(":formatter:core"))
+
     implementation(project(":models:credentials"))
 
     implementation(project(":screens:login"))

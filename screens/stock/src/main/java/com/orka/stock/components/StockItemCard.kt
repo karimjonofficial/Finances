@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.orka.core.Formatter
+import com.orka.core.FormatterImpl
 import com.orka.products.Product
 import com.orka.res.Drawables
 import com.orka.res.Strings
@@ -35,7 +37,8 @@ internal fun StockItemCard(
     modifier: Modifier = Modifier,
     item: StockItem,
     click: (Int) -> Unit,
-    addClick: (Product) -> Unit
+    addClick: (Product) -> Unit,
+    formatter: Formatter
 ) {
     Column(
         modifier = modifier
@@ -96,7 +99,7 @@ internal fun StockItemCard(
             }
 
             Text(
-                text = "${stringResource(Strings.price)}: ${item.product.price}",
+                text = "${stringResource(Strings.price)}: ${formatter.formatCurrency(item.product.price, stringResource(Strings.uzs))}",
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -126,8 +129,10 @@ private fun ProductCardPreview() {
             StockItemCard(
                 modifier = Modifier.size(height = 200.dp, width = 180.dp),
                 item = stockItem,
-                click = {}
-            ) {}
+                click = {},
+                addClick = {},
+                formatter = FormatterImpl()
+            )
         }
     }
 }

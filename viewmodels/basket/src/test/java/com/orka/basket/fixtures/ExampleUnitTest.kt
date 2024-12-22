@@ -1,4 +1,4 @@
-package com.orka.basket
+package com.orka.basket.fixtures
 
 import org.junit.Test
 

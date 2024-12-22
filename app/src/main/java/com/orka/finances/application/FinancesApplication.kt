@@ -1,13 +1,13 @@
 package com.orka.finances.application
 
 import android.app.Application
-import com.orka.di.AppContainer
+import com.orka.di.SingletonContainer
 
 class FinancesApplication : Application() {
-    lateinit var container: AppContainer
+    lateinit var container: SingletonContainer
 
     override fun onCreate() {
         super.onCreate()
-        container = AppContainer(this)
+        container = SingletonContainer(this)
     }
 }

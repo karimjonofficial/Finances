@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.orka.core.Formatter
 import com.orka.history.components.ReceiveCard
 import com.orka.receive.Receive
 import com.orka.ui.VerticalSpacer
@@ -15,11 +16,11 @@ internal fun HistoryList(
     modifier: Modifier = Modifier,
     items: List<Receive>,
     state: LazyListState,
-    formatCurrency: (Double) -> String
+    formatter: Formatter
 ) {
 
     LazyColumn(modifier = modifier.fillMaxSize(), state = state) {
         item { VerticalSpacer(16) }
-        items(items) { ReceiveCard(item = it, formatCurrency = formatCurrency) }
+        items(items) { ReceiveCard(item = it, formatter = formatter) }
     }
 }

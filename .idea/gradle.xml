@@ -30,10 +30,15 @@
             <option value="$PROJECT_DIR$/datasources/receive" />
             <option value="$PROJECT_DIR$/datasources/receive/core" />
             <option value="$PROJECT_DIR$/datasources/receive/network" />
+            <option value="$PROJECT_DIR$/datasources/sale" />
+            <option value="$PROJECT_DIR$/datasources/sale/core" />
             <option value="$PROJECT_DIR$/datasources/stock" />
             <option value="$PROJECT_DIR$/datasources/stock/core" />
             <option value="$PROJECT_DIR$/datasources/stock/network" />
             <option value="$PROJECT_DIR$/di" />
+            <option value="$PROJECT_DIR$/formatter" />
+            <option value="$PROJECT_DIR$/formatter/core" />
+            <option value="$PROJECT_DIR$/formatter/uz" />
             <option value="$PROJECT_DIR$/http" />
             <option value="$PROJECT_DIR$/http/core" />
             <option value="$PROJECT_DIR$/lib" />
@@ -47,6 +52,7 @@
             <option value="$PROJECT_DIR$/models/info" />
             <option value="$PROJECT_DIR$/models/products" />
             <option value="$PROJECT_DIR$/models/receive" />
+            <option value="$PROJECT_DIR$/models/sale" />
             <option value="$PROJECT_DIR$/models/stock" />
             <option value="$PROJECT_DIR$/res" />
             <option value="$PROJECT_DIR$/screens" />

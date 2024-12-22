@@ -41,8 +41,10 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
+
     implementation(project(":lib:ui"))
     implementation(project(":res"))
+    implementation(project(":formatter:core"))
     implementation(project(":datasources:stock:core"))
     implementation(project(":datasources:products:core"))
     implementation(project(":models:products"))

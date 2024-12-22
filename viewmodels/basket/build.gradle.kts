@@ -47,11 +47,13 @@ dependencies {
     implementation(project(":datasources:basket:core"))
     implementation(project(":models:basket"))
     implementation(project(":viewmodels:core"))
+    implementation(project(":models:products"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
     testImplementation(project(":lib:tests"))
+    testImplementation(project(":models:products"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

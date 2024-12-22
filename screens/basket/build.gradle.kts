@@ -43,9 +43,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.ui.tooling)
+
     implementation(project(":lib:ui"))
     implementation(project(":res"))
     implementation(project(":http:core"))
+    implementation(project(":formatter:core"))
     implementation(project(":unauthorizer"))
     implementation(project(":models:credentials"))
     implementation(project(":models:basket"))

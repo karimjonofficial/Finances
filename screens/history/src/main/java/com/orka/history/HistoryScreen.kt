@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.orka.core.Formatter
 import com.orka.history.parts.HistoryScreenBottomBar
 import com.orka.history.parts.HistoryScreenContent
 import com.orka.history.parts.HistoryScreenTopBar
@@ -22,7 +23,7 @@ fun HistoryScreen(
     viewModel: HistoryScreenViewModel,
     navigateToHome: () -> Unit,
     navigateToBasket: () -> Unit,
-    formatCurrency: (Double) -> String
+    formatter: Formatter
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -52,7 +53,7 @@ fun HistoryScreen(
             modifier = Modifier.padding(innerPadding),
             items = uiState.value,
             lazyListState = lazyListState,
-            formatCurrency = formatCurrency
+            formatter = formatter
         )
     }
 }

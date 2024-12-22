@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.basket.BasketItem
+import com.orka.core.Formatter
+import com.orka.core.FormatterImpl
 import com.orka.products.Product
 import com.orka.res.Drawables
 import com.orka.res.Strings
@@ -37,7 +39,10 @@ import com.orka.ui.VerticalSpacer
 internal fun BasketItemCard(
     modifier: Modifier = Modifier,
     item: BasketItem,
-
+    increaseClick: (Int) -> Unit,
+    decreaseClick: (Int) -> Unit,
+    removeClick: (Int) -> Unit,
+    formatter: Formatter
 ) {
     Card(modifier = modifier) {
 
@@ -71,7 +76,7 @@ internal fun BasketItemCard(
 
                     HorizontalSpacer(8)
 
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { removeClick(item.product.id) }) {
                         Icon(
                             painter = painterResource(Drawables.close),
                             contentDescription = stringResource(Strings.delete)
@@ -79,13 +84,16 @@ internal fun BasketItemCard(
                     }
                 }
 
-                VerticalSpacer(12)
+                VerticalSpacer(8)
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
 
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = item.product.price.toString(),
+                        text = formatter.formatCurrency(
+                            value = item.product.price,
+                            currencyName = stringResource(Strings.uzs)
+                        ),
                         fontWeight = FontWeight.Medium,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -106,7 +114,7 @@ internal fun BasketItemCard(
 
                             TextButton(
                                 modifier = Modifier.size(height = 36.dp, width = 32.dp),
-                                onClick = {}
+                                onClick = { decreaseClick(item.product.id) }
                             ) {
                                 Text(text = "-", fontWeight = FontWeight.Bold)
                             }
@@ -120,7 +128,7 @@ internal fun BasketItemCard(
 
                             TextButton(
                                 modifier = Modifier.size(height = 36.dp, width = 32.dp),
-                                onClick = {}
+                                onClick = { increaseClick(item.product.id) }
                             ) {
                                 Text(text = "+", fontWeight = FontWeight.Bold)
                             }
@@ -151,6 +159,12 @@ private fun BasketItemCardPreview() {
             amount = 1000
         )
 
-        BasketItemCard(modifier = Modifier.padding(16.dp).height(160.dp), item = item)
+        BasketItemCard(
+            modifier = Modifier.padding(16.dp).height(160.dp), item = item,
+            increaseClick = {},
+            decreaseClick = {},
+            removeClick = {},
+            formatter = FormatterImpl()
+        )
     }
 }

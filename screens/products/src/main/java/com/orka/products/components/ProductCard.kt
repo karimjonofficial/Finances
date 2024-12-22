@@ -7,19 +7,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import com.orka.core.Formatter
 import com.orka.products.Product
 import com.orka.res.Drawables
+import com.orka.res.Strings
 
 @Composable
 internal fun ProductCard(
     modifier: Modifier = Modifier,
     product: Product,
-    formatCurrency: (Double) -> String
+    formatter: Formatter
 ) {
 
     ListItem(
-        modifier = modifier.clickable {  },
-        headlineContent = { Text(formatCurrency(product.price)) },
+        modifier = modifier.clickable { },
+        headlineContent = {
+            Text(formatter.formatCurrency(product.price, stringResource(Strings.uzs)))
+        },
         overlineContent = { Text(product.name) },
         trailingContent = {
             Icon(

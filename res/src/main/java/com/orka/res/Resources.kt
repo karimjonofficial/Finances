@@ -40,6 +40,12 @@ object Strings {
     val description: Int
         get() = R.string.description
 
+    val done: Int
+        get() = R.string.done
+
+    val edit: Int
+        get() = R.string.edit
+
     val enter: Int
         get() = R.string.enter
 
@@ -127,6 +133,12 @@ object Drawables {
     val arrow_up: Int
         get() = R.drawable.arrow_up
 
+    val check: Int
+        get() = R.drawable.check
+
+    val checklist_outlined: Int
+        get() = R.drawable.checklist_outlined
+
     val close: Int
         get() = R.drawable.close
 
@@ -135,6 +147,9 @@ object Drawables {
 
     val download: Int
         get() = R.drawable.download
+
+    val edit_outlined: Int
+        get() = R.drawable.edit_outlined
 
     val furniture1: Int
         get() = R.drawable.furniture1

@@ -44,6 +44,7 @@ dependencies {
 
     implementation(project(":lib:ui"))
     implementation(project(":res"))
+    implementation(project(":formatter:core"))
 
     implementation(project(":screens:products"))
     implementation(project(":screens:stock"))
