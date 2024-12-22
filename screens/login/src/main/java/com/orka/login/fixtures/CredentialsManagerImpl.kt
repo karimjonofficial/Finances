@@ -5,11 +5,11 @@ import com.orka.credentials.Credential
 
 class CredentialsManagerImpl : CredentialsManager {
     override fun get(): Credential? {
-        TODO("Not yet implemented")
+        throw Exception()
     }
 
     override fun set(credential: Credential) {
-        TODO("Not yet implemented")
+        throw Exception()
     }
 
 }

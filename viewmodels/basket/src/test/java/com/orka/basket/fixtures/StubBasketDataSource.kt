@@ -21,8 +21,9 @@ class StubBasketDataSource : BasketDataSource {
     }
 
     override fun comment(comment: String) {}
+
     override fun setPrice(price: Double) {
-        TODO("Not yet implemented")
+
     }
 
 }

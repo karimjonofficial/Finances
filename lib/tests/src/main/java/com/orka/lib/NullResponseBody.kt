@@ -14,6 +14,6 @@ object NullResponseBody : ResponseBody() {
     }
 
     override fun source(): BufferedSource {
-        TODO("Not implemented yet")
+        throw Exception()
     }
 }

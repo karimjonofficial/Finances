@@ -48,6 +48,6 @@ class SpyBasketDataSource : BasketDataSource {
     }
 
     override fun setPrice(price: Double) {
-        TODO("Not yet implemented")
+        throw Exception()
     }
 }
