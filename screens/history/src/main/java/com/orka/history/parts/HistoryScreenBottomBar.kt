@@ -13,6 +13,7 @@ import com.orka.ui.NavItem
 internal fun HistoryScreenBottomBar(
     modifier: Modifier = Modifier,
     navigateToHome: () -> Unit,
+    navigateToBasket: () -> Unit,
     reloadScreen: () -> Unit
 ) {
 
@@ -21,17 +22,23 @@ internal fun HistoryScreenBottomBar(
             name = stringResource(Strings.home),
             selected = false,
             description = stringResource(Strings.home),
-            icon = painterResource(Drawables.home_outlined),
+            painter = painterResource(Drawables.home_outlined),
             click = navigateToHome
+        ),
+        NavItem(
+            name = stringResource(Strings.basket),
+            selected = false,
+            description = stringResource(Strings.basket),
+            painter = painterResource(Drawables.shopping_cart_outlined),
+            click = navigateToBasket
         ),
         NavItem(
             name = stringResource(Strings.history),
             selected = true,
             description = stringResource(Strings.history),
-            icon = painterResource(Drawables.history),
+            painter = painterResource(Drawables.history),
             click = reloadScreen
         )
     )
-
     BottomBar(modifier = modifier, navItems)
 }

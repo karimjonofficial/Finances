@@ -31,8 +31,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.orka.basket.BasketScreen
 import com.orka.di.AppContainer
 import com.orka.finances.ui.navigation.Navigation
+import com.orka.finances.ui.navigation.navigateToBasket
+import com.orka.finances.ui.navigation.navigateToHistory
+import com.orka.finances.ui.navigation.navigateToHome
+import com.orka.finances.ui.navigation.navigateToStockItem
+import com.orka.finances.ui.navigation.navigateToWarehouse
 import com.orka.history.HistoryScreen
 import com.orka.home.HomeScreen
 import com.orka.login.LoginScreen
@@ -54,8 +60,11 @@ fun FinancesScreen(
     when (val authState = uiState.value) {
 
         AuthenticationState.Initial -> {
+
             Surface {
+
                 Box(modifier = Modifier.fillMaxSize()) {
+
                     Text(
                         text = stringResource(Strings.app_is_initializing),
                         style = MaterialTheme.typography.titleMedium,
@@ -68,10 +77,12 @@ fun FinancesScreen(
         }
 
         AuthenticationState.UnAuthorized -> {
+
             LoginScreen(viewModel = container.loginScreenViewModel())
         }
 
         is AuthenticationState.Authorized -> {
+
             val navController = rememberNavController()
             val format = DecimalFormat("#,###")
             val uzs = stringResource(Strings.uzs)
@@ -85,21 +96,33 @@ fun FinancesScreen(
                 startDestination = Navigation.Home,
                 modifier = modifier
             ) {
+
                 composable<Navigation.Home> {
 
-                    val viewModel = container.homeScreenViewModel(authState.credential) {
-                        navController.navigate(Navigation.Warehouse(it))
-                    }
+                    HomeScreen(
+                        viewModel = container.homeScreenViewModel(authState.credential) {
+                            navController.navigateToWarehouse(it)
+                        },
+                        navigateToHistory = { navController.navigateToHistory() },
+                        navigateToBasket = { navController.navigateToBasket() }
+                    )
+                }
 
-                    HomeScreen(viewModel = viewModel) {
-                        navController.navigate(Navigation.History)
-                    }
+                composable<Navigation.Basket> {
+
+                    BasketScreen(
+                        viewModel = container.basketViewModel(),
+                        navigateToHome = { navController.navigateToHome() },
+                        navigateToHistory = { navController.navigateToHistory() },
+                    )
                 }
 
                 composable<Navigation.History> {
+
                     HistoryScreen(
                         viewModel = container.historyViewModel(authState.credential),
-                        navigateToHome = { navController.navigate(Navigation.Home) },
+                        navigateToHome = { navController.navigateToHome() },
+                        navigateToBasket = { navController.navigateToBasket() },
                         formatCurrency = formatCurrency
                     )
                 }
@@ -112,9 +135,7 @@ fun FinancesScreen(
                         stockScreenViewModel = container.stockScreenViewModel(
                             credential = authState.credential,
                             categoryId = destination.categoryId,
-                            navigate = { id ->
-                                navController.navigate(Navigation.StockItem(id))
-                            }
+                            navigate = { id -> navController.navigateToStockItem(id) }
                         ),
                         productsScreenViewModel = container.productsViewModel(
                             credential = authState.credential,
@@ -125,6 +146,7 @@ fun FinancesScreen(
                 }
 
                 composable<Navigation.StockItem> {
+
                     data class CarouselItem(
                         val id: Int,
                         @DrawableRes val imgRes: Int,
@@ -140,14 +162,10 @@ fun FinancesScreen(
                         CarouselItem(6, Drawables.furniture1, Strings.furniture),
                     )
 
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = { Text("Stock items") }
-                            )
-                        }
-                    ) { innerPadding ->
+                    Scaffold(topBar = { TopAppBar(title = { Text("Stock items") }) }) { innerPadding ->
+
                         Column(modifier = Modifier.padding(innerPadding)) {
+
                             HorizontalMultiBrowseCarousel(
                                 state = rememberCarouselState { carouselItems.size },
                                 modifier = Modifier.height(300.dp),
@@ -155,6 +173,7 @@ fun FinancesScreen(
                                 itemSpacing = 8.dp,
                                 contentPadding = PaddingValues(16.dp)
                             ) { index ->
+
                                 Image(
                                     modifier = Modifier
                                         .height(205.dp)

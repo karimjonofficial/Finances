@@ -80,7 +80,11 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
 
+    implementation(project(":di"))
+    implementation(project(":res"))
+    implementation(project(":unauthorizer"))
     implementation(project(":lib:ui"))
+    implementation(project(":models:credentials"))
 
     implementation(project(":screens:login"))
     implementation(project(":screens:home"))
@@ -88,6 +92,7 @@ dependencies {
     implementation(project(":screens:products"))
     implementation(project(":screens:warehouse"))
     implementation(project(":screens:history"))
+    implementation(project(":screens:basket"))
 
     implementation(project(":viewmodels:core"))
     implementation(project(":viewmodels:main"))
@@ -96,11 +101,7 @@ dependencies {
     implementation(project(":viewmodels:stock"))
     implementation(project(":viewmodels:products"))
     implementation(project(":viewmodels:history"))
-
-    implementation(project(":di"))
-    implementation(project(":res"))
-    implementation(project(":models:credentials"))
-    implementation(project(":unauthorizer"))
+    implementation(project(":viewmodels:basket"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

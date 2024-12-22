@@ -18,7 +18,7 @@ fun BottomBar(
                 onClick = { i.click() },
                 icon = {
                     Icon(
-                        painter = i.icon,
+                        painter = i.painter,
                         contentDescription = i.description
                     )
                 }

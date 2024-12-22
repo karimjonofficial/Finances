@@ -12,7 +12,9 @@ fun StockContent(
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    StockItemsList(modifier, uiState.value) {
-        viewModel.select(it)
-    }
+    StockItemsList(
+        modifier, uiState.value,
+        select =  { viewModel.select(it) },
+        addToBasket = { viewModel.addToBasket(it) }
+    )
 }

@@ -50,6 +50,7 @@
             <option value="$PROJECT_DIR$/models/stock" />
             <option value="$PROJECT_DIR$/res" />
             <option value="$PROJECT_DIR$/screens" />
+            <option value="$PROJECT_DIR$/screens/basket" />
             <option value="$PROJECT_DIR$/screens/history" />
             <option value="$PROJECT_DIR$/screens/home" />
             <option value="$PROJECT_DIR$/screens/login" />

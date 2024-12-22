@@ -11,7 +11,8 @@ import com.orka.ui.NavItem
 @Composable
 internal fun HomeScreenBottomBar(
     reloadScreen: () -> Unit,
-    navigateToHistory: () -> Unit
+    navigateToHistory: () -> Unit,
+    navigateToBasket: () -> Unit
 ) {
 
     val navItems = listOf(
@@ -19,14 +20,21 @@ internal fun HomeScreenBottomBar(
             name = stringResource(id = Strings.home),
             selected = true,
             description = stringResource(Strings.home),
-            icon = painterResource(Drawables.home_filled),
+            painter = painterResource(Drawables.home_filled),
             click = reloadScreen
+        ),
+        NavItem(
+            name = stringResource(Strings.basket),
+            selected = false,
+            description = stringResource(Strings.basket),
+            painter = painterResource(Drawables.shopping_cart_outlined),
+            click = navigateToBasket
         ),
         NavItem(
             name = stringResource(Strings.history),
             selected = false,
             description = stringResource(Strings.history),
-            icon = painterResource(Drawables.history),
+            painter = painterResource(Drawables.history),
             click = navigateToHistory
         )
     )

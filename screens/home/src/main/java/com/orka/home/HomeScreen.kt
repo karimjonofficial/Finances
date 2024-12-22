@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel,
-    navigateToHistory: () -> Unit
+    navigateToHistory: () -> Unit,
+    navigateToBasket: () -> Unit
 ) {
     val dialogVisible = rememberSaveable { mutableStateOf(false) }
     val lazyGridState = rememberLazyGridState()
@@ -39,7 +40,8 @@ fun HomeScreen(
                     lazyGridState.animateScrollToItem(0, 0)
                 }
             },
-            navigateToHistory = navigateToHistory
+            navigateToHistory = navigateToHistory,
+            navigateToBasket = navigateToBasket
         ) },
         floatingActionButton = { HomeScreenFloatingActionButton {
             dialogVisible.value = true

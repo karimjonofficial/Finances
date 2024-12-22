@@ -19,14 +19,23 @@ object Strings {
     val app_is_initializing: Int
         get() = R.string.app_is_initializing
 
+    val basket: Int
+        get() = R.string.basket
+
     val cancel: Int
         get() = R.string.cancel
+
+    val clear: Int
+        get() = R.string.clear
 
     val chair: Int
         get() = R.string.chair
 
     val comment: Int
         get() = R.string.comment
+
+    val delete: Int
+        get() = R.string.delete
 
     val description: Int
         get() = R.string.description
@@ -61,6 +70,9 @@ object Strings {
     val name: Int
         get() = R.string.name
 
+    val overall_price: Int
+        get() = R.string.overall_price
+
     val password: Int
         get() = R.string.password
 
@@ -78,6 +90,9 @@ object Strings {
 
     val remember_me: Int
         get() = R.string.remember_me
+
+    val sell: Int
+        get() = R.string.sell
 
     val scan_a_qr_code: Int
         get() = R.string.scan_a_qr_code
@@ -103,11 +118,20 @@ object Strings {
 
 object Drawables {
 
+    val add: Int
+        get() = R.drawable.add
+
     val arrow_down: Int
         get() = R.drawable.arrow_down
 
     val arrow_up: Int
         get() = R.drawable.arrow_up
+
+    val close: Int
+        get() = R.drawable.close
+
+    val delete_outlined: Int
+        get() = R.drawable.delete_outlined
 
     val download: Int
         get() = R.drawable.download
@@ -124,11 +148,32 @@ object Drawables {
     val home_outlined: Int
         get() = R.drawable.home_outlined
 
+    val keyboard_arrow_right: Int
+        get() = R.drawable.keyboard_arrow_right
+
+    val lock: Int
+        get() = R.drawable.lock
+
     val logo: Int
         get() = R.drawable.logo
 
+    val person: Int
+        get() = R.drawable.person
+
     val qr_code_scanner: Int
         get() = R.drawable.qr_code_scanner
+
+    val search: Int
+        get() = R.drawable.search
+
+    val star: Int
+        get() = R.drawable.star
+
+    val shopping_cart_filled: Int
+        get() = R.drawable.shopping_cart_filled
+
+    val shopping_cart_outlined: Int
+        get() = R.drawable.shopping_cart_outlined
 
     val tune: Int
         get() = R.drawable.tune

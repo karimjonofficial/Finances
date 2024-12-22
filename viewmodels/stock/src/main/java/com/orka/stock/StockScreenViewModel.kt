@@ -1,6 +1,8 @@
 package com.orka.stock
 
+import com.orka.basket.BasketItem
 import com.orka.core.BaseViewModelWithFetch
+import com.orka.core.BasketDataSource
 import com.orka.core.HttpService
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
@@ -18,6 +20,7 @@ class StockScreenViewModel(
     private val stockDataSource: StockDataSource,
     private val receiveDataSource: ReceiveDataSource,
     private val productsDataSource: ProductsDataSource,
+    private val basketDataSource: BasketDataSource,
     private val navigate: (Int) -> Unit
 ) : BaseViewModelWithFetch<List<StockItem>>(emptyList(), httpService) {
 
@@ -47,6 +50,10 @@ class StockScreenViewModel(
                 onException = { Log("StockScreenViewModel.Http", it.message ?: "No message") }
             )
         }
+    }
+
+    fun addToBasket(product: Product) {
+        basketDataSource.add(BasketItem(product, 1))
     }
 
     fun select(item: StockItem) {

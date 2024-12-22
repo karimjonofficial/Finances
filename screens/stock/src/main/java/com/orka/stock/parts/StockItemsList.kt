@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.orka.products.Product
 import com.orka.stock.StockItem
 import com.orka.stock.components.StockItemCard
 import com.orka.ui.VerticalSpacer
@@ -16,7 +17,8 @@ import com.orka.ui.VerticalSpacer
 fun StockItemsList(
     modifier: Modifier,
     items: List<StockItem>,
-    select: (StockItem) -> Unit
+    select: (StockItem) -> Unit,
+    addToBasket: (Product) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -30,8 +32,10 @@ fun StockItemsList(
         items(items = items) { item ->
             StockItemCard(
                 modifier = Modifier.size(height = 300.dp, width = 200.dp),
-                stockItem = item
-            ) { select(item) }
+                item = item,
+                click = { select(item) },
+                addClick = { addToBasket(it) }
+            )
         }
     }
 }

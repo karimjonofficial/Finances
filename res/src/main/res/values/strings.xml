@@ -32,4 +32,10 @@
     <string name="warehouse">Ombor</string>
     <string name="history">History</string>
     <string name="chair">Chair</string>
+    <string name="delete">Delete</string>
+    <string name="basket">Basket</string>
+    <string name="sale">Sale</string>
+    <string name="overall_price">Overall price</string>
+    <string name="sell">Sell</string>
+    <string name="clear">Clear</string>
 </resources>

@@ -44,42 +44,41 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
 
-    implementation(project(":viewmodels:core"))
     implementation(project(":unauthorizer"))
     implementation(project(":http:core"))
+    implementation(project(":database"))
 
     implementation(project(":models:info"))
     implementation(project(":models:credentials"))
-    implementation(project(":database"))
-    implementation(project(":datasources:info:core"))
-    implementation(project(":viewmodels:main"))
-
-    implementation(project(":viewmodels:login"))
-    implementation(project(":datasources:credentials:core"))
-    implementation(project(":datasources:credentials:network"))
-
     implementation(project(":models:receive"))
-    implementation(project(":datasources:receive:core"))
-    implementation(project(":datasources:receive:network"))
-
-
     implementation(project(":models:categories"))
-    implementation(project(":datasources:categories:core"))
-    implementation(project(":datasources:categories:network"))
-    implementation(project(":viewmodels:home"))
-
     implementation(project(":models:products"))
-    implementation(project(":datasources:products:core"))
-    implementation(project(":datasources:products:network"))
-    implementation(project(":viewmodels:products"))
-
     implementation(project(":models:stock"))
+    implementation(project(":models:basket"))
+
+    implementation(project(":datasources:info:core"))
+    implementation(project(":datasources:credentials:core"))
+    implementation(project(":datasources:receive:core"))
+    implementation(project(":datasources:categories:core"))
+    implementation(project(":datasources:products:core"))
     implementation(project(":datasources:stock:core"))
+    implementation(project(":datasources:basket:core"))
+
+    implementation(project(":datasources:credentials:network"))
+    implementation(project(":datasources:receive:network"))
+    implementation(project(":datasources:categories:network"))
+    implementation(project(":datasources:products:network"))
     implementation(project(":datasources:stock:network"))
+    implementation(project(":datasources:basket:local"))
+
+    implementation(project(":viewmodels:core"))
+    implementation(project(":viewmodels:main"))
+    implementation(project(":viewmodels:login"))
+    implementation(project(":viewmodels:home"))
+    implementation(project(":viewmodels:products"))
     implementation(project(":viewmodels:stock"))
-
-
     implementation(project(":viewmodels:history"))
+    implementation(project(":viewmodels:basket"))
 
     testImplementation(libs.junit)
 

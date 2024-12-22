@@ -2,13 +2,16 @@ package com.orka.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
-    protected fun launch(f: suspend () -> Unit) {
-        viewModelScope.launch { f() }
+    protected fun launch(context: CoroutineContext = EmptyCoroutineContext, f: suspend () -> Unit) {
+        viewModelScope.launch(context = context) { f() }
     }
 }
 
@@ -32,11 +35,11 @@ abstract class BaseViewModelWithInvoke<T>(
         request: suspend () -> Unit,
         onException: (Exception) -> Unit
     ) {
-        launch { httpService.invoke(request, onException) }
+        launch(context = Dispatchers.IO) { httpService.invoke(request, onException) }
     }
 
     protected fun invoke(request: suspend () -> Unit) {
-        launch { httpService.invoke { request() } }
+        launch(context = Dispatchers.IO) { httpService.invoke { request() } }
     }
 }
 

@@ -21,19 +21,19 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: HistoryScreenViewModel,
     navigateToHome: () -> Unit,
+    navigateToBasket: () -> Unit,
     formatCurrency: (Double) -> String
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val lazyListState = rememberLazyListState()
-    val uiState = viewModel.uiState.collectAsState()
-    viewModel.fetch()
 
     AppScaffold(
         topBar = { HistoryScreenTopBar(scrollBehavior = scrollBehavior) },
         bottomBar = {
             HistoryScreenBottomBar(
                 navigateToHome = navigateToHome,
+                navigateToBasket = navigateToBasket,
                 reloadScreen = {
                     viewModel.fetch()
                     coroutineScope.launch {
@@ -44,6 +44,9 @@ fun HistoryScreen(
         },
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
+
+        viewModel.fetch()
+        val uiState = viewModel.uiState.collectAsState()
 
         HistoryScreenContent(
             modifier = Modifier.padding(innerPadding),

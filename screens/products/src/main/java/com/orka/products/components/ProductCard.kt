@@ -1,14 +1,14 @@
 package com.orka.products.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import com.orka.products.Product
+import com.orka.res.Drawables
 
 @Composable
 internal fun ProductCard(
@@ -23,7 +23,7 @@ internal fun ProductCard(
         overlineContent = { Text(product.name) },
         trailingContent = {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                painter = painterResource(Drawables.keyboard_arrow_right),
                 contentDescription = ""
             )
         },

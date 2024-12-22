@@ -38,16 +38,21 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.squareup.retrofit)
+
     implementation(project(":lib"))
     implementation(project(":lib:log"))
     implementation(project(":http:core"))
     implementation(project(":viewmodels:core"))
+
     implementation(project(":datasources:receive:core"))
-    implementation(project(":models:receive"))
     implementation(project(":datasources:stock:core"))
-    implementation(project(":models:stock"))
     implementation(project(":datasources:products:core"))
+    implementation(project(":datasources:basket:core"))
+
+    implementation(project(":models:receive"))
+    implementation(project(":models:stock"))
     implementation(project(":models:products"))
+    implementation(project(":models:basket"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

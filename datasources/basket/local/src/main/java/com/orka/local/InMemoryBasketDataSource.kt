@@ -4,7 +4,7 @@ import com.orka.basket.Basket
 import com.orka.basket.BasketItem
 import com.orka.core.BasketDataSource
 
-internal class InMemoryBasketDataSource : BasketDataSource {
+class InMemoryBasketDataSource internal constructor(): BasketDataSource {
 
     private val items: MutableList<BasketItem> = emptyList<BasketItem>().toMutableList()
     private var comment: String = ""
@@ -60,11 +60,22 @@ internal class InMemoryBasketDataSource : BasketDataSource {
     override fun get(): Basket {
         return Basket(
             items = this.items.toList(),
+            price = calculate(),
             comment = comment
         )
     }
 
+    private fun calculate(): Double {
+        return items.sumOf { it.product.price * it.amount }
+    }
+
     override fun comment(comment: String) {
         this.comment = comment
+    }
+
+    companion object {
+        fun create(): BasketDataSource {
+            return InMemoryBasketDataSource()
+        }
     }
 }

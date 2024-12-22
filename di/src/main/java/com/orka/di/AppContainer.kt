@@ -2,6 +2,8 @@ package com.orka.di
 
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.orka.basket.BasketScreenViewModel
+import com.orka.core.BasketDataSource
 import com.orka.core.CategoriesDataSource
 import com.orka.core.CredentialsDataSource
 import com.orka.core.HttpService
@@ -14,6 +16,7 @@ import com.orka.credentials.Credential
 import com.orka.database.FinancesDb
 import com.orka.history.HistoryScreenViewModel
 import com.orka.home.HomeScreenViewModel
+import com.orka.local.InMemoryBasketDataSource
 import com.orka.login.LoginScreenViewModel
 import com.orka.main.MainViewModel
 import com.orka.network.RemoteCategoriesDataSource
@@ -42,10 +45,10 @@ class AppContainer(private val context: Context) {
     }
 
     private val httpService: HttpService by lazy { HttpServiceImpl(mainViewModel) }
+    private val basketDataSource: BasketDataSource by lazy { InMemoryBasketDataSource.create() }
+    private val credentialsDataSource: CredentialsDataSource by lazy { RemoteLoginDataSource.create(retrofit) }
+
     val mainViewModel = MainViewModel(userInfoDataSource)
-    private val credentialsDataSource: CredentialsDataSource by lazy {
-        RemoteLoginDataSource.create(retrofit)
-    }
 
     fun loginScreenViewModel(): LoginScreenViewModel {
         return LoginScreenViewModel(
@@ -74,6 +77,7 @@ class AppContainer(private val context: Context) {
             stockDataSource = stockDataSource(credential),
             receiveDataSource = receiveDataSource(credential),
             productsDataSource = productsDataSource(credential),
+            basketDataSource = basketDataSource,
             navigate = navigate
         )
     }
@@ -102,6 +106,14 @@ class AppContainer(private val context: Context) {
         return HistoryScreenViewModel(
             dataSource = receiveDataSource(credential),
             httpService = httpService
+        )
+    }
+
+    fun basketViewModel(): BasketScreenViewModel {
+        return BasketScreenViewModel(
+            basket = basketDataSource.get(),
+            httpService = httpService,
+            basketDataSource = basketDataSource,
         )
     }
 }

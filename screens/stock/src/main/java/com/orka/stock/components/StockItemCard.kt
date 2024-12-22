@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,14 +33,15 @@ import com.orka.ui.VerticalSpacer
 @Composable
 internal fun StockItemCard(
     modifier: Modifier = Modifier,
-    stockItem: StockItem,
-    click: (Int) -> Unit
+    item: StockItem,
+    click: (Int) -> Unit,
+    addClick: (Product) -> Unit
 ) {
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(24.dp))
-            .clickable { click(stockItem.id) }
+            .clickable { click(item.id) }
     ) {
         Box(
             modifier = Modifier
@@ -52,8 +55,19 @@ internal fun StockItemCard(
                 modifier = Modifier.fillMaxSize(),
                 painter = painterResource(Drawables.furniture1),
                 contentScale = ContentScale.Crop,
-                contentDescription = stockItem.product.name,
+                contentDescription = item.product.name,
             )
+
+            IconButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = { addClick(item.product) }
+            ) {
+
+                Icon(
+                    painter = painterResource(Drawables.add),
+                    contentDescription = stringResource(Strings.add)
+                )
+            }
         }
 
         VerticalSpacer(8)
@@ -63,7 +77,7 @@ internal fun StockItemCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Text(
-                    text = stockItem.product.name,
+                    text = item.product.name,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f)
                 )
@@ -75,14 +89,14 @@ internal fun StockItemCard(
                         .padding(2.dp)
                 ) {
                     Text(
-                        text = "${stockItem.amount} left",
+                        text = "${item.amount} left",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
             }
 
             Text(
-                text = "${stringResource(Strings.price)}: ${stockItem.product.price}",
+                text = "${stringResource(Strings.price)}: ${item.product.price}",
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -111,7 +125,8 @@ private fun ProductCardPreview() {
         ) {
             StockItemCard(
                 modifier = Modifier.size(height = 200.dp, width = 180.dp),
-                stockItem = stockItem
+                item = stockItem,
+                click = {}
             ) {}
         }
     }

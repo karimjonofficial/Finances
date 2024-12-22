@@ -54,6 +54,7 @@ class InMemoryBasketDataSourceTest {
 
     @Nested
     inner class BasketItemContext {
+
         private val item = BasketItem(
             product = Product(1, "Product", 1000.0, "", 1),
             amount = 1
@@ -144,6 +145,14 @@ class InMemoryBasketDataSourceTest {
             dataSource.clear()
             assertEquals(emptyList<BasketItem>(), dataSource.get().items)
             assertEquals("", dataSource.get().comment)
+        }
+
+        @Test
+        fun `Calculates overall price`() {
+            dataSource.add(item)
+            assertEquals(item.product.price, dataSource.get().price)
+            dataSource.add(item)
+            assertEquals(item.product.price * 2.0, dataSource.get().price)
         }
     }
 }

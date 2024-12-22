@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -48,7 +45,9 @@ internal fun LoginContent(
         modifier = modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         val uiState = viewModel.uiState.collectAsState()
+
         val username = rememberSaveable { mutableStateOf("") }
         val password = rememberSaveable { mutableStateOf("") }
         val remember = rememberSaveable { mutableStateOf(false) }
@@ -81,7 +80,7 @@ internal fun LoginContent(
             value = username.value,
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Filled.Person,
+                    painter = painterResource(Drawables.person),
                     contentDescription = null
                 )
             },
@@ -101,7 +100,7 @@ internal fun LoginContent(
             value = password.value,
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Filled.Lock,
+                    painter = painterResource(Drawables.lock),
                     contentDescription = null
                 )
             },
