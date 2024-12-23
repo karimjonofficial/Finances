@@ -37,10 +37,13 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
+
+    implementation(libs.kotlinx.datetime)
 
     implementation(project(":lib:ui"))
     implementation(project(":res"))
@@ -50,6 +53,7 @@ dependencies {
     implementation(project(":formatter:core"))
 
     implementation(project(":models:credentials"))
+    implementation(project(":models:products"))
     implementation(project(":models:receive"))
     implementation(project(":models:sale"))
 
