@@ -1,7 +1,7 @@
 package com.orka.network
 
 import com.orka.core.ReceiveDataSource
-import com.orka.core.models.PostRequestModel
+import com.orka.core.models.PostReceiveRequestModel
 import com.orka.credentials.Credential
 import com.orka.receive.Receive
 import retrofit2.Retrofit
@@ -18,7 +18,7 @@ class RemoteReceiveDataSource internal constructor(
         return apiService.get(authorizationHeader)
     }
 
-    override suspend fun add(body: PostRequestModel): Receive? {
+    override suspend fun add(body: PostReceiveRequestModel): Receive? {
         apiService.post(authorizationHeader, body)
         return null
     }

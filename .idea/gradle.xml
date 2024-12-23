@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/datasources/receive/network" />
             <option value="$PROJECT_DIR$/datasources/sale" />
             <option value="$PROJECT_DIR$/datasources/sale/core" />
+            <option value="$PROJECT_DIR$/datasources/sale/network" />
             <option value="$PROJECT_DIR$/datasources/stock" />
             <option value="$PROJECT_DIR$/datasources/stock/core" />
             <option value="$PROJECT_DIR$/datasources/stock/network" />

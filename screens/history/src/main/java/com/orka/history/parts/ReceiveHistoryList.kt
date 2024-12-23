@@ -12,7 +12,7 @@ import com.orka.receive.Receive
 import com.orka.ui.VerticalSpacer
 
 @Composable
-internal fun HistoryList(
+internal fun ReceiveHistoryList(
     modifier: Modifier = Modifier,
     items: List<Receive>,
     state: LazyListState,
@@ -20,6 +20,7 @@ internal fun HistoryList(
 ) {
 
     LazyColumn(modifier = modifier.fillMaxSize(), state = state) {
+
         item { VerticalSpacer(16) }
         items(items) { ReceiveCard(item = it, formatter = formatter) }
     }

@@ -43,11 +43,16 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.android)
     implementation(project(":lib"))
     implementation(project(":lib:log"))
+
     implementation(project(":http:core"))
-    implementation(project(":datasources:basket:core"))
-    implementation(project(":models:basket"))
     implementation(project(":viewmodels:core"))
+
     implementation(project(":models:products"))
+    implementation(project(":models:basket"))
+    implementation(project(":models:sale"))
+
+    implementation(project(":datasources:basket:core"))
+    implementation(project(":datasources:sale:core"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

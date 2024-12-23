@@ -9,6 +9,7 @@ import com.orka.core.HttpService
 import com.orka.core.HttpServiceImpl
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
+import com.orka.core.SaleDataSource
 import com.orka.core.StockDataSource
 import com.orka.core.UserInfoDataSource
 import com.orka.credentials.Credential
@@ -22,6 +23,7 @@ import com.orka.network.RemoteCategoriesDataSource
 import com.orka.network.RemoteLoginDataSource
 import com.orka.network.RemoteProductsDataSource
 import com.orka.network.RemoteReceiveDataSource
+import com.orka.network.RemoteSaleDataSource
 import com.orka.network.RemoteStockDataSource
 import com.orka.products.ProductsScreenViewModel
 import com.orka.stock.StockScreenViewModel
@@ -75,6 +77,10 @@ class SingletonContainer(private val context: Context) {
             RemoteProductsDataSource.create(retrofit, credential)
         }
 
+        private val saleDataSource: SaleDataSource by lazy {
+            RemoteSaleDataSource.create(retrofit, credential)
+        }
+
         val homeScreenViewModel: HomeScreenViewModel by lazy {
             HomeScreenViewModel(
                 dataSource = categoriesDataSource,
@@ -84,14 +90,11 @@ class SingletonContainer(private val context: Context) {
         }
 
         val basketViewModel: BasketScreenViewModel by lazy {
-            BasketScreenViewModel(
-                httpService = httpService,
-                basketDataSource = basketDataSource,
-            )
+            BasketScreenViewModel(httpService, basketDataSource, saleDataSource)
         }
 
         val historyViewModel: HistoryScreenViewModel by lazy {
-            HistoryScreenViewModel(dataSource = receiveDataSource, httpService = httpService)
+            HistoryScreenViewModel(receiveDataSource, saleDataSource, httpService)
         }
 
         inner class TransientContainer internal constructor(

@@ -5,13 +5,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.core.Formatter
 import com.orka.history.parts.HistoryScreenBottomBar
-import com.orka.history.parts.HistoryScreenContent
 import com.orka.history.parts.HistoryScreenTopBar
 import com.orka.ui.AppScaffold
 import kotlinx.coroutines.launch
@@ -25,9 +23,10 @@ fun HistoryScreen(
     navigateToBasket: () -> Unit,
     formatter: Formatter
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val saleListState = rememberLazyListState()
+    val receiveListState = rememberLazyListState()
 
     AppScaffold(
         topBar = { HistoryScreenTopBar(scrollBehavior = scrollBehavior) },
@@ -37,8 +36,11 @@ fun HistoryScreen(
                 navigateToBasket = navigateToBasket,
                 reloadScreen = {
                     viewModel.fetch()
+
                     coroutineScope.launch {
-                        lazyListState.animateScrollToItem(0, 0)
+
+                        receiveListState.animateScrollToItem(0, 0)
+                        saleListState.animateScrollToItem(0, 0)
                     }
                 }
             )
@@ -46,13 +48,11 @@ fun HistoryScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
 
-        viewModel.fetch()
-        val uiState = viewModel.uiState.collectAsState()
-
         HistoryScreenContent(
             modifier = Modifier.padding(innerPadding),
-            items = uiState.value,
-            lazyListState = lazyListState,
+            viewModel = viewModel,
+            receiveListState = receiveListState,
+            saleListState = saleListState,
             formatter = formatter
         )
     }

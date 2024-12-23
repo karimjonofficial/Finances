@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostResponseModel(
+data class PostReceiveResponseModel(
     @SerialName("id") val id: Int,
 
     @SerialName("datetime")

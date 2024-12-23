@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.android)
     implementation(project(":models:credentials"))
     implementation(project(":http:core"))
+    implementation(project(":lib:log"))
 
     testImplementation(libs.junit)
 

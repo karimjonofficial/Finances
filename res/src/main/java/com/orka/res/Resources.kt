@@ -28,6 +28,9 @@ object Strings {
     val clear: Int
         get() = R.string.clear
 
+    val close: Int
+        get() = R.string.close
+
     val chair: Int
         get() = R.string.chair
 
@@ -94,20 +97,29 @@ object Strings {
     val receive_new_products: Int
         get() = R.string.receive_new_products
 
+    val scan_a_qr_code: Int
+        get() = R.string.scan_a_qr_code
+
+    val selling_items: Int
+        get() = R.string.selling_items
+
+    val receive: Int
+        get() = R.string.receive
+
     val remember_me: Int
         get() = R.string.remember_me
 
-    val sell: Int
-        get() = R.string.sell
-
-    val scan_a_qr_code: Int
-        get() = R.string.scan_a_qr_code
+    val sale: Int
+        get() = R.string.sale
 
     val search: Int
         get() = R.string.search
 
     val select_the_product: Int
         get() = R.string.select_the_product
+
+    val sell: Int
+        get() = R.string.sell
 
     val table: Int
         get() = R.string.table

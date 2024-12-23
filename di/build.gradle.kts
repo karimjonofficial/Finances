@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":models:products"))
     implementation(project(":models:stock"))
     implementation(project(":models:basket"))
+    implementation(project(":models:sale"))
 
     implementation(project(":datasources:info:core"))
     implementation(project(":datasources:credentials:core"))
@@ -67,6 +68,7 @@ dependencies {
     implementation(project(":datasources:products:core"))
     implementation(project(":datasources:stock:core"))
     implementation(project(":datasources:basket:core"))
+    implementation(project(":datasources:sale:core"))
 
     implementation(project(":datasources:credentials:network"))
     implementation(project(":datasources:receive:network"))
@@ -74,6 +76,7 @@ dependencies {
     implementation(project(":datasources:products:network"))
     implementation(project(":datasources:stock:network"))
     implementation(project(":datasources:basket:local"))
+    implementation(project(":datasources:sale:network"))
 
     implementation(project(":viewmodels:core"))
     implementation(project(":viewmodels:main"))

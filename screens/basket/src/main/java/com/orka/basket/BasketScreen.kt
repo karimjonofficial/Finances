@@ -8,13 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
-import com.orka.basket.fixtures.BasketDataSourceImpl
-import com.orka.basket.fixtures.HttpServiceImpl
 import com.orka.basket.parts.BasketScreenBottomBar
 import com.orka.basket.parts.BasketScreenTopBar
 import com.orka.core.Formatter
-import com.orka.core.FormatterImpl
 import com.orka.ui.AppScaffold
 import kotlinx.coroutines.launch
 
@@ -55,21 +51,4 @@ fun BasketScreen(
             formatter = formatter
         )
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun BasketScreenPreview() {
-    
-    val dataSource = BasketDataSourceImpl()
-
-    BasketScreen(
-        viewModel = BasketScreenViewModel(
-            httpService = HttpServiceImpl(),
-            basketDataSource = dataSource
-        ),
-        navigateToHome = {},
-        navigateToHistory = {},
-        formatter = FormatterImpl()
-    )
 }

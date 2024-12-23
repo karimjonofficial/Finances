@@ -1,4 +1,4 @@
-package com.orka.warehouse.parts
+package com.orka.warehouse
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api

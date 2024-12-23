@@ -37,12 +37,18 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.android)
+
     implementation(project(":lib"))
     implementation(project(":lib:log"))
+
     implementation(project(":http:core"))
-    implementation(project(":datasources:receive:core"))
-    implementation(project(":models:receive"))
     implementation(project(":viewmodels:core"))
+
+    implementation(project(":datasources:receive:core"))
+    implementation(project(":datasources:sale:core"))
+
+    implementation(project(":models:receive"))
+    implementation(project(":models:sale"))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

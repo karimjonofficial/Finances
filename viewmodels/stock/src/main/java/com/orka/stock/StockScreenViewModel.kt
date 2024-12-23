@@ -7,8 +7,8 @@ import com.orka.core.HttpService
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
 import com.orka.core.StockDataSource
-import com.orka.core.models.PostRequestModel
-import com.orka.core.models.PostRequestModelItem
+import com.orka.core.models.PostReceiveRequestModel
+import com.orka.core.models.PostReceiveRequestModelItem
 import com.orka.log.Log
 import com.orka.products.Product
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,8 +41,8 @@ class StockScreenViewModel(
             invoke(
                 request = {
                     receiveDataSource.add(
-                        PostRequestModel(
-                            items = listOf(PostRequestModelItem(productId, amount)),
+                        PostReceiveRequestModel(
+                            items = listOf(PostReceiveRequestModelItem(productId, amount)),
                             price = price.toString(),
                             comment = comment
                         )

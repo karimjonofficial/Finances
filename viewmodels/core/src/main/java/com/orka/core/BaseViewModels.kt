@@ -2,6 +2,7 @@ package com.orka.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.orka.log.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +23,7 @@ abstract class BaseViewModelWithState<T>(
     val uiState = _uiState.asStateFlow()
 
     protected fun setState(value: T) {
+        Log("${this::class.simpleName}.State", "${value!!::class.simpleName}: $value")
         _uiState.value = value
     }
 }

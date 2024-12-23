@@ -44,12 +44,18 @@ dependencies {
 
     implementation(project(":lib:ui"))
     implementation(project(":res"))
+
     implementation(project(":unauthorizer"))
     implementation(project(":http:core"))
     implementation(project(":formatter:core"))
+
     implementation(project(":models:credentials"))
     implementation(project(":models:receive"))
+    implementation(project(":models:sale"))
+
     implementation(project(":datasources:receive:core"))
+    implementation(project(":datasources:sale:core"))
+
     implementation(project(":viewmodels:core"))
     implementation(project(":viewmodels:history"))
 

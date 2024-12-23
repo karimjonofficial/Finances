@@ -3,12 +3,17 @@ package com.orka.basket
 import com.orka.core.BaseViewModelWithFetch
 import com.orka.core.BasketDataSource
 import com.orka.core.HttpService
+import com.orka.core.SaleDataSource
+import com.orka.core.models.PostSaleRequestModel
+import com.orka.core.models.PostSaleRequestModelItem
 
 class BasketScreenViewModel(
     httpService: HttpService,
     private val basketDataSource: BasketDataSource,
+    private val saleDataSource: SaleDataSource
 ) : BaseViewModelWithFetch<BasketScreenState>(
-    BasketScreenState.Regular(Basket()), httpService
+    initialState = BasketScreenState.Initial,
+    httpService = httpService
 ) {
 
     init {
@@ -16,42 +21,95 @@ class BasketScreenViewModel(
     }
 
     override fun fetch() {
-
-        val basket = basketDataSource.get()
-
-        setState(
-            if (uiState.value is BasketScreenState.Regular)
-                BasketScreenState.Regular(basket)
-            else BasketScreenState.Edit(basket)
-        )
+        uiState.value.let {
+            if (it !is BasketScreenState.Selling) {
+                if (it is BasketScreenState.Ready) {
+                    setState(
+                        if (it is BasketScreenState.Ready.Edit)
+                            BasketScreenState.Ready.Edit(basketDataSource.get())
+                        else BasketScreenState.Ready.Regular(basketDataSource.get())
+                    )
+                } else if (it is BasketScreenState.Initial) {
+                    setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+                }
+            }
+        }
     }
 
     fun clear() {
         basketDataSource.clear()
-        setState(BasketScreenState.Regular(basketDataSource.get()))
+        setState(BasketScreenState.Initial)
+        fetch()
     }
 
     fun increase(productId: Int) {
-        basketDataSource.increase(productId, 1)
-        setState(BasketScreenState.Regular(basketDataSource.get()))
+        if (uiState.value is BasketScreenState.Ready) {
+            basketDataSource.increase(productId, 1)
+            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        }
     }
 
     fun decrease(productId: Int) {
-        basketDataSource.decrease(productId, 1)
-        setState(BasketScreenState.Regular(basketDataSource.get()))
+        if (uiState.value is BasketScreenState.Ready) {
+            basketDataSource.decrease(productId, 1)
+            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        }
     }
 
     fun remove(productId: Int) {
-        basketDataSource.remove(productId)
-        setState(BasketScreenState.Regular(basketDataSource.get()))
+
+        if (uiState.value is BasketScreenState.Ready) {
+            basketDataSource.remove(productId)
+            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        }
     }
 
     fun setPrice(price: Double) {
-        basketDataSource.setPrice(price)
-        setState(BasketScreenState.Regular(basketDataSource.get()))
+
+        if (uiState.value is BasketScreenState.Ready) {
+            basketDataSource.setPrice(price)
+            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        }
     }
 
     fun edit() {
-        setState(BasketScreenState.Edit(uiState.value.basket))
+        uiState.value.let {
+            if (it is BasketScreenState.Ready)
+                setState(BasketScreenState.Ready.Edit(it.basket))
+        }
+    }
+
+    fun stopEditing() {
+        if (uiState.value is BasketScreenState.Ready) {
+            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        }
+    }
+
+    fun sale() {
+        val state = uiState.value
+        state.let {
+            if (it is BasketScreenState.Ready) {
+                setState(BasketScreenState.Selling)
+                invoke {
+                    sale(basketDataSource.get())
+                    clear()
+                }
+            }
+        }
+    }
+
+    private suspend fun sale(basket: Basket) {
+        saleDataSource.add(
+            body = PostSaleRequestModel(
+                items = basket.items.map {
+                    PostSaleRequestModelItem(
+                        amount = it.amount,
+                        productId = it.product.id
+                    )
+                },
+                price = basket.price.toString(),
+                comment = "No comment"
+            )
+        )
     }
 }
