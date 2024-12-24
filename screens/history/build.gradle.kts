@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(project(":lib:ui"))
+    implementation(project(":lib:extensions:string"))
     implementation(project(":res"))
 
     implementation(project(":unauthorizer"))

@@ -33,6 +33,10 @@ class UzFormatter : Formatter {
         return "${decimalFormat.format(value).replace(",", " ")} $currencyName"
     }
 
+    override fun formatCurrency(value: Double): String {
+        return decimalFormat.format(value).replace(",", " ")
+    }
+
     override fun formatTime(datetime: Instant): String {
         return datetime.format(timeFormat)
     }

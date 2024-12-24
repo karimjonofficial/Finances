@@ -9,15 +9,20 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import com.orka.basket.BasketScreenState
 import com.orka.core.Formatter
+import com.orka.log.Log
 import com.orka.res.Drawables
 import com.orka.res.Strings
+import com.orka.string.convertFormattedString
+import com.orka.string.removeSpaces
 import com.orka.ui.HorizontalSpacer
 
 @Composable
@@ -44,7 +49,8 @@ internal fun PriceContent(
             EditPriceContent(
                 price = state.basket.price,
                 setPrice = { setPrice(it) },
-                stopEditing = { stopEditing() }
+                stopEditing = { stopEditing() },
+                formatter = formatter
             )
         }
 
@@ -73,7 +79,11 @@ private fun RegularPriceContent(
 
         HorizontalSpacer(8)
 
-        IconButton(onClick = { if (price > 0.0) { edit() } }) {
+        IconButton(onClick = {
+            if (price > 0.0) {
+                edit()
+            }
+        }) {
 
             Icon(
                 painter = painterResource(Drawables.edit_outlined),
@@ -87,17 +97,44 @@ private fun RegularPriceContent(
 private fun EditPriceContent(
     price: Double,
     setPrice: (Double) -> Unit,
-    stopEditing: () -> Unit
+    stopEditing: () -> Unit,
+    formatter: Formatter
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
-        val text = rememberSaveable {
-            mutableStateOf(price.toString())
+        val text = remember {
+            mutableStateOf(TextFieldValue(
+                text = formatter.formatCurrency(price),
+                selection = TextRange(formatter.formatCurrency(price).length)
+            ))
         }
 
         OutlinedTextField(
             value = text.value,
-            onValueChange = { text.value = it },
+            onValueChange = {
+                if(text.value.text != it.text) {
+
+                    val double = it.text.convertFormattedString()
+
+                    Log("TextFieldValue", "Text: ${it.text}")
+                    Log("Text.removeSpaces()", "Text: ${it.text.removeSpaces()}")
+
+                    if(double != null) {
+                        Log("ConvertFormattedString", "$double")
+                        text.value = TextFieldValue(
+                            text = formatter.formatCurrency(double),
+                            selection = if(it.selection.end == it.text.length)
+                                TextRange(formatter.formatCurrency(double).length)
+                            else it.selection
+                        )
+                    } else {
+                        Log("ConvertFormattedString", "Null")
+                        text.value = it
+                    }
+                } else {
+                    text.value = it
+                }
+            },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number
             ),
@@ -109,8 +146,9 @@ private fun EditPriceContent(
 
         IconButton(
             onClick = {
-                if (text.value.isNotEmpty() && text.value.toDoubleOrNull() != null) {
-                    setPrice(text.value.toDouble())
+                text.value.text.convertFormattedString().let {
+                    if(it != null) setPrice(it)
+                    else Log("ConvertFormattedString", "Null")
                 }
             }
         ) {

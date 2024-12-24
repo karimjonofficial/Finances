@@ -53,8 +53,6 @@ internal fun LoginContent(
         val remember = rememberSaveable { mutableStateOf(false) }
         val passwordVisible = rememberSaveable { mutableStateOf(false) }
 
-        val visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
-
         VerticalSpacer(32)
 
         Icon(
@@ -104,7 +102,8 @@ internal fun LoginContent(
                     contentDescription = null
                 )
             },
-            visualTransformation = visualTransformation,
+            visualTransformation = if (passwordVisible.value) VisualTransformation.None
+            else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(
                     onClick = { passwordVisible.value = !passwordVisible.value }

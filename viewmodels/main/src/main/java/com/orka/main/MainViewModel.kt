@@ -7,6 +7,7 @@ import com.orka.core.UserInfoDataSource
 import com.orka.credentials.Credential
 import com.orka.info.UserInfo
 import com.orka.unauthorizer.Unauthorizer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -43,7 +44,7 @@ class MainViewModel(
     }
 
     override fun get(): Credential? {
-        return runBlocking {
+        return runBlocking(Dispatchers.IO) {
             getUserInfo()?.let {
                 val (_, token, refresh) = it
                 if (token?.isNotBlank() == true)

@@ -36,9 +36,7 @@ fun HistoryScreen(
                 navigateToBasket = navigateToBasket,
                 reloadScreen = {
                     viewModel.fetch()
-
                     coroutineScope.launch {
-
                         receiveListState.animateScrollToItem(0, 0)
                         saleListState.animateScrollToItem(0, 0)
                     }

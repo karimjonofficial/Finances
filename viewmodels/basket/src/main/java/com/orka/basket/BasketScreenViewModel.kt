@@ -6,6 +6,7 @@ import com.orka.core.HttpService
 import com.orka.core.SaleDataSource
 import com.orka.core.models.PostSaleRequestModel
 import com.orka.core.models.PostSaleRequestModelItem
+import com.orka.log.Log
 
 class BasketScreenViewModel(
     httpService: HttpService,
@@ -87,13 +88,19 @@ class BasketScreenViewModel(
 
     fun sale() {
         val state = uiState.value
+
         state.let {
-            if (it is BasketScreenState.Ready) {
+            if (it is BasketScreenState.Ready && it.basket.items.isNotEmpty() && it.basket.price > 0.0) {
                 setState(BasketScreenState.Selling)
-                invoke {
-                    sale(basketDataSource.get())
-                    clear()
-                }
+                invoke(
+                    request = {
+                        sale(basketDataSource.get())
+                        clear()
+                    },
+                    onException = { exception ->
+                        Log("BasketScreenViewModel.Http", exception.message ?: "No message")
+                    }
+                )
             }
         }
     }

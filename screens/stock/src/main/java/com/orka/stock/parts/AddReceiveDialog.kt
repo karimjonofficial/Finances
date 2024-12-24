@@ -109,10 +109,7 @@ fun AddReceiveDialog(
         OutlinedTextField(
             value = comment.value,
             onValueChange = { comment.value = it },
-            label = { Text(stringResource(Strings.comment)) },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            )
+            label = { Text(stringResource(Strings.comment)) }
         )
     }
 }

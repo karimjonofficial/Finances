@@ -8,6 +8,10 @@ class FormatterImpl : Formatter {
         return value.toString()
     }
 
+    override fun formatCurrency(value: Double): String {
+        return value.toString()
+    }
+
     override fun formatTime(datetime: Instant): String {
         return datetime.toString()
     }

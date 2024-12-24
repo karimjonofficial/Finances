@@ -43,6 +43,8 @@
             <option value="$PROJECT_DIR$/http" />
             <option value="$PROJECT_DIR$/http/core" />
             <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib/extensions" />
+            <option value="$PROJECT_DIR$/lib/extensions/string" />
             <option value="$PROJECT_DIR$/lib/log" />
             <option value="$PROJECT_DIR$/lib/tests" />
             <option value="$PROJECT_DIR$/lib/ui" />
