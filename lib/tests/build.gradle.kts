@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.orka.lib"
+    namespace = "com.orka.tests"
     compileSdk = 34
 
     defaultConfig {
@@ -40,17 +40,17 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.squareup.retrofit)
     implementation(libs.coil.network.okhttp)
     implementation(libs.junit)
     implementation(libs.kotlinx.coroutines.test)
     implementation(libs.junit.jupiter)
-    implementation(project(":lib"))
-    implementation(project(":models:credentials"))
-    implementation(project(":models:categories"))
-    implementation(project(":models:products"))
-    implementation(project(":models:stock"))
+
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.category))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.stock))
+    implementation(project(":http:status"))
 
     testImplementation(libs.junit)
 

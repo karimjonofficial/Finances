@@ -17,5 +17,5 @@ kotlin {
 dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
-    implementation(project(":models:products"))
+    implementation(project(Modules.Models.product))
 }

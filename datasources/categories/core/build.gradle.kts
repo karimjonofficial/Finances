@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:categories"))
+    implementation(project(Modules.Models.category))
 }

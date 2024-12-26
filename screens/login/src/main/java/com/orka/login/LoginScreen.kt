@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.orka.login.fixtures.CredentialsManagerImpl
 import com.orka.login.fixtures.HttpServiceImpl
 import com.orka.login.fixtures.InMemoryCredentialsDataSource
-import com.orka.ui.AppScaffold
+import com.orka.components.AppScaffold
 
 @Composable
 fun LoginScreen(

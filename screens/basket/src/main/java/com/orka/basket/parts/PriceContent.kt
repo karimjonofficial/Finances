@@ -13,17 +13,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import com.orka.basket.BasketScreenState
+import com.orka.components.HorizontalSpacer
 import com.orka.core.Formatter
+import com.orka.input.CurrencyVisualTransformation
 import com.orka.log.Log
 import com.orka.res.Drawables
 import com.orka.res.Strings
 import com.orka.string.convertFormattedString
-import com.orka.string.removeSpaces
-import com.orka.ui.HorizontalSpacer
 
 @Composable
 internal fun PriceContent(
@@ -35,7 +33,7 @@ internal fun PriceContent(
 ) {
     when (state) {
 
-        is BasketScreenState.Ready.Regular -> {
+        is BasketScreenState.WithBasket.Regular -> {
 
             RegularPriceContent(
                 formatter = formatter,
@@ -44,7 +42,7 @@ internal fun PriceContent(
             )
         }
 
-        is BasketScreenState.Ready.Edit -> {
+        is BasketScreenState.WithBasket.Edit -> {
 
             EditPriceContent(
                 price = state.basket.price,
@@ -55,7 +53,7 @@ internal fun PriceContent(
         }
 
         BasketScreenState.Initial -> {}
-        BasketScreenState.Selling -> {
+        BasketScreenState.InProcess -> {
             Text(stringResource(Strings.selling_items))
         }
     }
@@ -102,52 +100,25 @@ private fun EditPriceContent(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
-        val text = remember {
-            mutableStateOf(TextFieldValue(
-                text = formatter.formatCurrency(price),
-                selection = TextRange(formatter.formatCurrency(price).length)
-            ))
-        }
+        val text = remember { mutableStateOf(formatter.formatCurrency(price)) }
 
         OutlinedTextField(
             value = text.value,
-            onValueChange = {
-                if(text.value.text != it.text) {
-
-                    val double = it.text.convertFormattedString()
-
-                    Log("TextFieldValue", "Text: ${it.text}")
-                    Log("Text.removeSpaces()", "Text: ${it.text.removeSpaces()}")
-
-                    if(double != null) {
-                        Log("ConvertFormattedString", "$double")
-                        text.value = TextFieldValue(
-                            text = formatter.formatCurrency(double),
-                            selection = if(it.selection.end == it.text.length)
-                                TextRange(formatter.formatCurrency(double).length)
-                            else it.selection
-                        )
-                    } else {
-                        Log("ConvertFormattedString", "Null")
-                        text.value = it
-                    }
-                } else {
-                    text.value = it
-                }
-            },
+            onValueChange = { text.value = it },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number
             ),
             label = { Text(text = stringResource(Strings.overall_price)) },
-            suffix = { Text(text = stringResource(Strings.uzs)) }
+            suffix = { Text(text = stringResource(Strings.uzs)) },
+            visualTransformation = CurrencyVisualTransformation(formatter)
         )
 
         HorizontalSpacer(8)
 
         IconButton(
             onClick = {
-                text.value.text.convertFormattedString().let {
-                    if(it != null) setPrice(it)
+                text.value.convertFormattedString().let {
+                    if (it != null && it > 0.0) setPrice(it)
                     else Log("ConvertFormattedString", "Null")
                 }
             }

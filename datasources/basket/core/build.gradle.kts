@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:basket"))
+    implementation(project(Modules.Models.basket))
 }

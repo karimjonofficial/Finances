@@ -11,10 +11,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.core.Formatter
-import com.orka.products.ProductsContent
 import com.orka.products.ProductsScreenViewModel
 import com.orka.res.Strings
-import com.orka.stock.StockContent
 import com.orka.stock.StockScreenViewModel
 
 @Composable

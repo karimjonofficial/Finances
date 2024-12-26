@@ -42,27 +42,26 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
-
     implementation(libs.kotlinx.datetime)
 
-    implementation(project(":lib:ui"))
-    implementation(project(":lib:extensions:string"))
-    implementation(project(":res"))
 
-    implementation(project(":unauthorizer"))
-    implementation(project(":http:core"))
-    implementation(project(":formatter:core"))
+    implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Lib.Ui.Navigation.items))
+    implementation(project(Modules.Lib.log))
+    implementation(project(Modules.Lib.Extensions.string))
 
-    implementation(project(":models:credentials"))
-    implementation(project(":models:products"))
-    implementation(project(":models:receive"))
-    implementation(project(":models:sale"))
+    implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Formatters.core))
 
-    implementation(project(":datasources:receive:core"))
-    implementation(project(":datasources:sale:core"))
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
 
-    implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:history"))
+    implementation(project(Modules.Models.receive))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.sale))
+
+    implementation(project(Modules.ViewModels.history))
 
     testImplementation(libs.junit)
     

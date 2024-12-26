@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
@@ -11,6 +22,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/datasources" />
             <option value="$PROJECT_DIR$/datasources/basket" />
@@ -41,13 +53,19 @@
             <option value="$PROJECT_DIR$/formatter/core" />
             <option value="$PROJECT_DIR$/formatter/uz" />
             <option value="$PROJECT_DIR$/http" />
-            <option value="$PROJECT_DIR$/http/core" />
+            <option value="$PROJECT_DIR$/http/service" />
+            <option value="$PROJECT_DIR$/http/service/core" />
+            <option value="$PROJECT_DIR$/http/status" />
             <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/lib/extensions" />
             <option value="$PROJECT_DIR$/lib/extensions/string" />
             <option value="$PROJECT_DIR$/lib/log" />
             <option value="$PROJECT_DIR$/lib/tests" />
             <option value="$PROJECT_DIR$/lib/ui" />
+            <option value="$PROJECT_DIR$/lib/ui/components" />
+            <option value="$PROJECT_DIR$/lib/ui/input" />
+            <option value="$PROJECT_DIR$/lib/ui/navigation" />
+            <option value="$PROJECT_DIR$/lib/ui/navigation/items" />
             <option value="$PROJECT_DIR$/models" />
             <option value="$PROJECT_DIR$/models/basket" />
             <option value="$PROJECT_DIR$/models/categories" />
@@ -63,8 +81,6 @@
             <option value="$PROJECT_DIR$/screens/history" />
             <option value="$PROJECT_DIR$/screens/home" />
             <option value="$PROJECT_DIR$/screens/login" />
-            <option value="$PROJECT_DIR$/screens/products" />
-            <option value="$PROJECT_DIR$/screens/stock" />
             <option value="$PROJECT_DIR$/screens/warehouse" />
             <option value="$PROJECT_DIR$/unauthorizer" />
             <option value="$PROJECT_DIR$/viewmodels" />

@@ -1,18 +1,18 @@
 package com.orka.home
 
 import com.orka.categories.Category
-import com.orka.core.BaseViewModelWithFetch
 import com.orka.core.CategoriesDataSource
 import com.orka.core.HttpService
+import com.orka.core.ListStateViewModel
 
 class HomeScreenViewModel(
     private val dataSource: CategoriesDataSource,
     httpService: HttpService,
     private val navigate: (Int) -> Unit,
-) : BaseViewModelWithFetch<List<Category>>(emptyList(), httpService) {
+) : ListStateViewModel<Category>(httpService) {
 
-    override fun fetch() {
-        invoke { setState(dataSource.get() ?: emptyList()) }
+    fun fetch() {
+        request { setState(dataSource.get() ?: emptyList()) }
     }
 
     fun select(category: Category) {
@@ -21,7 +21,7 @@ class HomeScreenViewModel(
 
     fun addCategory(name: String, description: String) {
         if (name.isNotBlank()) {
-            invoke { if (dataSource.add(name, description) != null) fetch() }
+            request { if (dataSource.add(name, description) != null) fetch() }
         }
     }
 }

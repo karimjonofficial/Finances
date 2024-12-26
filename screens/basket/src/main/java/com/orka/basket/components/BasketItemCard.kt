@@ -32,8 +32,8 @@ import com.orka.core.FormatterImpl
 import com.orka.products.Product
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.HorizontalSpacer
-import com.orka.ui.VerticalSpacer
+import com.orka.components.HorizontalSpacer
+import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun BasketItemCard(

@@ -7,14 +7,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
 import com.orka.history.components.DateHeader
 import com.orka.history.components.SaleCard
 import com.orka.sale.Sale
-import com.orka.ui.VerticalSpacer
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

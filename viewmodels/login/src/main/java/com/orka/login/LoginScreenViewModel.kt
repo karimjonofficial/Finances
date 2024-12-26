@@ -1,16 +1,16 @@
 package com.orka.login
 
-import com.orka.core.BaseViewModelWithInvoke
 import com.orka.core.CredentialsDataSource
 import com.orka.core.CredentialsManager
 import com.orka.core.HttpService
+import com.orka.core.SingleStateViewModel
 import kotlinx.coroutines.delay
 
 class LoginScreenViewModel(
     private val dataSource: CredentialsDataSource,
     private val credentialsManager: CredentialsManager,
     httpService: HttpService
-) : BaseViewModelWithInvoke<LoginScreenState>(LoginScreenState.Initial, httpService) {
+) : SingleStateViewModel<LoginScreenState>(httpService, LoginScreenState.Initial) {
 
     fun login(username: String, password: String) {
         if (username.isNotBlank() && password.isNotBlank()) {
@@ -25,7 +25,7 @@ class LoginScreenViewModel(
     }
 
     private fun authorize(username: String, password: String) {
-        invoke(
+        request(
             request = {
                 val credential = dataSource.get(username, password)
                 if (credential != null) {

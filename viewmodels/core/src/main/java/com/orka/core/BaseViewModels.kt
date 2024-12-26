@@ -5,51 +5,74 @@ import androidx.lifecycle.viewModelScope
 import com.orka.log.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(
+    private val httpService: HttpService
+) : ViewModel() {
+
     protected fun launch(context: CoroutineContext = EmptyCoroutineContext, f: suspend () -> Unit) {
         viewModelScope.launch(context = context) { f() }
     }
-}
 
-abstract class BaseViewModelWithState<T>(
-    initialState: T
-) : BaseViewModel() {
-    private val _uiState: MutableStateFlow<T> = MutableStateFlow(initialState)
-    val uiState = _uiState.asStateFlow()
-
-    protected fun setState(value: T) {
-        Log("${this::class.simpleName}.State", "${value!!::class.simpleName}: $value")
-        _uiState.value = value
-    }
-}
-
-abstract class BaseViewModelWithInvoke<T>(
-    initialState: T,
-    private val httpService: HttpService
-) : BaseViewModelWithState<T>(initialState) {
-
-    protected fun invoke(
-        request: suspend () -> Unit,
-        onException: (Exception) -> Unit
+    protected fun request(
+        onException: (Exception) -> Unit = {},
+        request: suspend () -> Unit
     ) {
         launch(context = Dispatchers.IO) { httpService.invoke(request, onException) }
     }
+}
 
-    protected fun invoke(request: suspend () -> Unit) {
-        launch(context = Dispatchers.IO) { httpService.invoke { request() } }
+abstract class SingleStateViewModel<T>(
+    httpService: HttpService,
+    initialState: T
+) : BaseViewModel(httpService) {
+
+    @Suppress("PropertyName")
+    internal val _uiState: MutableStateFlow<T> = MutableStateFlow(initialState)
+    val uiState = _uiState.asStateFlow()
+
+    protected open fun setState(state: T) {
+        _uiState.value = state
+        Log("${this::class.simpleName}", "State: $state")
     }
 }
 
-abstract class BaseViewModelWithFetch<T>(
-    initialState: T,
+abstract class ListStateViewModel<T>(
     httpService: HttpService
-) : BaseViewModelWithInvoke<T>(initialState, httpService) {
-
-    abstract fun fetch()
+) : SingleStateViewModel<List<T>>(
+    httpService = httpService,
+    initialState = emptyList()
+) {
+    override fun setState(state: List<T>) {
+        _uiState.value = state
+        Log("${this::class.simpleName}", "List size: ${state.size}")
+    }
 }
 
+abstract class DoubleStateViewModel<Primary, Secondary>(
+    httpService: HttpService,
+    initialPrimaryState: Primary,
+    initialSecondaryState: Secondary
+) : BaseViewModel(httpService) {
+
+    private val _primaryState: MutableStateFlow<Primary> = MutableStateFlow(initialPrimaryState)
+    private val _secondaryState: MutableStateFlow<Secondary> = MutableStateFlow(initialSecondaryState)
+
+    fun setPrimaryState(state: Primary) {
+        _primaryState.value = state
+        Log("${this::class.simpleName}", "Primary state: $state")
+    }
+
+    fun setSecondaryState(state: Secondary) {
+        _secondaryState.value = state
+        Log("${this::class.simpleName}", "Secondary state: $state")
+    }
+
+    protected val primaryState: StateFlow<Primary> = _primaryState.asStateFlow()
+    protected val secondaryState: StateFlow<Secondary> = _secondaryState.asStateFlow()
+}

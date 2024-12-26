@@ -42,14 +42,16 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(project(":res"))
-    implementation(project(":http:core"))
-    implementation(project(":lib:ui"))
-    implementation(project(":formatter:core"))
-    implementation(project(":models:credentials"))
-    implementation(project(":datasources:credentials:core"))
-    implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:login"))
+    implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Lib.log))
+    implementation(project(Modules.Http.Service.core))
+
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.DataSources.Credential.core))
+
+    implementation(project(Modules.ViewModels.core))
+    implementation(project(Modules.ViewModels.login))
 
     testImplementation(libs.junit)
 

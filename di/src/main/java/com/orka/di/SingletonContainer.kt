@@ -6,7 +6,6 @@ import com.orka.basket.BasketScreenViewModel
 import com.orka.core.CategoriesDataSource
 import com.orka.core.Formatter
 import com.orka.core.HttpService
-import com.orka.core.HttpServiceImpl
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
 import com.orka.core.SaleDataSource
@@ -20,7 +19,7 @@ import com.orka.local.InMemoryBasketDataSource
 import com.orka.login.LoginScreenViewModel
 import com.orka.main.MainViewModel
 import com.orka.network.RemoteCategoriesDataSource
-import com.orka.network.RemoteLoginDataSource
+import com.orka.network.RemoteCredentialDataSource
 import com.orka.network.RemoteProductsDataSource
 import com.orka.network.RemoteReceiveDataSource
 import com.orka.network.RemoteSaleDataSource
@@ -46,7 +45,7 @@ class SingletonContainer(private val context: Context) {
 
     private val httpService: HttpService by lazy { HttpServiceImpl(mainViewModel) }
     private val basketDataSource by lazy { InMemoryBasketDataSource.create() }
-    private val credentialsDataSource by lazy { RemoteLoginDataSource.create(retrofit) }
+    private val credentialsDataSource by lazy { RemoteCredentialDataSource.create(retrofit) }
 
     val mainViewModel by lazy { MainViewModel(userInfoDataSource) }
 

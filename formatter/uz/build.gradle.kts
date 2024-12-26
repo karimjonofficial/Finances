@@ -15,6 +15,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":formatter:core"))
+    implementation(project(Modules.Formatters.core))
     implementation(libs.kotlinx.datetime)
 }

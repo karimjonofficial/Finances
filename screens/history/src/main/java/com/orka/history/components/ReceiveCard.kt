@@ -19,7 +19,7 @@ import com.orka.core.Formatter
 import com.orka.receive.Receive
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.VerticalSpacer
+import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun ReceiveCard(item: Receive, formatter: Formatter) {

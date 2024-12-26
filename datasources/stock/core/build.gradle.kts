@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:stock"))
+    implementation(project(Modules.Models.stock))
 }

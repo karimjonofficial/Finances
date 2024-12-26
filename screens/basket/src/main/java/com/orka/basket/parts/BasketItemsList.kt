@@ -14,7 +14,7 @@ import com.orka.basket.BasketScreenState
 import com.orka.basket.BasketScreenViewModel
 import com.orka.basket.components.BasketItemCard
 import com.orka.core.Formatter
-import com.orka.ui.VerticalSpacer
+import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun BasketItemsList(
@@ -28,7 +28,7 @@ internal fun BasketItemsList(
 
     when(val state = uiState.value) {
 
-        is BasketScreenState.Ready -> {
+        is BasketScreenState.WithBasket -> {
             LazyColumn(
                 modifier = modifier,
                 contentPadding = PaddingValues(horizontal = 12.dp),
@@ -53,7 +53,7 @@ internal fun BasketItemsList(
         }
 
         BasketScreenState.Initial -> {}
-        BasketScreenState.Selling -> {
+        BasketScreenState.InProcess -> {
             Box(modifier = modifier)
         }
     }

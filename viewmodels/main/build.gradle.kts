@@ -41,16 +41,21 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.android)
-    implementation(project(":datasources:info:core"))
-    implementation(project(":models:info"))
-    implementation(project(":models:credentials"))
-    implementation(project(":viewmodels:core"))
-    implementation(project(":unauthorizer"))
+
+    implementation(project(Modules.unauthorizer))
+
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
+
+    implementation(project(Modules.Models.info))
+    implementation(project(Modules.Models.credential))
+
+    implementation(project(Modules.DataSources.Info.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
+    testImplementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

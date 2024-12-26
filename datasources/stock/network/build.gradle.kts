@@ -38,14 +38,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.squareup.retrofit)
     implementation(libs.coil.network.okhttp)
-    implementation(project(":datasources:stock:core"))
-    implementation(project(":models:stock"))
-    implementation(project(":models:credentials"))
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.stock))
+    implementation(project(Modules.DataSources.Stock.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

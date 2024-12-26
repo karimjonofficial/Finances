@@ -39,22 +39,21 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.android)
     implementation(libs.kotlinx.datetime)
 
-    implementation(project(":lib"))
-    implementation(project(":lib:log"))
+    implementation(project(Modules.Lib.log))
 
-    implementation(project(":http:core"))
-    implementation(project(":viewmodels:core"))
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
 
-    implementation(project(":datasources:receive:core"))
-    implementation(project(":datasources:sale:core"))
+    implementation(project(Modules.Models.receive))
+    implementation(project(Modules.Models.sale))
 
-    implementation(project(":models:receive"))
-    implementation(project(":models:sale"))
+    implementation(project(Modules.DataSources.Receive.core))
+    implementation(project(Modules.DataSources.Sale.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
+    testImplementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

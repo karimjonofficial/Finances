@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.TopBar
+import com.orka.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

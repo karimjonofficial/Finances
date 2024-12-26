@@ -6,8 +6,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.BottomBar
-import com.orka.ui.NavItem
+import com.orka.components.BottomBar
+import com.orka.items.NavItem
 
 @Composable
 internal fun HistoryScreenBottomBar(

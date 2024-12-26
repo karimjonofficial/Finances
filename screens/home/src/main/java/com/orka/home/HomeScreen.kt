@@ -15,7 +15,8 @@ import com.orka.home.parts.AddCategoryDialog
 import com.orka.home.parts.HomeScreenBottomBar
 import com.orka.home.parts.HomeScreenFloatingActionButton
 import com.orka.home.parts.HomeScreenTopBar
-import com.orka.ui.AppScaffold
+import com.orka.components.AppScaffold
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,8 +28,9 @@ fun HomeScreen(
     navigateToBasket: () -> Unit
 ) {
     val dialogVisible = rememberSaveable { mutableStateOf(false) }
+    viewModel.fetch()
     val lazyGridState = rememberLazyGridState()
-    val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope { Dispatchers.Main }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     AppScaffold(

@@ -42,20 +42,24 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
 
-    implementation(project(":lib:ui"))
-    implementation(project(":res"))
-    implementation(project(":formatter:core"))
+    implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Lib.log))
 
-    implementation(project(":screens:products"))
-    implementation(project(":screens:stock"))
+    implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Formatters.core))
 
-    implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:products"))
-    implementation(project(":viewmodels:stock"))
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
 
-    implementation(project(":models:products"))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.stock))
+
+    implementation(project(Modules.ViewModels.products))
+    implementation(project(Modules.ViewModels.stock))
 
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -46,14 +46,8 @@ android {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        resources.excludes.add("META-INF/*")
     }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
 
 dependencies {
@@ -69,46 +63,44 @@ dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
+
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
     implementation(libs.squareup.retrofit)
-    implementation(libs.converter.gson)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
-    implementation(libs.google.gson)
+
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
 
-    implementation(project(":di"))
-    implementation(project(":res"))
-    implementation(project(":unauthorizer"))
-    implementation(project(":lib:ui"))
-    implementation(project(":formatter:core"))
+    implementation(project(Modules.di))
+    implementation(project(Modules.res))
+    implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Formatters.core))
 
-    implementation(project(":models:credentials"))
+    implementation(project(Modules.Models.credential))
 
-    implementation(project(":screens:login"))
-    implementation(project(":screens:home"))
-    implementation(project(":screens:stock"))
-    implementation(project(":screens:products"))
-    implementation(project(":screens:warehouse"))
-    implementation(project(":screens:history"))
-    implementation(project(":screens:basket"))
+    implementation(project(Modules.ViewModels.core))
+    implementation(project(Modules.ViewModels.main))
+    implementation(project(Modules.ViewModels.login))
+    implementation(project(Modules.ViewModels.home))
+    implementation(project(Modules.ViewModels.stock))
+    implementation(project(Modules.ViewModels.products))
+    implementation(project(Modules.ViewModels.history))
+    implementation(project(Modules.ViewModels.basket))
 
-    implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:main"))
-    implementation(project(":viewmodels:login"))
-    implementation(project(":viewmodels:home"))
-    implementation(project(":viewmodels:stock"))
-    implementation(project(":viewmodels:products"))
-    implementation(project(":viewmodels:history"))
-    implementation(project(":viewmodels:basket"))
+    implementation(project(Modules.Screens.login))
+    implementation(project(Modules.Screens.home))
+    implementation(project(Modules.Screens.warehouse))
+    implementation(project(Modules.Screens.history))
+    implementation(project(Modules.Screens.basket))
+
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

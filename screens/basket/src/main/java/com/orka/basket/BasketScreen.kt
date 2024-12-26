@@ -11,7 +11,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.basket.parts.BasketScreenBottomBar
 import com.orka.basket.parts.BasketScreenTopBar
 import com.orka.core.Formatter
-import com.orka.ui.AppScaffold
+import com.orka.components.AppScaffold
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,6 +23,8 @@ fun BasketScreen(
     navigateToHistory: () -> Unit,
     formatter: Formatter
 ) {
+
+    viewModel.fetch()
 
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()

@@ -1,23 +1,26 @@
 package com.orka.main
 
 import androidx.lifecycle.viewModelScope
-import com.orka.core.BaseViewModelWithState
 import com.orka.core.CredentialsManager
+import com.orka.core.SingleStateViewModel
 import com.orka.core.UserInfoDataSource
 import com.orka.credentials.Credential
 import com.orka.info.UserInfo
 import com.orka.unauthorizer.Unauthorizer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MainViewModel(
     private val userInfoDataSource: UserInfoDataSource
-) : BaseViewModelWithState<AuthenticationState>(AuthenticationState.Initial), Unauthorizer,
-    CredentialsManager {
+) : SingleStateViewModel<AuthenticationState>(
+    httpService = NullHttpService,
+    initialState = AuthenticationState.Initial
+), Unauthorizer, CredentialsManager {
 
     fun initUserInfo() {
-        get()?.let { setStateAuthorized(it) } ?: setStateUnauthorized()
+        launch(Dispatchers.IO) {
+            get()?.let { setStateAuthorized(it) } ?: setStateUnauthorized()
+        }
     }
 
     private suspend fun updateUserInfo(it: UserInfo, credential: Credential) {
@@ -27,7 +30,7 @@ class MainViewModel(
     }
 
     override fun unauthorize() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             userInfoDataSource.unauthorize()
             setStateUnauthorized()
         }
@@ -43,32 +46,29 @@ class MainViewModel(
         setState(AuthenticationState.UnAuthorized)
     }
 
-    override fun get(): Credential? {
-        return runBlocking(Dispatchers.IO) {
-            getUserInfo()?.let {
-                val (_, token, refresh) = it
-                if (token?.isNotBlank() == true)
-                    Credential(token, refresh)
-                else null
-            }
+    override suspend fun get(): Credential? {
+        return getUserInfo()?.let {
+            val (_, token, refresh) = it
+            if (token?.isNotBlank() == true)
+                Credential(token, refresh)
+            else null
         }
     }
 
-    override fun set(credential: Credential) {
-        launch {
-            val info = getUserInfo()
-            if (info != null) {
-                updateUserInfo(info, credential)
-            } else {
-                userInfoDataSource.add(
-                    UserInfo(
-                        token = credential.token,
-                        refresh = credential.refresh
-                    )
+    override suspend fun set(credential: Credential) {
+
+        val info = getUserInfo()
+        if (info != null) {
+            updateUserInfo(info, credential)
+        } else {
+            userInfoDataSource.add(
+                UserInfo(
+                    token = credential.token,
+                    refresh = credential.refresh
                 )
-            }
-            setStateAuthorized(credential)
+            )
         }
+        setStateAuthorized(credential)
     }
 }
 

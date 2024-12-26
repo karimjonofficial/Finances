@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.res.Strings
-import com.orka.ui.TopBar
+import com.orka.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

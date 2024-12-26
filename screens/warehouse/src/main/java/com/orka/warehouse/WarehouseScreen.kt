@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.core.Formatter
 import com.orka.products.ProductsScreenViewModel
-import com.orka.products.parts.AddProductDialog
+import com.orka.warehouse.parts.AddProductDialog
 import com.orka.stock.StockScreenViewModel
-import com.orka.stock.parts.AddReceiveDialog
-import com.orka.ui.AppScaffold
+import com.orka.warehouse.parts.AddReceiveDialog
+import com.orka.components.AppScaffold
 import com.orka.warehouse.parts.WarehouseScreenTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +42,7 @@ fun WarehouseScreen(
     ) { innerPadding ->
 
         if (receiveDialogVisible.value) {
-            val state = stockScreenViewModel.dialogState.collectAsState()
+            val state = stockScreenViewModel.productsState.collectAsState()
 
             AddReceiveDialog(
                 dismissRequest = { receiveDialogVisible.value = false },

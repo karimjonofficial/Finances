@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.orka.home.parts.CategoriesList
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.VerticalSpacer
+import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun HomeContent(
@@ -47,8 +47,6 @@ internal fun HomeContent(
         focusManager.clearFocus()
         onDispose { }
     }
-
-    viewModel.fetch()
 
     Column(modifier = modifier) {
 

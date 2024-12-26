@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:info"))
+    implementation(project(Modules.Models.info))
 }

@@ -34,7 +34,7 @@ import com.orka.login.fixtures.HttpServiceImpl
 import com.orka.login.fixtures.InMemoryCredentialsDataSource
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.VerticalSpacer
+import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun LoginContent(

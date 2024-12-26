@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:products"))
+    implementation(project(Modules.Models.product))
 }

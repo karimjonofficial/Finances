@@ -1,9 +1,9 @@
 package com.orka.basket
 
-import com.orka.core.BaseViewModelWithFetch
 import com.orka.core.BasketDataSource
 import com.orka.core.HttpService
 import com.orka.core.SaleDataSource
+import com.orka.core.SingleStateViewModel
 import com.orka.core.models.PostSaleRequestModel
 import com.orka.core.models.PostSaleRequestModelItem
 import com.orka.log.Log
@@ -12,26 +12,24 @@ class BasketScreenViewModel(
     httpService: HttpService,
     private val basketDataSource: BasketDataSource,
     private val saleDataSource: SaleDataSource
-) : BaseViewModelWithFetch<BasketScreenState>(
-    initialState = BasketScreenState.Initial,
-    httpService = httpService
+) : SingleStateViewModel<BasketScreenState>(
+    httpService = httpService,
+    BasketScreenState.Initial
 ) {
 
-    init {
-        fetch()
-    }
+    init { fetch() }
 
-    override fun fetch() {
+    fun fetch() {
         uiState.value.let {
-            if (it !is BasketScreenState.Selling) {
-                if (it is BasketScreenState.Ready) {
+            if (it !is BasketScreenState.InProcess) {
+                if (it is BasketScreenState.WithBasket) {
                     setState(
-                        if (it is BasketScreenState.Ready.Edit)
-                            BasketScreenState.Ready.Edit(basketDataSource.get())
-                        else BasketScreenState.Ready.Regular(basketDataSource.get())
+                        if (it is BasketScreenState.WithBasket.Edit)
+                            BasketScreenState.WithBasket.Edit(basketDataSource.get())
+                        else BasketScreenState.WithBasket.Regular(basketDataSource.get())
                     )
                 } else if (it is BasketScreenState.Initial) {
-                    setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+                    setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
                 }
             }
         }
@@ -44,45 +42,45 @@ class BasketScreenViewModel(
     }
 
     fun increase(productId: Int) {
-        if (uiState.value is BasketScreenState.Ready) {
+        if (uiState.value is BasketScreenState.WithBasket) {
             basketDataSource.increase(productId, 1)
-            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+            setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
         }
     }
 
     fun decrease(productId: Int) {
-        if (uiState.value is BasketScreenState.Ready) {
+        if (uiState.value is BasketScreenState.WithBasket) {
             basketDataSource.decrease(productId, 1)
-            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+            setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
         }
     }
 
     fun remove(productId: Int) {
 
-        if (uiState.value is BasketScreenState.Ready) {
+        if (uiState.value is BasketScreenState.WithBasket) {
             basketDataSource.remove(productId)
-            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+            setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
         }
     }
 
     fun setPrice(price: Double) {
 
-        if (uiState.value is BasketScreenState.Ready) {
+        if (uiState.value is BasketScreenState.WithBasket) {
             basketDataSource.setPrice(price)
-            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+            setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
         }
     }
 
     fun edit() {
         uiState.value.let {
-            if (it is BasketScreenState.Ready)
-                setState(BasketScreenState.Ready.Edit(it.basket))
+            if (it is BasketScreenState.WithBasket)
+                setState(BasketScreenState.WithBasket.Edit(it.basket))
         }
     }
 
     fun stopEditing() {
-        if (uiState.value is BasketScreenState.Ready) {
-            setState(BasketScreenState.Ready.Regular(basketDataSource.get()))
+        if (uiState.value is BasketScreenState.WithBasket) {
+            setState(BasketScreenState.WithBasket.Regular(basketDataSource.get()))
         }
     }
 
@@ -90,9 +88,9 @@ class BasketScreenViewModel(
         val state = uiState.value
 
         state.let {
-            if (it is BasketScreenState.Ready && it.basket.items.isNotEmpty() && it.basket.price > 0.0) {
-                setState(BasketScreenState.Selling)
-                invoke(
+            if (it is BasketScreenState.WithBasket && it.basket.items.isNotEmpty() && it.basket.price > 0.0) {
+                setState(BasketScreenState.InProcess)
+                request(
                     request = {
                         sale(basketDataSource.get())
                         clear()

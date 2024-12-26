@@ -19,9 +19,9 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    implementation(project(":models:basket"))
-    implementation(project(":models:products"))
-    implementation(project(":datasources:basket:core"))
+    implementation(project(Modules.Models.basket))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.DataSources.Basket.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

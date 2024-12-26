@@ -36,14 +36,15 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.squareup.retrofit)
-    implementation(project(":datasources:products:core"))
-    implementation(project(":models:products"))
-    implementation(project(":models:credentials"))
+
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.DataSources.Product.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
+    implementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

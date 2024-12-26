@@ -16,6 +16,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:products"))
     implementation(libs.kotlinx.serialization.json)
+    implementation(project(Modules.Models.product))
 }

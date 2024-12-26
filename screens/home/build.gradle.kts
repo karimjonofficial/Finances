@@ -41,16 +41,23 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(project(":lib:ui"))
-    implementation(project(":res"))
-    implementation(project(":http:core"))
-    implementation(project(":formatter:core"))
-    implementation(project(":unauthorizer"))
-    implementation(project(":models:credentials"))
-    implementation(project(":models:categories"))
-    implementation(project(":datasources:categories:core"))
-    implementation(project(":viewmodels:core"))
-    implementation(project(":viewmodels:home"))
+
+    implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Lib.Ui.Navigation.items))
+    implementation(project(Modules.Lib.log))
+    implementation(project(Modules.Lib.Extensions.string))
+
+    implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Formatters.core))
+
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
+
+    implementation(project(Modules.Models.category))
+    implementation(project(Modules.DataSources.Category.core))
+
+    implementation(project(Modules.ViewModels.home))
 
     testImplementation(libs.junit)
 

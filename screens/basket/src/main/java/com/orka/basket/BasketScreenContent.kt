@@ -32,7 +32,6 @@ internal fun BasketScreenContent(
     formatter: Formatter
 ) {
 
-    viewModel.fetch()
     val uiState = viewModel.uiState.collectAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -66,10 +65,10 @@ internal fun BasketScreenContent(
                     )
                 }
 
-                if(uiState.value !is BasketScreenState.Ready.Edit) {
+                if(uiState.value !is BasketScreenState.WithBasket.Edit) {
                     Button(
                         modifier = Modifier.size(width = 180.dp, height = 58.dp),
-                        enabled = uiState.value is BasketScreenState.Ready,
+                        enabled = uiState.value is BasketScreenState.WithBasket,
                         onClick = { viewModel.sale() },
                         elevation = ButtonDefaults.elevatedButtonElevation()
                     ) {

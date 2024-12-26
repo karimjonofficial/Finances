@@ -27,7 +27,6 @@ internal fun HistoryScreenContent(
     formatter: Formatter
 ) {
     val tabIndex = rememberSaveable { mutableIntStateOf(0) }
-    viewModel.fetch()
 
     Column(modifier = modifier) {
 
@@ -60,7 +59,7 @@ internal fun HistoryScreenContent(
             }
 
             1 -> {
-                val uiState = viewModel.uiState.collectAsState()
+                val uiState = viewModel.receiveUiState.collectAsState()
 
                 ReceiveHistoryList(
                     map = uiState.value,

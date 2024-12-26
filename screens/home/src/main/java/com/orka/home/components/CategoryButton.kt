@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.orka.categories.Category
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.ui.HorizontalSpacer
+import com.orka.components.HorizontalSpacer
 
 @Composable
 fun CategoryButton(

@@ -1,14 +1,13 @@
 package com.orka.history
 
-import com.orka.core.BaseViewModelWithFetch
+import com.orka.core.DoubleStateViewModel
 import com.orka.core.HttpService
 import com.orka.core.ReceiveDataSource
 import com.orka.core.SaleDataSource
 import com.orka.log.Log
 import com.orka.receive.Receive
 import com.orka.sale.Sale
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -17,24 +16,40 @@ class HistoryScreenViewModel(
     private val receiveDataSource: ReceiveDataSource,
     private val saleDataSource: SaleDataSource,
     httpService: HttpService
-) : BaseViewModelWithFetch<Map<LocalDate, List<Receive>>>(emptyMap(), httpService) {
+) : DoubleStateViewModel<Map<LocalDate, List<Receive>>, Map<LocalDate, List<Sale>>>(
+    httpService = httpService,
+    initialPrimaryState = emptyMap(),
+    initialSecondaryState = emptyMap()
+) {
 
-    private val _saleUiState: MutableStateFlow<Map<LocalDate, List<Sale>>> = MutableStateFlow(emptyMap())
-    val saleUiState = _saleUiState.asStateFlow()
+    val receiveUiState = primaryState
+    val saleUiState = secondaryState
 
-    override fun fetch() = invoke(
+    fun fetch() {
+        launch(Dispatchers.Default) {
+            request(
+                request = {
+                    val primary = receiveDataSource.get()?.reversed()?.groupBy {
+                        it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+                    } ?: emptyMap()
 
-        request = {
-            setState(
-                receiveDataSource.get()?.reversed()?.groupBy {
-                    it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                } ?: emptyMap()
+                    setPrimaryState(primary)
+                },
+                onException = { Log("HistoryScreenViewModel.Http", it.message ?: "No message") }
             )
+        }
 
-            _saleUiState.value = saleDataSource.get()?.reversed()?.groupBy {
-                it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
-            } ?: emptyMap()
-        },
-        onException = { Log("HistoryScreenViewModel.Http", it.message ?: "No message") }
-    )
+        launch(Dispatchers.Default) {
+            request(
+                request = {
+                    val state = saleDataSource.get()?.reversed()?.groupBy {
+                        it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+                    } ?: emptyMap()
+
+                    setSecondaryState(state)
+                },
+                onException = { Log("HistoryScreenViewModel.Http", it.message ?: "No message") }
+            )
+        }
+    }
 }

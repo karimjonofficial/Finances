@@ -39,10 +39,11 @@ dependencies {
     implementation(libs.squareup.retrofit)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
-    implementation(project(":datasources:receive:core"))
-    implementation(project(":models:receive"))
-    implementation(project(":models:credentials"))
-    implementation(project(":models:products"))
+
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.receive))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.DataSources.Receive.core))
 
     testImplementation(libs.junit)
 

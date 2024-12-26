@@ -8,8 +8,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.res.Strings
-import com.orka.ui.Dialog
-import com.orka.ui.VerticalSpacer
+import com.orka.components.Dialog
+import com.orka.components.VerticalSpacer
 
 @Composable
 fun AddCategoryDialog(

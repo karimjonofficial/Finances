@@ -40,11 +40,11 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
 
-    implementation(project(":models:sale"))
-    implementation(project(":models:credentials"))
-    implementation(project(":models:products"))
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.sale))
+    implementation(project(Modules.Models.product))
 
-    implementation(project(":datasources:sale:core"))
+    implementation(project(Modules.DataSources.Sale.core))
 
     testImplementation(libs.junit)
 

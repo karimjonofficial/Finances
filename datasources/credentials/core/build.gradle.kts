@@ -15,5 +15,5 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":models:credentials"))
+    implementation(project(Modules.Models.credential))
 }

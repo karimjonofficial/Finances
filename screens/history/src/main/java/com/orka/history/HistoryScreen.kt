@@ -11,7 +11,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.core.Formatter
 import com.orka.history.parts.HistoryScreenBottomBar
 import com.orka.history.parts.HistoryScreenTopBar
-import com.orka.ui.AppScaffold
+import com.orka.components.AppScaffold
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +25,8 @@ fun HistoryScreen(
     formatter: Formatter
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val coroutineScope = rememberCoroutineScope()
+    viewModel.fetch()
+    val coroutineScope = rememberCoroutineScope { Dispatchers.Main }
     val saleListState = rememberLazyListState()
     val receiveListState = rememberLazyListState()
 

@@ -37,14 +37,14 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.coil.network.okhttp)
     implementation(libs.squareup.retrofit)
-    implementation(project(":datasources:categories:core"))
-    implementation(project(":models:categories"))
-    implementation(project(":models:credentials"))
+    implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.category))
+    implementation(project(Modules.DataSources.Category.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
+    testImplementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

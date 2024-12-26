@@ -38,13 +38,18 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.android)
     implementation(libs.squareup.retrofit)
-    implementation(project(":lib:log"))
-    implementation(project(":viewmodels:core"))
-    implementation(project(":http:core"))
-    implementation(project(":datasources:products:core"))
-    implementation(project(":models:products"))
+
+    implementation(project(Modules.Lib.log))
+
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
+
+
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.DataSources.Product.core))
 
     testImplementation(libs.junit)
+    testImplementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

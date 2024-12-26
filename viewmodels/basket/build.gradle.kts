@@ -41,24 +41,23 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.android)
-    implementation(project(":lib"))
-    implementation(project(":lib:log"))
 
-    implementation(project(":http:core"))
-    implementation(project(":viewmodels:core"))
+    implementation(project(Modules.Lib.log))
 
-    implementation(project(":models:products"))
-    implementation(project(":models:basket"))
-    implementation(project(":models:sale"))
+    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.ViewModels.core))
 
-    implementation(project(":datasources:basket:core"))
-    implementation(project(":datasources:sale:core"))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.basket))
+    implementation(project(Modules.Models.sale))
+
+    implementation(project(Modules.DataSources.Basket.core))
+    implementation(project(Modules.DataSources.Sale.core))
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
-    testImplementation(project(":lib:tests"))
-    testImplementation(project(":models:products"))
+    testImplementation(project(Modules.Lib.tests))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
