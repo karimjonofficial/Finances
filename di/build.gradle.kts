@@ -80,7 +80,6 @@ dependencies {
     implementation(project(Modules.DataSources.Sale.network))
 
     implementation(project(Modules.ViewModels.core))
-    implementation(project(Modules.ViewModels.main))
     implementation(project(Modules.ViewModels.login))
     implementation(project(Modules.ViewModels.home))
     implementation(project(Modules.ViewModels.products))

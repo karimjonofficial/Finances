@@ -29,8 +29,8 @@ class StockScreenViewModel(
     val productsState = secondaryState
 
     fun fetch() = request {
-        setPrimaryState(stockDataSource.get(categoryId) ?: emptyList())
-        setSecondaryState(productsDataSource.get(categoryId) ?: emptyList())
+        setPrimaryState(stockDataSource.get(categoryId)?.sortedBy { it.product.name } ?: emptyList())
+        setSecondaryState(productsDataSource.get(categoryId)?.sortedBy { it.name } ?: emptyList())
     }
 
     fun receive(productId: Int, amount: Int, price: Double, comment: String) {

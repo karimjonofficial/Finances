@@ -26,7 +26,6 @@
     <string name="enter">Enter</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="scan_a_qr_code">Scan a Qr code</string>
-    <string name="app_is_initializing">App is initializing</string>
     <string name="uzs">so\'m</string>
     <string name="comment">Izoh</string>
     <string name="warehouse">Ombor</string>
@@ -43,4 +42,6 @@
     <string name="close">Close</string>
     <string name="receive">Receive</string>
     <string name="selling_items">Sotilmoqda</string>
+    <string name="loading_data">Loading data...</string>
+    <string name="app_is_initializing">App is initializing...</string>
 </resources>

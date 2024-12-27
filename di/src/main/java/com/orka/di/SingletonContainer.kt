@@ -1,23 +1,20 @@
 package com.orka.di
 
-import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.orka.basket.BasketScreenViewModel
 import com.orka.core.CategoriesDataSource
+import com.orka.core.CredentialsManager
 import com.orka.core.Formatter
 import com.orka.core.HttpService
 import com.orka.core.ProductsDataSource
 import com.orka.core.ReceiveDataSource
 import com.orka.core.SaleDataSource
 import com.orka.core.StockDataSource
-import com.orka.core.UserInfoDataSource
 import com.orka.credentials.Credential
-import com.orka.database.FinancesDb
 import com.orka.history.HistoryScreenViewModel
 import com.orka.home.HomeScreenViewModel
 import com.orka.local.InMemoryBasketDataSource
 import com.orka.login.LoginScreenViewModel
-import com.orka.main.MainViewModel
 import com.orka.network.RemoteCategoriesDataSource
 import com.orka.network.RemoteCredentialDataSource
 import com.orka.network.RemoteProductsDataSource
@@ -26,12 +23,16 @@ import com.orka.network.RemoteSaleDataSource
 import com.orka.network.RemoteStockDataSource
 import com.orka.products.ProductsScreenViewModel
 import com.orka.stock.StockScreenViewModel
+import com.orka.unauthorizer.Unauthorizer
 import com.orka.uz.UzFormatter
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-class SingletonContainer(private val context: Context) {
+class SingletonContainer(
+    private val unauthorizer: Unauthorizer,
+    private val credentialsManager: CredentialsManager
+) {
 
     private val baseUrl = "http://45.90.216.251:7000/api/"
 
@@ -39,18 +40,12 @@ class SingletonContainer(private val context: Context) {
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl).build()
 
-    private val userInfoDataSource: UserInfoDataSource by lazy {
-        UserInfoDataSourceAdapter(FinancesDb.getDatabase(context).userInfoDao())
-    }
-
-    private val httpService: HttpService by lazy { HttpServiceImpl(mainViewModel) }
+    private val httpService: HttpService by lazy { HttpServiceImpl(unauthorizer) }
     private val basketDataSource by lazy { InMemoryBasketDataSource.create() }
     private val credentialsDataSource by lazy { RemoteCredentialDataSource.create(retrofit) }
 
-    val mainViewModel by lazy { MainViewModel(userInfoDataSource) }
-
     val loginScreenViewModel by lazy {
-        LoginScreenViewModel(credentialsDataSource, mainViewModel, httpService)
+        LoginScreenViewModel(credentialsDataSource, credentialsManager, httpService)
     }
 
     val formatter: Formatter by lazy { UzFormatter() }

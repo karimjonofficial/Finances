@@ -15,7 +15,7 @@ abstract class BaseViewModel(
     private val httpService: HttpService
 ) : ViewModel() {
 
-    protected fun launch(context: CoroutineContext = EmptyCoroutineContext, f: suspend () -> Unit) {
+    protected fun launch(context: CoroutineContext = Dispatchers.Default, f: suspend () -> Unit) {
         viewModelScope.launch(context = context) { f() }
     }
 

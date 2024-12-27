@@ -50,7 +50,7 @@ internal fun SaleCard(
                     if (expanded.value) {
                         Column {
                             item.items.forEach {
-                                Text(text = it.product.name)
+                                Text(text = "${it.product.name} ${it.amount} ta")
                                 VerticalSpacer(4)
                             }
                         }

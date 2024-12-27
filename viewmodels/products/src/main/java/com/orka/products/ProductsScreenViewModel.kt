@@ -13,7 +13,7 @@ class ProductsScreenViewModel(
 
     fun fetch() {
         request(
-            request = { setState(dataSource.get(categoryId) ?: emptyList()) },
+            request = { setState(dataSource.get(categoryId)?.sortedBy { it.name } ?: emptyList()) },
             onException = { Log("ProductsScreenViewModel.Http", it.message ?: "Unknown exception") }
         )
     }

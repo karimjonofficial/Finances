@@ -1,8 +1,10 @@
 object Modules {
+    private val containers = ":containers"
     val database = ":database"
     private val datasources = ":datasources"
     val di = ":di"
     private val formatter = ":formatter"
+    private val fsm = ":fsm"
     private val http = ":http"
     private val lib = ":lib"
     private val models = ":models"
@@ -11,6 +13,10 @@ object Modules {
     val unauthorizer = ":unauthorizer"
     private val viewModels = ":viewmodels"
 
+    object Containers {
+        val main = "$containers:main"
+        val core = "$containers${AbstractionType.core}"
+    }
     object DataSources {
 
         object Basket {
@@ -55,6 +61,9 @@ object Modules {
     object Formatters {
         val core = "$formatter${AbstractionType.core}"
         val uz = "$formatter${CountryCodes.uz}"
+    }
+    object Fsm {
+        val main = "$fsm:main"
     }
     object Http {
         private val service = "$http:service"

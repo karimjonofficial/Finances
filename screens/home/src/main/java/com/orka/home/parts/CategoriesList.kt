@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.categories.Category
+import com.orka.components.VerticalSpacer
 import com.orka.home.components.CategoryButton
 import com.orka.res.Strings
 
@@ -36,6 +37,8 @@ internal fun CategoriesList(
         contentPadding = PaddingValues(horizontal = 24.dp),
         columns = GridCells.Fixed(2)
     ) {
+        item { VerticalSpacer(8) }
+        item { VerticalSpacer(8) }
         items(items = categories, key = { it.id }) { it ->
             CategoryButton(category = it, click = { categoryClick(it) })
         }

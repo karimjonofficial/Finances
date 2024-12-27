@@ -25,10 +25,10 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val app = application as FinancesApplication
-            val appContainer = app.container
+            val mainContainer = app.container
 
             FinancesTheme {
-                FinancesScreen(singletonContainer = appContainer)
+                FinancesScreen(viewModel = mainContainer.mainViewModel)
             }
         }
     }

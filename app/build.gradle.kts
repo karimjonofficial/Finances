@@ -75,11 +75,15 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
 
+    implementation(project(Modules.Containers.main))
     implementation(project(Modules.di))
     implementation(project(Modules.res))
-    implementation(project(Modules.unauthorizer))
+
     implementation(project(Modules.Lib.Ui.components))
+
+    implementation(project(Modules.unauthorizer))
     implementation(project(Modules.Formatters.core))
+    implementation(project(Modules.Fsm.main))
 
     implementation(project(Modules.Models.credential))
 

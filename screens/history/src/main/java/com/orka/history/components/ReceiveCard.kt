@@ -45,7 +45,7 @@ internal fun ReceiveCard(item: Receive, formatter: Formatter) {
 
                         Column {
                             item.items.forEach {
-                                Text(text = it.product.name)
+                                Text(text = "${it.product.name} ${it.amount} ta")
                                 VerticalSpacer(4)
                             }
                         }

@@ -23,6 +23,12 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/containers" />
+            <option value="$PROJECT_DIR$/containers/core" />
+            <option value="$PROJECT_DIR$/containers/main" />
+            <option value="$PROJECT_DIR$/containers/scoped" />
+            <option value="$PROJECT_DIR$/containers/singleton" />
+            <option value="$PROJECT_DIR$/containers/transients" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/datasources" />
             <option value="$PROJECT_DIR$/datasources/basket" />
@@ -52,6 +58,8 @@
             <option value="$PROJECT_DIR$/formatter" />
             <option value="$PROJECT_DIR$/formatter/core" />
             <option value="$PROJECT_DIR$/formatter/uz" />
+            <option value="$PROJECT_DIR$/fsm" />
+            <option value="$PROJECT_DIR$/fsm/main" />
             <option value="$PROJECT_DIR$/http" />
             <option value="$PROJECT_DIR$/http/service" />
             <option value="$PROJECT_DIR$/http/service/core" />

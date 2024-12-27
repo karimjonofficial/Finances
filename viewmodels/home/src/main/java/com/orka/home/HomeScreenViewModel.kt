@@ -12,7 +12,7 @@ class HomeScreenViewModel(
 ) : ListStateViewModel<Category>(httpService) {
 
     fun fetch() {
-        request { setState(dataSource.get() ?: emptyList()) }
+        request { setState(dataSource.get()?.sortedBy { it.name } ?: emptyList()) }
     }
 
     fun select(category: Category) {

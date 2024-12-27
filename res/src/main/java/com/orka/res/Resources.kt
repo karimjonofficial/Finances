@@ -19,6 +19,9 @@ object Strings {
     val app_is_initializing: Int
         get() = R.string.app_is_initializing
 
+    val loading_data: Int
+        get() = R.string.loading_data
+
     val basket: Int
         get() = R.string.basket
 
