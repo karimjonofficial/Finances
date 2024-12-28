@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.orka.basket.BasketScreen
-import com.orka.finances.ui.StockItemScreenMock
+import com.orka.finances.ui.ProductScreenMock
 import com.orka.history.HistoryScreen
 import com.orka.home.HomeScreen
 import com.orka.main.MainStates
@@ -68,8 +68,8 @@ internal fun NavigationGraph(
             )
         }
 
-        composable<Navigation.StockItem> {
-            StockItemScreenMock()
+        composable<Navigation.Product> {
+            ProductScreenMock()
         }
     }
 }

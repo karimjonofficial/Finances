@@ -26,7 +26,7 @@ import com.orka.res.Strings
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun StockItemScreenMock() {
+internal fun ProductScreenMock() {
     data class CarouselItem(
         val id: Int,
         @DrawableRes val imgRes: Int,

@@ -42,7 +42,7 @@ fun WarehouseScreen(
     ) { innerPadding ->
 
         if (receiveDialogVisible.value) {
-            val state = stockScreenViewModel.productsState.collectAsState()
+            val state = stockScreenViewModel.dialogState.collectAsState()
 
             AddReceiveDialog(
                 dismissRequest = { receiveDialogVisible.value = false },
@@ -51,7 +51,7 @@ fun WarehouseScreen(
                     receiveDialogVisible.value = false
                     stockScreenViewModel.fetch()
                 },
-                products = state.value
+                state = state.value
             )
         }
 

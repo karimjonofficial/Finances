@@ -92,7 +92,7 @@ class SingletonContainer(
         }
 
         inner class TransientContainer internal constructor(
-            private val navigateToStockItem: (Int) -> Unit
+            private val navigateToProduct: (Int) -> Unit
         ) {
 
             private val stockViewModels = emptyMap<Int, StockScreenViewModel>().toMutableMap()
@@ -105,8 +105,7 @@ class SingletonContainer(
                     stockDataSource = stockDataSource,
                     receiveDataSource = receiveDataSource,
                     productsDataSource = productsDataSource,
-                    basketDataSource = basketDataSource,
-                    navigate = navigateToStockItem
+                    basketDataSource = basketDataSource
                 ).apply { stockViewModels[categoryId] = this }
             }
 
@@ -114,7 +113,8 @@ class SingletonContainer(
                 return productsViewModels[categoryId] ?: ProductsScreenViewModel(
                     dataSource = productsDataSource,
                     categoryId = categoryId,
-                    httpService = httpService
+                    httpService = httpService,
+                    navigate = navigateToProduct
                 ).apply { productsViewModels[categoryId] = this }
             }
         }

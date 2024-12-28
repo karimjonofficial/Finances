@@ -8,6 +8,6 @@ sealed class MainEvent {
     data object UnAuthorize : MainEvent()
     data class InitContainers(
         val navigateToWarehouse: (Int) -> Unit,
-        val navigateToStockItem: (Int) -> Unit
+        val navigateToStockProduct: (Int) -> Unit
     ) : MainEvent()
 }

@@ -15,8 +15,12 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.auto(
-                lightScrim = Color.TRANSPARENT,
-                darkScrim = Color.TRANSPARENT
+                lightScrim = Color.BLACK,
+                darkScrim = Color.WHITE
+            ),
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = Color.WHITE,
+                darkScrim = Color.BLACK
             )
         )
 

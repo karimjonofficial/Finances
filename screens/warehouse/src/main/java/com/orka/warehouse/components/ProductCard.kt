@@ -16,23 +16,24 @@ import com.orka.res.Strings
 @Composable
 internal fun ProductCard(
     modifier: Modifier = Modifier,
-    product: Product,
-    formatter: Formatter
+    item: Product,
+    formatter: Formatter,
+    selectProduct: (Product) -> Unit
 ) {
 
     ListItem(
-        modifier = modifier.clickable { },
+        modifier = modifier.clickable { selectProduct(item) },
         headlineContent = {
-            Text(formatter.formatCurrency(product.price, stringResource(Strings.uzs)))
+            Text(formatter.formatCurrency(item.price, stringResource(Strings.uzs)))
         },
-        overlineContent = { Text(product.name) },
+        overlineContent = { Text(item.name) },
         trailingContent = {
             Icon(
                 painter = painterResource(Drawables.keyboard_arrow_right),
                 contentDescription = ""
             )
         },
-        supportingContent = { Text(product.description) },
-        leadingContent = { Text(product.id.toString()) }
+        supportingContent = { Text(item.description) },
+        leadingContent = { Text(item.id.toString()) }
     )
 }

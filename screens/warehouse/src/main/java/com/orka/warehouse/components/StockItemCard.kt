@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,20 +22,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
 import com.orka.core.FormatterImpl
 import com.orka.products.Product
 import com.orka.res.Drawables
 import com.orka.res.Strings
 import com.orka.stock.StockItem
-import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun StockItemCard(
     modifier: Modifier = Modifier,
     item: StockItem,
     click: (Int) -> Unit,
-    addClick: (Product) -> Unit,
     formatter: Formatter
 ) {
     Column(
@@ -60,17 +57,6 @@ internal fun StockItemCard(
                 contentScale = ContentScale.Crop,
                 contentDescription = item.product.name,
             )
-
-            IconButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                onClick = { addClick(item.product) }
-            ) {
-
-                Icon(
-                    painter = painterResource(Drawables.add),
-                    contentDescription = stringResource(Strings.add)
-                )
-            }
         }
 
         VerticalSpacer(8)
@@ -130,7 +116,6 @@ private fun ProductCardPreview() {
                 modifier = Modifier.size(height = 200.dp, width = 180.dp),
                 item = stockItem,
                 click = {},
-                addClick = {},
                 formatter = FormatterImpl()
             )
         }

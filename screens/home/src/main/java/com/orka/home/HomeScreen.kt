@@ -6,16 +6,17 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.orka.components.AppScaffold
 import com.orka.home.parts.AddCategoryDialog
 import com.orka.home.parts.HomeScreenBottomBar
 import com.orka.home.parts.HomeScreenFloatingActionButton
 import com.orka.home.parts.HomeScreenTopBar
-import com.orka.components.AppScaffold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -27,27 +28,31 @@ fun HomeScreen(
     navigateToHistory: () -> Unit,
     navigateToBasket: () -> Unit
 ) {
+    val uiState = viewModel.uiState.collectAsState()
     val dialogVisible = rememberSaveable { mutableStateOf(false) }
-    viewModel.fetch()
     val lazyGridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope { Dispatchers.Main }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     AppScaffold(
-        topBar = { HomeScreenTopBar(scrollBehavior) {} },
-        bottomBar = { HomeScreenBottomBar(
-            reloadScreen = {
-                viewModel.fetch()
-                coroutineScope.launch {
-                    lazyGridState.animateScrollToItem(0, 0)
-                }
-            },
-            navigateToHistory = navigateToHistory,
-            navigateToBasket = navigateToBasket
-        ) },
-        floatingActionButton = { HomeScreenFloatingActionButton {
-            dialogVisible.value = true
-        } },
+        topBar = { HomeScreenTopBar(scrollBehavior = scrollBehavior) {} },
+        bottomBar = {
+            HomeScreenBottomBar(
+                reloadScreen = {
+                    coroutineScope.launch {
+                        lazyGridState.animateScrollToItem(0, 0)
+                        viewModel.reset()
+                    }
+                },
+                navigateToHistory = navigateToHistory,
+                navigateToBasket = navigateToBasket
+            )
+        },
+        floatingActionButton = {
+            HomeScreenFloatingActionButton {
+                dialogVisible.value = true
+            }
+        },
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
 
@@ -63,10 +68,11 @@ fun HomeScreen(
             )
         }
 
-        HomeContent(
+        HomeScreenContent(
             modifier = Modifier.padding(innerPadding),
             viewModel = viewModel,
-            lazyGridState = lazyGridState
+            lazyGridState = lazyGridState,
+            state = uiState.value
         )
     }
 }

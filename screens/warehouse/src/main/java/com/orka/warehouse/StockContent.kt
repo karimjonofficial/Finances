@@ -3,7 +3,12 @@ package com.orka.warehouse
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import com.orka.components.EmptyScreen
+import com.orka.components.InitialScreen
+import com.orka.components.InitializingScreen
+import com.orka.components.OfflineScreen
 import com.orka.core.Formatter
+import com.orka.stock.StockScreenState
 import com.orka.stock.StockScreenViewModel
 import com.orka.warehouse.parts.StockItemsList
 
@@ -13,14 +18,25 @@ fun StockContent(
     viewModel: StockScreenViewModel,
     formatter: Formatter
 ) {
-
-    viewModel.fetch()
     val uiState = viewModel.stockItemsState.collectAsState()
 
-    StockItemsList(
-        modifier, uiState.value,
-        select =  { viewModel.select(it) },
-        addToBasket = { viewModel.addToBasket(it) },
-        formatter = formatter
-    )
+    when(val state = uiState.value) {
+        StockScreenState.Initial -> {
+            InitialScreen()
+            viewModel.fetch()
+        }
+
+        is StockScreenState.Initialized -> {
+            StockItemsList(
+                modifier = modifier,
+                map = state.stockItemsMap,
+                formatter = formatter,
+                select = { viewModel.select(it) }
+            )
+        }
+
+        StockScreenState.Empty -> { EmptyScreen() }
+        StockScreenState.Initializing -> { InitializingScreen() }
+        StockScreenState.Offline -> { OfflineScreen() }
+    }
 }

@@ -39,7 +39,7 @@ sealed interface MainStates {
                 override fun handle(event: MainEvent, fsm: MainFsm) {
                     if (event == MainEvent.UnAuthorize) fsm.unauthorize(this)
                     else if (event is MainEvent.InitContainers) {
-                        fsm.initContainers(this, event.navigateToWarehouse, event.navigateToStockItem)
+                        fsm.initContainers(this, event.navigateToWarehouse, event.navigateToStockProduct)
                     }
                 }
             }

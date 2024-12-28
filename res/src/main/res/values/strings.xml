@@ -44,4 +44,6 @@
     <string name="selling_items">Sotilmoqda</string>
     <string name="loading_data">Loading data...</string>
     <string name="app_is_initializing">App is initializing...</string>
+    <string name="empty_list">Empty list</string>
+    <string name="initializing">Initializing</string>
 </resources>

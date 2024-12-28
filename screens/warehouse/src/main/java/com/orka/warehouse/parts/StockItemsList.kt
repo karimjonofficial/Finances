@@ -10,16 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
-import com.orka.products.Product
 import com.orka.stock.StockItem
 import com.orka.warehouse.components.StockItemCard
 
 @Composable
 fun StockItemsList(
     modifier: Modifier,
-    items: List<StockItem>,
+    map: Map<Char, List<StockItem>>,
     select: (StockItem) -> Unit,
-    addToBasket: (Product) -> Unit,
     formatter: Formatter
 ) {
 
@@ -32,16 +30,16 @@ fun StockItemsList(
 
         item { VerticalSpacer(16) }
         item { VerticalSpacer(16) }
-        
-        items(items = items) { item ->
 
-            StockItemCard(
-                modifier = Modifier.size(height = 300.dp, width = 200.dp),
-                item = item,
-                click = { select(item) },
-                addClick = { addToBasket(it) },
-                formatter = formatter
-            )
+        map.forEach {
+            items(items = it.value) { item ->
+                StockItemCard(
+                    modifier = Modifier.size(height = 300.dp, width = 200.dp),
+                    item = item,
+                    click = { select(item) },
+                    formatter = formatter
+                )
+            }
         }
     }
 }

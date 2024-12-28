@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Navigation {
     @Serializable data object Home : Navigation()
-    @Serializable data class StockItem(@SerialName("item_id") val itemId: Int) : Navigation()
+    @Serializable data class Product(@SerialName("item_id") val itemId: Int) : Navigation()
     @Serializable data class Warehouse(@SerialName("category_id") val categoryId: Int) : Navigation()
     @Serializable data object History : Navigation()
     @Serializable data object Basket : Navigation()
@@ -17,8 +17,8 @@ fun NavController.navigateToHome() {
     this.navigate(Navigation.Home)
 }
 
-fun NavController.navigateToStockItem(itemId: Int) {
-    this.navigate(Navigation.StockItem(itemId))
+fun NavController.navigateToProduct(itemId: Int) {
+    this.navigate(Navigation.Product(itemId))
 }
 
 fun NavController.navigateToWarehouse(categoryId: Int) {

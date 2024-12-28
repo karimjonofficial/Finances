@@ -1,21 +1,37 @@
 package com.orka.products
 
 import com.orka.core.HttpService
-import com.orka.core.ListStateViewModel
 import com.orka.core.ProductsDataSource
+import com.orka.core.SingleStateViewModel
 import com.orka.log.Log
 
 class ProductsScreenViewModel(
     private val categoryId: Int,
     private val dataSource: ProductsDataSource,
-    httpService: HttpService
-) : ListStateViewModel<Product>(httpService) {
+    httpService: HttpService,
+    private val navigate: (Int) -> Unit
+) : SingleStateViewModel<ProductsScreenState>(httpService, ProductsScreenState.Initial) {
 
     fun fetch() {
-        request(
-            request = { setState(dataSource.get(categoryId)?.sortedBy { it.name } ?: emptyList()) },
-            onException = { Log("ProductsScreenViewModel.Http", it.message ?: "Unknown exception") }
-        )
+        launch {
+            if(uiState.value == ProductsScreenState.Initial)
+                setState(ProductsScreenState.Initializing)
+
+            request(
+                request = {
+                    val result = dataSource.get(categoryId)?.sortedBy { it.name }?.groupBy { it.name[0] }
+                    if(result?.isNotEmpty() == true) {
+                        launch { setState(ProductsScreenState.Initialized(result)) }
+                    } else {
+                        launch { setState(ProductsScreenState.Empty) }
+                    }
+                },
+                onException = {
+                    setState(ProductsScreenState.Offline)
+                    Log("ProductsScreenViewModel.Http", it.message ?: "Unknown exception")
+                }
+            )
+        }
     }
 
     fun add(name: String, price: Double, description: String) {
@@ -30,6 +46,10 @@ class ProductsScreenViewModel(
                 }
             )
         }
+    }
+
+    fun select(product: Product) {
+        navigate(product.id)
     }
 }
 

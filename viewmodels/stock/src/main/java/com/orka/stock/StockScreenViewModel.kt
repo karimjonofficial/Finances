@@ -10,7 +10,6 @@ import com.orka.core.StockDataSource
 import com.orka.core.models.PostReceiveRequestModel
 import com.orka.core.models.PostReceiveRequestModelItem
 import com.orka.log.Log
-import com.orka.products.Product
 
 class StockScreenViewModel(
     private val categoryId: Int,
@@ -18,19 +17,62 @@ class StockScreenViewModel(
     private val stockDataSource: StockDataSource,
     private val receiveDataSource: ReceiveDataSource,
     private val productsDataSource: ProductsDataSource,
-    private val basketDataSource: BasketDataSource,
-    private val navigate: (Int) -> Unit
-) : DoubleStateViewModel<List<StockItem>, List<Product>>(
+    private val basketDataSource: BasketDataSource
+) : DoubleStateViewModel<StockScreenState, DialogState>(
     httpService = httpService,
-    initialPrimaryState = emptyList(),
-    initialSecondaryState = emptyList()
+    initialPrimaryState = StockScreenState.Initial,
+    initialSecondaryState = DialogState.Initial
 ) {
     val stockItemsState = primaryState
-    val productsState = secondaryState
+    val dialogState = secondaryState
 
     fun fetch() = request {
-        setPrimaryState(stockDataSource.get(categoryId)?.sortedBy { it.product.name } ?: emptyList())
-        setSecondaryState(productsDataSource.get(categoryId)?.sortedBy { it.name } ?: emptyList())
+        fetchStockItems()
+        fetchProducts()
+    }
+
+    private fun fetchProducts() {
+        launch {
+            if(secondaryState.value == DialogState.Initial)
+                setSecondaryState(DialogState.Initializing)
+
+            request(
+                request = {
+                    val result = productsDataSource.get(categoryId)?.sortedBy { it.name }
+                    if (result?.isNotEmpty() == true) {
+                        launch { setSecondaryState(DialogState.Initialized(result)) }
+                    } else {
+                        launch { setSecondaryState(DialogState.Empty) }
+                    }
+                },
+                onException = {
+                    setSecondaryState(DialogState.Offline)
+                    Log("ProductsScreenViewModel.Http", it.message ?: "Unknown exception")
+                }
+            )
+        }
+    }
+    private fun fetchStockItems() {
+        launch {
+            if(primaryState.value == StockScreenState.Initial)
+                setPrimaryState(StockScreenState.Initializing)
+
+            request(
+                request = {
+                    val result = stockDataSource.get(categoryId)?.sortedBy { it.product.name }
+                        ?.groupBy { it.product.name[0] }
+                    if (result?.isNotEmpty() == true) {
+                        launch { setPrimaryState(StockScreenState.Initialized(result)) }
+                    } else {
+                        launch { setPrimaryState(StockScreenState.Empty) }
+                    }
+                },
+                onException = {
+                    setPrimaryState(StockScreenState.Offline)
+                    Log("ProductsScreenViewModel.Http", it.message ?: "Unknown exception")
+                }
+            )
+        }
     }
 
     fun receive(productId: Int, amount: Int, price: Double, comment: String) {
@@ -50,12 +92,10 @@ class StockScreenViewModel(
         }
     }
 
-    fun addToBasket(product: Product) {
-        Log("BasketDataSource.${basketDataSource.hashCode()}", "Add")
-        basketDataSource.add(BasketItem(product, 1))
-    }
-
-    fun select(item: StockItem) {
-        navigate(item.id)
+    fun select(stockItem: StockItem) {
+        launch {
+            Log("BasketDataSource.${basketDataSource.hashCode()}", "Add")
+            basketDataSource.add(BasketItem(stockItem.product, 1))
+        }
     }
 }

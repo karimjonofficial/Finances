@@ -13,8 +13,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.core.Formatter
-import com.orka.history.parts.ReceiveHistoryList
-import com.orka.history.parts.SaleHistoryList
+import com.orka.history.parts.ReceiveContent
+import com.orka.history.parts.SaleContent
 import com.orka.res.Strings
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,24 +50,13 @@ internal fun HistoryScreenContent(
 
             0 -> {
                 val uiState = viewModel.saleUiState.collectAsState()
-
-                SaleHistoryList(
-                    map = uiState.value,
-                    state = saleListState,
-                    formatter = formatter
-                )
+                SaleContent(uiState.value, viewModel, saleListState, formatter)
             }
 
             1 -> {
                 val uiState = viewModel.receiveUiState.collectAsState()
-
-                ReceiveHistoryList(
-                    map = uiState.value,
-                    state = receiveListState,
-                    formatter = formatter
-                )
+                ReceiveContent(uiState.value, receiveListState, formatter)
             }
         }
     }
 }
-

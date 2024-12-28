@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel(
     private val httpService: HttpService
@@ -32,26 +31,16 @@ abstract class SingleStateViewModel<T>(
     initialState: T
 ) : BaseViewModel(httpService) {
 
-    @Suppress("PropertyName")
-    internal val _uiState: MutableStateFlow<T> = MutableStateFlow(initialState)
+    private val _uiState: MutableStateFlow<T> = MutableStateFlow(initialState)
     val uiState = _uiState.asStateFlow()
 
     protected open fun setState(state: T) {
         _uiState.value = state
         Log("${this::class.simpleName}", "State: $state")
+        onStateChanged(state)
     }
-}
 
-abstract class ListStateViewModel<T>(
-    httpService: HttpService
-) : SingleStateViewModel<List<T>>(
-    httpService = httpService,
-    initialState = emptyList()
-) {
-    override fun setState(state: List<T>) {
-        _uiState.value = state
-        Log("${this::class.simpleName}", "List size: ${state.size}")
-    }
+    protected open fun onStateChanged(state: T) {}
 }
 
 abstract class DoubleStateViewModel<Primary, Secondary>(

@@ -4,11 +4,6 @@ import com.orka.core.DoubleStateViewModel
 import com.orka.core.HttpService
 import com.orka.core.ReceiveDataSource
 import com.orka.core.SaleDataSource
-import com.orka.log.Log
-import com.orka.receive.Receive
-import com.orka.sale.Sale
-import kotlinx.coroutines.Dispatchers
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -16,40 +11,66 @@ class HistoryScreenViewModel(
     private val receiveDataSource: ReceiveDataSource,
     private val saleDataSource: SaleDataSource,
     httpService: HttpService
-) : DoubleStateViewModel<Map<LocalDate, List<Receive>>, Map<LocalDate, List<Sale>>>(
+) : DoubleStateViewModel<SaleContentState, ReceiveContentState>(
     httpService = httpService,
-    initialPrimaryState = emptyMap(),
-    initialSecondaryState = emptyMap()
+    initialPrimaryState = SaleContentState.Initial,
+    initialSecondaryState = ReceiveContentState.Initial
 ) {
 
-    val receiveUiState = primaryState
-    val saleUiState = secondaryState
+    val saleUiState = primaryState
+    val receiveUiState = secondaryState
 
     fun fetch() {
-        launch(Dispatchers.Default) {
-            request(
-                request = {
-                    val primary = receiveDataSource.get()?.reversed()?.groupBy {
-                        it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                    } ?: emptyMap()
+        fetchSales()
+        fetchReceives()
+    }
 
-                    setPrimaryState(primary)
-                },
-                onException = { Log("HistoryScreenViewModel.Http", it.message ?: "No message") }
-            )
+    private fun fetchSales() {
+        launch {
+            if (primaryState.value == SaleContentState.Initial)
+                setPrimaryState(SaleContentState.Initializing)
+            request {
+                val result = saleDataSource.get()
+                if (result != null) {
+                    if (result.isNotEmpty()) {
+                        launch {
+                            setPrimaryState(SaleContentState.Initialized(result.reversed().groupBy {
+                                it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+                            }))
+                        }
+                    } else {
+                        launch { setPrimaryState(SaleContentState.Empty) }
+                    }
+                } else {
+                    launch { setPrimaryState(SaleContentState.Offline) }
+                }
+            }
         }
+    }
 
-        launch(Dispatchers.Default) {
-            request(
-                request = {
-                    val state = saleDataSource.get()?.reversed()?.groupBy {
-                        it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                    } ?: emptyMap()
-
-                    setSecondaryState(state)
-                },
-                onException = { Log("HistoryScreenViewModel.Http", it.message ?: "No message") }
-            )
+    private fun fetchReceives() {
+        launch {
+            if (secondaryState.value == ReceiveContentState.Initial)
+                setSecondaryState(ReceiveContentState.Initializing)
+            request {
+                val result = receiveDataSource.get()
+                if (result != null) {
+                    if (result.isNotEmpty()) {
+                        launch {
+                            setSecondaryState(
+                                ReceiveContentState.Initialized(
+                                    result.reversed().groupBy {
+                                        it.datetime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+                                    })
+                            )
+                        }
+                    } else {
+                        launch { setSecondaryState(ReceiveContentState.Empty) }
+                    }
+                } else {
+                    launch { setSecondaryState(ReceiveContentState.Offline) }
+                }
+            }
         }
     }
 }

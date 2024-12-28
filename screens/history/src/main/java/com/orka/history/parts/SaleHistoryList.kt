@@ -19,10 +19,10 @@ import kotlinx.datetime.LocalDate
 internal fun SaleHistoryList(
     modifier: Modifier = Modifier,
     map: Map<LocalDate, List<Sale>>,
-    state: LazyListState,
+    lazyListState: LazyListState,
     formatter: Formatter,
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize(), state = state) {
+    LazyColumn(modifier = modifier.fillMaxSize(), state = lazyListState) {
 
         item { VerticalSpacer(16) }
 
