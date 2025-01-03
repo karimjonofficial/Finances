@@ -52,6 +52,7 @@ dependencies {
     implementation(project(Modules.Lib.Extensions.string))
 
     implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Printer.core))
     implementation(project(Modules.Formatters.core))
 
     implementation(project(Modules.Http.Service.core))

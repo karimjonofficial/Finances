@@ -24,7 +24,6 @@ internal fun HomeScreenTopBar(
     scan: () -> Unit,
 ) {
     MediumTopAppBar(
-        collapsedHeight = 50.dp,
         title = { Text("Finances") },
         navigationIcon = {
             Image(

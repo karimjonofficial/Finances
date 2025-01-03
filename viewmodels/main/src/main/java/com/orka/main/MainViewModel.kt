@@ -22,25 +22,19 @@ class MainViewModel(
 
     override fun initialize(state: MainStates.Initial) {
         launch(Dispatchers.IO) {
-            val info = userInfoDataSource.get()
-            if (info != null) {
-                setStateWithSingleton(info)
-            }
+            val credential = get()
+            if (credential != null) setStateWithSingleton(credential)
+            else
+                setState(MainStates.WithSingleton.UnAuthorized(SingletonContainer(this, this)))
         }
     }
 
-    private fun setStateWithSingleton(info: UserInfo) {
+    private fun setStateWithSingleton(credential: Credential) {
         launch {
-            val token = info.token
-            if (token?.isNotEmpty() == true) {
-                val credential = Credential(token, info.refresh)
-                val singleton = SingletonContainer(this, this)
-                setState(
-                    MainStates.WithSingleton.WithCredential.Initializing(credential, singleton)
-                )
-            } else {
-                setState(MainStates.WithSingleton.UnAuthorized(SingletonContainer(this, this)))
-            }
+            val singleton = SingletonContainer(this, this)
+            setState(
+                MainStates.WithSingleton.WithCredential.Initializing(credential, singleton)
+            )
         }
     }
 
@@ -97,8 +91,9 @@ class MainViewModel(
 
     override suspend fun get(): Credential? {
         val info = userInfoDataSource.get()
-        if (info == null) return null
-        else {
+        if (info == null) {
+            return null
+        } else {
             val token = info.token
             return if (token?.isNotEmpty() == true) {
                 Credential(token, info.refresh)
@@ -108,10 +103,14 @@ class MainViewModel(
 
     override suspend fun set(credential: Credential) {
         val info = userInfoDataSource.get()
-        if(info == null) {
-            userInfoDataSource.add(UserInfo(1, credential.token, credential.refresh))
+        if (info == null) {
+            val new = UserInfo(1, credential.token, credential.refresh)
+            launch(Dispatchers.IO) { userInfoDataSource.add(new) }
+            launch { setStateWithSingleton(credential) }
         } else {
-            userInfoDataSource.update(info.copy(token = credential.token, refresh = credential.refresh))
+            val new = info.copy(token = credential.token, refresh = credential.refresh)
+            launch(Dispatchers.IO) { userInfoDataSource.update(new) }
+            launch { setStateWithSingleton(credential) }
         }
     }
 }

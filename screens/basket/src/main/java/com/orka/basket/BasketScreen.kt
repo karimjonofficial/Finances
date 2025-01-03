@@ -12,6 +12,7 @@ import com.orka.basket.parts.BasketScreenBottomBar
 import com.orka.basket.parts.BasketScreenTopBar
 import com.orka.core.Formatter
 import com.orka.components.AppScaffold
+import com.orka.core.Printer
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,7 +22,8 @@ fun BasketScreen(
     viewModel: BasketScreenViewModel,
     navigateToHome: () -> Unit,
     navigateToHistory: () -> Unit,
-    formatter: Formatter
+    formatter: Formatter,
+    printer: Printer
 ) {
 
     viewModel.fetch()
@@ -50,7 +52,8 @@ fun BasketScreen(
             modifier = Modifier.padding(innerPadding),
             viewModel = viewModel,
             lazyListState = lazyListState,
-            formatter = formatter
+            formatter = formatter,
+            printer = printer
         )
     }
 }

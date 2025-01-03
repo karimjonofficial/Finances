@@ -38,9 +38,9 @@ class StockScreenViewModel(
 
             request(
                 request = {
-                    val result = productsDataSource.get(categoryId)?.sortedBy { it.name }
+                    val result = productsDataSource.getAll(categoryId)
                     if (result?.isNotEmpty() == true) {
-                        launch { setSecondaryState(DialogState.Initialized(result)) }
+                        launch { setSecondaryState(DialogState.Initialized(result.sortedBy { it.name })) }
                     } else {
                         launch { setSecondaryState(DialogState.Empty) }
                     }

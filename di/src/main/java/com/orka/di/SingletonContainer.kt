@@ -21,6 +21,7 @@ import com.orka.network.RemoteProductsDataSource
 import com.orka.network.RemoteReceiveDataSource
 import com.orka.network.RemoteSaleDataSource
 import com.orka.network.RemoteStockDataSource
+import com.orka.product.ProductScreenViewModel
 import com.orka.products.ProductsScreenViewModel
 import com.orka.stock.StockScreenViewModel
 import com.orka.unauthorizer.Unauthorizer
@@ -34,7 +35,7 @@ class SingletonContainer(
     private val credentialsManager: CredentialsManager
 ) {
 
-    private val baseUrl = "http://45.90.216.251:7000/api/"
+    private val baseUrl = "http://16.171.10.164/api/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
@@ -97,8 +98,9 @@ class SingletonContainer(
 
             private val stockViewModels = emptyMap<Int, StockScreenViewModel>().toMutableMap()
             private val productsViewModels = emptyMap<Int, ProductsScreenViewModel>().toMutableMap()
+            private val productViewModels = emptyMap<Int, ProductScreenViewModel>().toMutableMap()
 
-            fun stockScreenViewModel(categoryId: Int): StockScreenViewModel {
+            fun stockViewModel(categoryId: Int): StockScreenViewModel {
                 return stockViewModels[categoryId] ?: StockScreenViewModel(
                     categoryId = categoryId,
                     httpService = httpService,
@@ -116,6 +118,14 @@ class SingletonContainer(
                     httpService = httpService,
                     navigate = navigateToProduct
                 ).apply { productsViewModels[categoryId] = this }
+            }
+
+            fun productViewModel(id: Int): ProductScreenViewModel {
+                return productViewModels[id] ?: ProductScreenViewModel(
+                    dataSource = productsDataSource,
+                    productId = id,
+                    httpService = httpService
+                ).apply { productViewModels[id] = this }
             }
         }
 

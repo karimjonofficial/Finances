@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.orka.core.Printer
 import com.orka.finances.ui.navigation.NavigationGraph
 import com.orka.finances.ui.navigation.navigateToProduct
 import com.orka.finances.ui.navigation.navigateToWarehouse
@@ -15,7 +16,8 @@ import com.orka.main.MainViewModel
 @Composable
 fun FinancesScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    printer: Printer
 ) {
     val mainState = viewModel.uiState.collectAsState()
 
@@ -46,7 +48,7 @@ fun FinancesScreen(
                 }
 
                 is MainStates.WithSingleton.WithCredential.WithContainers -> {
-                    NavigationGraph(modifier, state, navController)
+                    NavigationGraph(modifier, state, navController, printer)
                 }
             }
         }

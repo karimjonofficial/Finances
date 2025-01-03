@@ -1,7 +1,6 @@
 package com.orka.warehouse.parts
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -34,7 +33,6 @@ fun StockItemsList(
         map.forEach {
             items(items = it.value) { item ->
                 StockItemCard(
-                    modifier = Modifier.size(height = 300.dp, width = 200.dp),
                     item = item,
                     click = { select(item) },
                     formatter = formatter

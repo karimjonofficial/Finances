@@ -40,7 +40,7 @@ internal fun CategoriesList(
         item { VerticalSpacer(8) }
         item { VerticalSpacer(8) }
         items(items = categories, key = { it.id }) { it ->
-            CategoryButton(category = it, click = { categoryClick(it) })
+            CategoryButton(category = it, select = { categoryClick(it) })
         }
     }
 }

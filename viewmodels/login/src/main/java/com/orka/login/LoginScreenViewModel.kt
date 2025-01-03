@@ -35,8 +35,8 @@ class LoginScreenViewModel(
                     resetStateDelayed()
                 }
             },
-            onException = {
-                setState(LoginScreenState.Failed("Check the internet connection"))
+            onException = { e ->
+                setState(LoginScreenState.Failed(e.message.toString()))
                 launch { resetStateDelayed() }
             }
         )

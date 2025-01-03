@@ -5,63 +5,49 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.orka.core.Formatter
-import com.orka.log.Log
-import com.orka.string.convertFormattedString
 
 class CurrencyVisualTransformation(private val formatter: Formatter) : VisualTransformation {
     private val currencyOffsetMapping = CurrencyOffsetMapping()
+    private val zeroOffsetMapping = ZeroOffsetMapping()
 
     override fun filter(text: AnnotatedString): TransformedText {
-        if (text.text != "") {
+        return if (text.text.isNotBlank()) {
+            filterNotBlankText(text)
+        } else {
+            TransformedText(text, OffsetMapping.Identity)
+        }
+    }
 
-            val double = text.text.convertFormattedString()
+    private fun filterNotBlankText(text: AnnotatedString): TransformedText {
+        val currency = text.text.toDoubleOrNull()
+        return if (currency != null) filterDoubleText(currency)
+        else TransformedText(AnnotatedString(""), OffsetMapping.Identity)
+    }
 
-            if (double != null) {
-
-                if(!(double == 0.0 && text.length > 1)) {
-
-                    return TransformedText(
-                        AnnotatedString(formatter.formatCurrency(double)),
-                        currencyOffsetMapping
-                    )
-                } else {
-
-                    val builder = StringBuilder()
-
-                    text.text.reversed().forEachIndexed { index, char ->
-                        builder.append(char)
-                        if((index + 1) % 3 == 0) { builder.append(" ") }
-                    }
-
-                    val string = builder.toString().reversed()
-                    Log("CurrencyVisualTransformation", "Zeroes.length: ${string.length}")
-                    return TransformedText(AnnotatedString(string), currencyOffsetMapping)
-                }
-            } else {
-                return TransformedText(AnnotatedString("0"), OffsetMapping.Identity)
-            }
-        } else return TransformedText(text, OffsetMapping.Identity)
+    private fun filterDoubleText(
+        currency: Double
+    ): TransformedText {
+        return if(currency == 0.0) TransformedText(AnnotatedString("0"), zeroOffsetMapping)
+        else TransformedText(AnnotatedString(formatter.formatCurrency(currency)), currencyOffsetMapping)
     }
 }
 
 class CurrencyOffsetMapping : OffsetMapping {
     override fun originalToTransformed(offset: Int): Int {
-        Log("CurrencyOffsetMapping.oToT", "Offset: $offset")
-        return (offset + ((offset - 1) / 3)).apply {
-            Log(
-                "CurrencyOffsetMapping.oToT",
-                "Return: $this"
-            )
-        }
+        return (offset + ((offset - 1) / 3))
     }
 
     override fun transformedToOriginal(offset: Int): Int {
-        Log("CurrencyOffsetMapping.tToO", "Offset: $offset")
-        return (offset - ((offset - 1) / 3)).apply {
-            Log(
-                "CurrencyOffsetMapping.tToO",
-                "Return: $this"
-            )
-        }
+        return (offset - ((offset - 1) / 3))
+    }
+}
+
+class ZeroOffsetMapping : OffsetMapping {
+    override fun originalToTransformed(offset: Int): Int {
+        return 1
+    }
+
+    override fun transformedToOriginal(offset: Int): Int {
+        return 1
     }
 }

@@ -15,24 +15,51 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.orka.basket.parts.PriceContent
 import com.orka.basket.parts.BasketItemsList
+import com.orka.basket.parts.SellDialog
 import com.orka.core.Formatter
+import com.orka.core.Printer
 import com.orka.res.Strings
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun BasketScreenContent(
     modifier: Modifier,
     viewModel: BasketScreenViewModel,
     lazyListState: LazyListState,
-    formatter: Formatter
+    formatter: Formatter,
+    printer: Printer
 ) {
 
     val uiState = viewModel.uiState.collectAsState()
+    val dialogVisible = rememberSaveable { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
+
+    if(dialogVisible.value) {
+        if(uiState.value is BasketScreenState.WithBasket.Regular) {
+
+            SellDialog(
+                dismissRequest = { dialogVisible.value = false },
+                basket = (uiState.value as BasketScreenState.WithBasket.Regular).basket,
+                print = {
+                    coroutineScope.launch(Dispatchers.Default) {
+                        printer.print(it.toImageBitmap().asAndroidBitmap())
+                    }
+                },
+                sell = { viewModel.sell() }
+            )
+        }
+    }
 
     Column(modifier = modifier.fillMaxSize()) {
 
@@ -65,11 +92,11 @@ internal fun BasketScreenContent(
                     )
                 }
 
-                if(uiState.value !is BasketScreenState.WithBasket.Edit) {
+                if (uiState.value is BasketScreenState.WithBasket.Regular) {
                     Button(
                         modifier = Modifier.size(width = 180.dp, height = 58.dp),
                         enabled = uiState.value is BasketScreenState.WithBasket,
-                        onClick = { viewModel.sale() },
+                        onClick = { dialogVisible.value = true },
                         elevation = ButtonDefaults.elevatedButtonElevation()
                     ) {
                         Text(text = stringResource(Strings.sell))

@@ -11,10 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.core.Formatter
 import com.orka.products.ProductsScreenViewModel
-import com.orka.warehouse.parts.AddProductDialog
+import com.orka.warehouse.parts.ProductDialog
 import com.orka.stock.StockScreenViewModel
-import com.orka.warehouse.parts.AddReceiveDialog
+import com.orka.warehouse.parts.ReceiveDialog
 import com.orka.components.AppScaffold
+import com.orka.input.CurrencyVisualTransformation
 import com.orka.warehouse.parts.WarehouseScreenTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +30,7 @@ fun WarehouseScreen(
     val receiveDialogVisible = rememberSaveable { mutableStateOf(false) }
     val productsDialogVisible = rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val currencyVisualTransformation = CurrencyVisualTransformation(formatter)
 
     AppScaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -44,25 +46,29 @@ fun WarehouseScreen(
         if (receiveDialogVisible.value) {
             val state = stockScreenViewModel.dialogState.collectAsState()
 
-            AddReceiveDialog(
+            ReceiveDialog(
                 dismissRequest = { receiveDialogVisible.value = false },
                 addReceive = { product, amount, price, comment ->
                     stockScreenViewModel.receive(product.id, amount, price, comment)
-                    receiveDialogVisible.value = false
                     stockScreenViewModel.fetch()
+                    productsScreenViewModel.fetch()
+                    receiveDialogVisible.value = false
                 },
-                state = state.value
+                state = state.value,
+                currencyVisualTransformation = currencyVisualTransformation
             )
         }
 
         if (productsDialogVisible.value) {
-            AddProductDialog(
+            ProductDialog(
                 dismissRequest = { productsDialogVisible.value = false },
-                addClick = { name, price, description ->
+                onSuccess = { name, price, description ->
                     productsScreenViewModel.add(name, price, description)
-                    productsDialogVisible.value = false
                     productsScreenViewModel.fetch()
-                }
+                    stockScreenViewModel.fetch()
+                    productsDialogVisible.value = false
+                },
+                currencyVisualTransformation = currencyVisualTransformation
             )
         }
 

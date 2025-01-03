@@ -24,11 +24,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/containers" />
-            <option value="$PROJECT_DIR$/containers/core" />
             <option value="$PROJECT_DIR$/containers/main" />
-            <option value="$PROJECT_DIR$/containers/scoped" />
-            <option value="$PROJECT_DIR$/containers/singleton" />
-            <option value="$PROJECT_DIR$/containers/transients" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/datasources" />
             <option value="$PROJECT_DIR$/datasources/basket" />
@@ -37,6 +33,8 @@
             <option value="$PROJECT_DIR$/datasources/categories" />
             <option value="$PROJECT_DIR$/datasources/categories/core" />
             <option value="$PROJECT_DIR$/datasources/categories/network" />
+            <option value="$PROJECT_DIR$/datasources/credential" />
+            <option value="$PROJECT_DIR$/datasources/credential/core" />
             <option value="$PROJECT_DIR$/datasources/credentials" />
             <option value="$PROJECT_DIR$/datasources/credentials/core" />
             <option value="$PROJECT_DIR$/datasources/credentials/network" />
@@ -59,6 +57,7 @@
             <option value="$PROJECT_DIR$/formatter/core" />
             <option value="$PROJECT_DIR$/formatter/uz" />
             <option value="$PROJECT_DIR$/fsm" />
+            <option value="$PROJECT_DIR$/fsm/core" />
             <option value="$PROJECT_DIR$/fsm/main" />
             <option value="$PROJECT_DIR$/http" />
             <option value="$PROJECT_DIR$/http/service" />
@@ -83,12 +82,15 @@
             <option value="$PROJECT_DIR$/models/receive" />
             <option value="$PROJECT_DIR$/models/sale" />
             <option value="$PROJECT_DIR$/models/stock" />
+            <option value="$PROJECT_DIR$/printer" />
+            <option value="$PROJECT_DIR$/printer/core" />
             <option value="$PROJECT_DIR$/res" />
             <option value="$PROJECT_DIR$/screens" />
             <option value="$PROJECT_DIR$/screens/basket" />
             <option value="$PROJECT_DIR$/screens/history" />
             <option value="$PROJECT_DIR$/screens/home" />
             <option value="$PROJECT_DIR$/screens/login" />
+            <option value="$PROJECT_DIR$/screens/product" />
             <option value="$PROJECT_DIR$/screens/warehouse" />
             <option value="$PROJECT_DIR$/unauthorizer" />
             <option value="$PROJECT_DIR$/viewmodels" />
@@ -98,6 +100,7 @@
             <option value="$PROJECT_DIR$/viewmodels/home" />
             <option value="$PROJECT_DIR$/viewmodels/login" />
             <option value="$PROJECT_DIR$/viewmodels/main" />
+            <option value="$PROJECT_DIR$/viewmodels/product" />
             <option value="$PROJECT_DIR$/viewmodels/products" />
             <option value="$PROJECT_DIR$/viewmodels/stock" />
           </set>

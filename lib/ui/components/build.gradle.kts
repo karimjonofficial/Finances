@@ -41,7 +41,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Extensions.string))
     implementation(project(Modules.Lib.Ui.Navigation.items))
+    implementation(project(Modules.Lib.Ui.input))
+    implementation(project(Modules.Formatters.core))
 
     testImplementation(libs.junit)
 

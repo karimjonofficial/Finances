@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.categories.Category
@@ -32,12 +33,12 @@ import com.orka.components.HorizontalSpacer
 fun CategoryButton(
     modifier: Modifier = Modifier,
     category: Category,
-    click: (Category) -> Unit
+    select: (Category) -> Unit
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(percent = 50))
-            .clickable { click(category) }
+            .clickable { select(category) }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -64,7 +65,8 @@ fun CategoryButton(
         Text(
             modifier = Modifier.weight(1f),
             text = category.name,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold
         )
 
         HorizontalSpacer(16)
@@ -80,7 +82,7 @@ private fun CategoryButtonPreview() {
         CategoryButton(
             modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
             category = category,
-            click = {}
+            select = {}
         )
     }
 }

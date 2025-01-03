@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.orka.components.AppScaffold
 import com.orka.core.Formatter
 import com.orka.history.parts.HistoryScreenBottomBar
 import com.orka.history.parts.HistoryScreenTopBar
-import com.orka.components.AppScaffold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -43,7 +43,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
 
     implementation(project(Modules.res))
+    implementation(project(Modules.Lib.Extensions.string))
     implementation(project(Modules.Lib.Ui.components))
+    implementation(project(Modules.Lib.Ui.input))
     implementation(project(Modules.Lib.log))
 
     implementation(project(Modules.unauthorizer))

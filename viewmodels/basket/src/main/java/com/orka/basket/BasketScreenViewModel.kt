@@ -84,7 +84,7 @@ class BasketScreenViewModel(
         }
     }
 
-    fun sale() {
+    fun sell() {
         val state = uiState.value
 
         state.let {
@@ -92,7 +92,7 @@ class BasketScreenViewModel(
                 setState(BasketScreenState.InProcess)
                 request(
                     request = {
-                        sale(basketDataSource.get())
+                        sell(basketDataSource.get())
                         clear()
                     },
                     onException = { exception ->
@@ -103,7 +103,7 @@ class BasketScreenViewModel(
         }
     }
 
-    private suspend fun sale(basket: Basket) {
+    private suspend fun sell(basket: Basket) {
         saleDataSource.add(
             body = PostSaleRequestModel(
                 items = basket.items.map {

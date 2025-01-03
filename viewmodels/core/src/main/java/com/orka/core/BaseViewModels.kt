@@ -22,7 +22,7 @@ abstract class BaseViewModel(
         onException: (Exception) -> Unit = {},
         request: suspend () -> Unit
     ) {
-        launch(context = Dispatchers.IO) { httpService.invoke(request, onException) }
+        launch(context = Dispatchers.IO) { httpService.invoke(onException, request) }
     }
 }
 

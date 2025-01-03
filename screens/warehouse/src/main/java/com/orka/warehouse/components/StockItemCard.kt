@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.components.VerticalSpacer
@@ -46,13 +47,12 @@ internal fun StockItemCard(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(24.dp))
-                .weight(1f)
                 .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
 
             Image(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.size(200.dp),
                 painter = painterResource(Drawables.furniture1),
                 contentScale = ContentScale.Crop,
                 contentDescription = item.product.name,
@@ -63,12 +63,13 @@ internal fun StockItemCard(
 
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.Top) {
 
                 Text(
                     text = item.product.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f)
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(1f),
+                    fontWeight = FontWeight.Bold
                 )
 
                 Box(

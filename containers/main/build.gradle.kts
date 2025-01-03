@@ -41,6 +41,8 @@ dependencies {
     implementation(project(Modules.di))
     implementation(project(Modules.database))
     implementation(project(Modules.Models.info))
+    implementation(project(Modules.Printer.core))
+    implementation(project(Modules.Models.credential))
     implementation(project(Modules.DataSources.Info.core))
     implementation(project(Modules.ViewModels.main))
 

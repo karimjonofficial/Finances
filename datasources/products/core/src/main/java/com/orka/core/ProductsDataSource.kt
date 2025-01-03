@@ -3,7 +3,9 @@ package com.orka.core
 import com.orka.products.Product
 
 interface ProductsDataSource {
-    suspend fun get(): List<Product>?
-    suspend fun get(categoryId: Int): List<Product>?
-    suspend fun add(name: String, price: Double, description: String, categoryId: Int): Product?
+    suspend fun getAll(): List<Product>?
+    suspend fun getAll(categoryId: Int): List<Product>?
+    suspend fun get(id: Int): Product
+    suspend fun add(model: AddProductModel): Product?
+    suspend fun update(model: UpdateProductModel): Product?
 }

@@ -4,6 +4,9 @@
     <bytecodeTargetLevel target="11">
       <module name="Finances.android.androidLib" target="21" />
       <module name="Finances.androidLib" target="21" />
+      <module name="Finances.containers.scoped" target="21" />
+      <module name="Finances.containers.singleton" target="21" />
+      <module name="Finances.containers.transients" target="21" />
       <module name="Finances.features.home.data.remote" target="21" />
       <module name="Finances.features.home.presentation.newone" target="21" />
       <module name="Finances.features.products.viewmodels" target="21" />
@@ -16,6 +19,7 @@
       <module name="Finances.lib2.ui.navigation" target="21" />
       <module name="Finances.lib2.ui2" target="21" />
       <module name="Finances.navigation.impl" target="21" />
+      <module name="Finances.previews" target="21" />
       <module name="Finances.screens.products" target="21" />
       <module name="Finances.screens.stock" target="21" />
       <module name="Finances.test" target="21" />

@@ -75,6 +75,8 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.print)
+
     implementation(project(Modules.Containers.main))
     implementation(project(Modules.di))
     implementation(project(Modules.res))
@@ -83,6 +85,7 @@ dependencies {
 
     implementation(project(Modules.unauthorizer))
     implementation(project(Modules.Formatters.core))
+    implementation(project(Modules.Printer.core))
     implementation(project(Modules.Fsm.main))
 
     implementation(project(Modules.Models.credential))
@@ -93,6 +96,7 @@ dependencies {
     implementation(project(Modules.ViewModels.home))
     implementation(project(Modules.ViewModels.stock))
     implementation(project(Modules.ViewModels.products))
+    implementation(project(Modules.ViewModels.product))
     implementation(project(Modules.ViewModels.history))
     implementation(project(Modules.ViewModels.basket))
 
@@ -100,6 +104,7 @@ dependencies {
     implementation(project(Modules.Screens.home))
     implementation(project(Modules.Screens.warehouse))
     implementation(project(Modules.Screens.history))
+    implementation(project(Modules.Screens.product))
     implementation(project(Modules.Screens.basket))
 
 

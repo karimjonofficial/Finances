@@ -26,7 +26,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel,
     navigateToHistory: () -> Unit,
-    navigateToBasket: () -> Unit
+    navigateToBasket: () -> Unit,
+    scan: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val dialogVisible = rememberSaveable { mutableStateOf(false) }
@@ -35,7 +36,7 @@ fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     AppScaffold(
-        topBar = { HomeScreenTopBar(scrollBehavior = scrollBehavior) {} },
+        topBar = { HomeScreenTopBar(scrollBehavior = scrollBehavior) { scan() } },
         bottomBar = {
             HomeScreenBottomBar(
                 reloadScreen = {

@@ -106,6 +106,9 @@ object Strings {
     val receive_new_products: Int
         get() = R.string.receive_new_products
 
+    val save: Int
+        get() = R.string.save
+
     val scan_a_qr_code: Int
         get() = R.string.scan_a_qr_code
 

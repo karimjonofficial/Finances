@@ -1,5 +1,6 @@
 package com.orka.products
 
+import com.orka.core.AddProductModel
 import com.orka.core.HttpService
 import com.orka.core.ProductsDataSource
 import com.orka.core.SingleStateViewModel
@@ -19,7 +20,7 @@ class ProductsScreenViewModel(
 
             request(
                 request = {
-                    val result = dataSource.get(categoryId)?.sortedBy { it.name }?.groupBy { it.name[0] }
+                    val result = dataSource.getAll(categoryId)?.sortedBy { it.name }?.groupBy { it.name[0] }
                     if(result?.isNotEmpty() == true) {
                         launch { setState(ProductsScreenState.Initialized(result)) }
                     } else {
@@ -37,7 +38,7 @@ class ProductsScreenViewModel(
     fun add(name: String, price: Double, description: String) {
         if (name.isNotBlank() && price > 0) {
             request(
-                request = { dataSource.add(name, price, description, categoryId)?.let { fetch() } },
+                request = { dataSource.add(AddProductModel(name, price, description, categoryId))?.let { fetch() } },
                 onException = {
                     Log(
                         "ProductsScreenViewModel.Http",

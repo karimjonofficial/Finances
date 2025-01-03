@@ -8,6 +8,7 @@ object Modules {
     private val http = ":http"
     private val lib = ":lib"
     private val models = ":models"
+    private val printer = ":printer"
     val res = ":res"
     private val screens = ":screens"
     val unauthorizer = ":unauthorizer"
@@ -64,6 +65,7 @@ object Modules {
     }
     object Fsm {
         val main = "$fsm:main"
+        val core = "$fsm${AbstractionType.core}"
     }
     object Http {
         private val service = "$http:service"
@@ -105,14 +107,16 @@ object Modules {
         val sale = "$models${ModelFamilies.sale}"
         val stock = "$models${ModelFamilies.stock}"
     }
+    object Printer {
+        val core = "$printer${AbstractionType.core}"
+    }
     object Screens {
 
         val basket = "$screens${ScreenFamilies.basket}"
         val history = "$screens${ScreenFamilies.history}"
         val home = "$screens${ScreenFamilies.home}"
         val login = "$screens${ScreenFamilies.login}"
-        val products = "$screens${ScreenFamilies.products}"
-        val stock = "$screens${ScreenFamilies.stock}"
+        val product = "$screens${ScreenFamilies.product}"
         val warehouse = "$screens${ScreenFamilies.warehouse}"
     }
     object ViewModels {
@@ -123,6 +127,7 @@ object Modules {
         val home = "$viewModels${ScreenFamilies.home}"
         val login = "$viewModels${ScreenFamilies.login}"
         val main = "$viewModels:main"
+        val product = "$viewModels${ScreenFamilies.product}"
         val products = "$viewModels${ScreenFamilies.products}"
         val stock = "$viewModels${ScreenFamilies.stock}"
     }
@@ -153,6 +158,7 @@ data object ScreenFamilies {
     val history = ":history"
     val home = ":home"
     val login = ":login"
+    val product = ":product"
     val products = ":products"
     val stock = ":stock"
     val warehouse = ":warehouse"

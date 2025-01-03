@@ -46,4 +46,5 @@
     <string name="app_is_initializing">App is initializing...</string>
     <string name="empty_list">Empty list</string>
     <string name="initializing">Initializing</string>
+    <string name="save">Save</string>
 </resources>
