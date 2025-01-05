@@ -42,7 +42,7 @@ dependencies {
 
     implementation(project(Modules.Lib.log))
     implementation(project(Modules.Lib.Extensions.string))
-    implementation(project(Modules.Formatters.core))
+    implementation(project(Modules.Services.Formatter.Currency.core))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -9,16 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
+import com.orka.history.models.SaleModel
 import com.orka.history.components.DateHeader
 import com.orka.history.components.SaleCard
-import com.orka.sale.Sale
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SaleHistoryList(
     modifier: Modifier = Modifier,
-    map: Map<LocalDate, List<Sale>>,
+    map: Map<LocalDate, List<SaleModel>>,
     lazyListState: LazyListState,
     formatter: Formatter,
 ) {

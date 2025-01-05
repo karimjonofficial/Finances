@@ -1,14 +1,14 @@
 package com.orka.login
 
+import com.orka.core.CredentialManager
 import com.orka.core.CredentialsDataSource
-import com.orka.core.CredentialsManager
 import com.orka.core.HttpService
 import com.orka.core.SingleStateViewModel
 import kotlinx.coroutines.delay
 
 class LoginScreenViewModel(
     private val dataSource: CredentialsDataSource,
-    private val credentialsManager: CredentialsManager,
+    private val credentialManager: CredentialManager,
     httpService: HttpService
 ) : SingleStateViewModel<LoginScreenState>(httpService, LoginScreenState.Initial) {
 
@@ -29,7 +29,7 @@ class LoginScreenViewModel(
             request = {
                 val credential = dataSource.get(username, password)
                 if (credential != null) {
-                    credentialsManager.set(credential)
+                    credentialManager.setCredential(credential)
                 } else {
                     setState(LoginScreenState.Failed("No such users found"))
                     resetStateDelayed()

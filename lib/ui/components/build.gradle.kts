@@ -44,7 +44,8 @@ dependencies {
     implementation(project(Modules.Lib.Extensions.string))
     implementation(project(Modules.Lib.Ui.Navigation.items))
     implementation(project(Modules.Lib.Ui.input))
-    implementation(project(Modules.Formatters.core))
+    implementation(project(Modules.Services.Formatter.Currency.core))
+    implementation(project(Modules.Services.Formatter.Datetime.core))
 
     testImplementation(libs.junit)
 

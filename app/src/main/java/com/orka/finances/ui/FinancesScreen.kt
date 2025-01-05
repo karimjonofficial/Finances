@@ -29,16 +29,16 @@ fun FinancesScreen(
             }
         }
 
-        is MainStates.WithSingleton -> {
+        is MainStates.HasSingleton -> {
             val navController = rememberNavController()
 
             when (state) {
 
-                is MainStates.WithSingleton.UnAuthorized -> {
+                is MainStates.HasSingleton.UnAuthorized -> {
                     LoginScreen(modifier, state.singletonContainer.loginScreenViewModel)
                 }
 
-                is MainStates.WithSingleton.WithCredential.Initializing -> {
+                is MainStates.HasSingleton.HasCredential.CreatingContainers -> {
                     LoadingScreen(modifier = modifier) {
                         viewModel.handle(MainEvent.InitContainers(
                             navigateToWarehouse = { navController.navigateToWarehouse(it) },
@@ -47,8 +47,8 @@ fun FinancesScreen(
                     }
                 }
 
-                is MainStates.WithSingleton.WithCredential.WithContainers -> {
-                    NavigationGraph(modifier, state, navController, printer)
+                is MainStates.HasSingleton.HasCredential.HasContainers -> {
+                    NavigationGraph(modifier, state, navController, { viewModel.handle(MainEvent.UnAuthorize) }, printer)
                 }
             }
         }

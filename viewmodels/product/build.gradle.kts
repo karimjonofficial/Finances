@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
 
     implementation(project(Modules.Fsm.core))
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
     implementation(project(Modules.Models.product))
     implementation(project(Modules.DataSources.Product.core))
 

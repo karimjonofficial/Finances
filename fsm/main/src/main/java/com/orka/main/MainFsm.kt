@@ -6,12 +6,12 @@ interface MainFsm {
 
     fun handle(event: MainEvent)
 
-    fun initialize(state: MainStates.Initial)
-    fun setCredential(credential: Credential, state: MainStates.WithSingleton.UnAuthorized)
-    fun unauthorize(state: MainStates.WithSingleton.WithCredential)
+    fun checkCredentials(state: MainStates.Initial)
+    fun setCredential(credential: Credential, state: MainStates.HasSingleton.UnAuthorized)
+    fun unauthorize(state: MainStates.HasSingleton.HasCredential)
 
     fun initContainers(
-        state: MainStates.WithSingleton.WithCredential.Initializing,
+        state: MainStates.HasSingleton.HasCredential.CreatingContainers,
         navigateToWarehouse: (Int) -> Unit,
         navigateToStockItem: (Int) -> Unit
     )

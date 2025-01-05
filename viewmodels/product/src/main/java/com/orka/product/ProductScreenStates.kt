@@ -1,23 +1,20 @@
 package com.orka.product
 
 import androidx.lifecycle.viewModelScope
+import com.orka.core.FsmEvent
 import com.orka.core.FsmState
-import com.orka.core.UpdateProductModel
+import com.orka.core.SingleStateFsm
 import com.orka.products.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 
-sealed class ProductScreenStates(internal open val id: Int) :
-    FsmState<ProductScreenEvents, ProductScreenStates, ProductScreenViewModel>() {
+sealed class ProductScreenStates(internal open val id: Int) : FsmState() {
 
     data class Initial(override val id: Int) : ProductScreenStates(id) {
-        override suspend fun process(
-            event: ProductScreenEvents,
-            fsm: ProductScreenViewModel
-        ): ProductScreenStates {
+        override suspend fun process(event: FsmEvent, fsm: SingleStateFsm): ProductScreenStates {
             return if (event is ProductScreenEvents.Init) Processing(id) {
                 val product = fsm.viewModelScope.async(Dispatchers.IO) {
-                    fsm.dataSource.get(id)
+                    (fsm as ProductScreenViewModel).getProduct(id)
                 }.await()
 
                 Initialized(id, product)
@@ -28,38 +25,29 @@ sealed class ProductScreenStates(internal open val id: Int) :
     @ConsistentCopyVisibility
     data class Processing internal constructor(
         override val id: Int,
-        val callback: suspend () -> ProductScreenStates,
+        val produce: suspend () -> ProductScreenStates,
     ) : ProductScreenStates(id) {
 
-        override suspend fun process(
-            event: ProductScreenEvents,
-            fsm: ProductScreenViewModel
-        ): ProductScreenStates {
+        override suspend fun process(event: FsmEvent, fsm: SingleStateFsm): ProductScreenStates {
             return if(event is ProductScreenEvents.Process) {
-                fsm.viewModelScope.async(Dispatchers.Default) { callback() }.await()
+                fsm.viewModelScope.async(Dispatchers.Default) { produce() }.await()
             } else Initial(id)
         }
     }
 
     data class Initialized(override val id: Int, val product: Product) : ProductScreenStates(id) {
-        override suspend fun process(
-            event: ProductScreenEvents,
-            fsm: ProductScreenViewModel
-        ): ProductScreenStates {
+        override suspend fun process(event: FsmEvent, fsm: SingleStateFsm): ProductScreenStates {
             return if (event is ProductScreenEvents.Edit) Editing(id, product) else Initial(id)
         }
     }
 
     data class Editing(override val id: Int, val product: Product) : ProductScreenStates(id) {
 
-        override suspend fun process(
-            event: ProductScreenEvents,
-            fsm: ProductScreenViewModel
-        ): ProductScreenStates {
+        override suspend fun process(event: FsmEvent, fsm: SingleStateFsm): ProductScreenStates {
 
             return if (event is ProductScreenEvents.Save) {
                 Processing(id) {
-                    fsm.dataSource.update(UpdateProductModel(id, event.name, event.price, event.description, product.categoryId))
+                    (fsm as ProductScreenViewModel).update(event.name, event.price, event.description, product.categoryId)
                     event.reloadWarehouse(product.categoryId)
                     Initial(id)
                 }

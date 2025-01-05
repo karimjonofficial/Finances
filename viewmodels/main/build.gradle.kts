@@ -42,12 +42,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.android)
 
-    implementation(project(Modules.di))
-
-    implementation(project(Modules.unauthorizer))
+    implementation(project(Modules.Containers.singleton))
 
     implementation(project(Modules.Fsm.main))
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
+    implementation(project(Modules.Services.Credential.core))
     implementation(project(Modules.ViewModels.core))
 
     implementation(project(Modules.Models.info))

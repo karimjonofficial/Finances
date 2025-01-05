@@ -2,21 +2,17 @@ object Modules {
     private val containers = ":containers"
     val database = ":database"
     private val datasources = ":datasources"
-    val di = ":di"
-    private val formatter = ":formatter"
     private val fsm = ":fsm"
-    private val http = ":http"
     private val lib = ":lib"
     private val models = ":models"
-    private val printer = ":printer"
     val res = ":res"
     private val screens = ":screens"
-    val unauthorizer = ":unauthorizer"
+    private val service = ":services"
     private val viewModels = ":viewmodels"
 
     object Containers {
         val main = "$containers:main"
-        val core = "$containers${AbstractionType.core}"
+        val singleton = "$containers:singleton"
     }
     object DataSources {
 
@@ -59,31 +55,21 @@ object Modules {
             val network = "$datasources${ModelFamilies.stock}${DataSourceTypes.network}"
         }
     }
-    object Formatters {
-        val core = "$formatter${AbstractionType.core}"
-        val uz = "$formatter${CountryCodes.uz}"
-    }
     object Fsm {
         val main = "$fsm:main"
         val core = "$fsm${AbstractionType.core}"
     }
-    object Http {
-        private val service = "$http:service"
-        val status = "$http:status"
-
-        object Service {
-            val core = "$service:core"
-        }
-    }
     object Lib {
 
         private val extensions = "$lib:extensions"
+        val http = "$lib:http"
         val log = "$lib:log"
         val tests = "$lib:tests"
         private val ui = "$lib:ui"
 
         object Extensions {
             val string = "$extensions:string"
+            val datetime = "$extensions:datetime"
         }
 
         object Ui {
@@ -107,9 +93,6 @@ object Modules {
         val sale = "$models${ModelFamilies.sale}"
         val stock = "$models${ModelFamilies.stock}"
     }
-    object Printer {
-        val core = "$printer${AbstractionType.core}"
-    }
     object Screens {
 
         val basket = "$screens${ScreenFamilies.basket}"
@@ -118,6 +101,39 @@ object Modules {
         val login = "$screens${ScreenFamilies.login}"
         val product = "$screens${ScreenFamilies.product}"
         val warehouse = "$screens${ScreenFamilies.warehouse}"
+    }
+    object Services {
+        private val credential = "$service:credential"
+        private val formatter = "$service:formatter"
+        private val http = "$service:http"
+        private val printer = "$service:printer"
+
+        object Credential {
+            val core = "$credential${AbstractionType.core}"
+        }
+
+        object Formatter {
+            private val currency = "$formatter:currency"
+            private val datetime = "$formatter:datetime"
+            val core = "$formatter${AbstractionType.core}"
+            val local = "$formatter:local"
+
+            object Currency {
+                val core = "$currency${AbstractionType.core}"
+            }
+
+            object Datetime {
+                val core = "$datetime${AbstractionType.core}"
+            }
+        }
+
+        object Http {
+            val core = "$http${AbstractionType.core}"
+        }
+
+        object Printer {
+            val core = "$printer${AbstractionType.core}"
+        }
     }
     object ViewModels {
 
@@ -135,6 +151,7 @@ object Modules {
 
 object AbstractionType {
     val core = ":core"
+    val impl = ":impl"
 }
 object DataSourceTypes {
 
@@ -162,7 +179,4 @@ data object ScreenFamilies {
     val products = ":products"
     val stock = ":stock"
     val warehouse = ":warehouse"
-}
-object CountryCodes {
-    val uz = ":uz"
 }

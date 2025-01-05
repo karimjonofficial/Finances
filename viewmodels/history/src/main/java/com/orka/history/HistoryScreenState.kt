@@ -1,7 +1,7 @@
 package com.orka.history
 
-import com.orka.receive.Receive
-import com.orka.sale.Sale
+import com.orka.history.models.ReceiveModel
+import com.orka.history.models.SaleModel
 import kotlinx.datetime.LocalDate
 
 sealed class SaleContentState {
@@ -9,7 +9,7 @@ sealed class SaleContentState {
     data object Offline : SaleContentState()
     data object Initializing : SaleContentState()
     data object Empty : SaleContentState()
-    data class Initialized(val categories: Map<LocalDate, List<Sale>>) : SaleContentState()
+    data class Initialized(val salesMap: Map<LocalDate, List<SaleModel>>) : SaleContentState()
 }
 
 sealed class ReceiveContentState {
@@ -17,5 +17,5 @@ sealed class ReceiveContentState {
     data object Offline : ReceiveContentState()
     data object Initializing : ReceiveContentState()
     data object Empty : ReceiveContentState()
-    data class Initialized(val categories: Map<LocalDate, List<Receive>>) : ReceiveContentState()
+    data class Initialized(val receivesMap: Map<LocalDate, List<ReceiveModel>>) : ReceiveContentState()
 }

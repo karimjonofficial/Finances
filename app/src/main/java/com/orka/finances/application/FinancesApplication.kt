@@ -1,7 +1,7 @@
 package com.orka.finances.application
 
 import android.app.Application
-import com.orka.main.MainContainer
+import com.orka.containers.MainContainer
 
 class FinancesApplication : Application() {
 

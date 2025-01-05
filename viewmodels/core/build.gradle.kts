@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.android)
 
     implementation(project(Modules.Lib.log))
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
     implementation(project(Modules.Models.credential))
 
     testImplementation(libs.junit)

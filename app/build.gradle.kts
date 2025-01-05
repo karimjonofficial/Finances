@@ -78,14 +78,18 @@ dependencies {
     implementation(libs.androidx.print)
 
     implementation(project(Modules.Containers.main))
-    implementation(project(Modules.di))
+    implementation(project(Modules.Containers.singleton))
+    implementation(project(Modules.Containers.main))
+    implementation(project(Modules.Containers.singleton))
     implementation(project(Modules.res))
 
     implementation(project(Modules.Lib.Ui.components))
 
-    implementation(project(Modules.unauthorizer))
-    implementation(project(Modules.Formatters.core))
-    implementation(project(Modules.Printer.core))
+    implementation(project(Modules.Services.Formatter.Currency.core))
+    implementation(project(Modules.Services.Formatter.Datetime.core))
+    implementation(project(Modules.Services.Formatter.core))
+    implementation(project(Modules.Services.Credential.core))
+    implementation(project(Modules.Services.Printer.core))
     implementation(project(Modules.Fsm.main))
 
     implementation(project(Modules.Models.credential))

@@ -1,43 +1,27 @@
 package com.orka.finances.ui.navigation
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.orka.basket.BasketScreen
-import com.orka.components.VerticalSpacer
 import com.orka.core.Printer
 import com.orka.history.HistoryScreen
 import com.orka.home.HomeScreen
 import com.orka.main.MainStates
 import com.orka.product.ProductScreen
 import com.orka.warehouse.WarehouseScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun NavigationGraph(
     modifier: Modifier = Modifier,
-    state: MainStates.WithSingleton.WithCredential.WithContainers,
+    state: MainStates.HasSingleton.HasCredential.HasContainers,
     navController: NavHostController,
+    unauthorize: () -> Unit,
     printer: Printer
 ) {
-    val coroutineScope = rememberCoroutineScope()
 
     NavHost(
         modifier = modifier,
@@ -51,7 +35,7 @@ internal fun NavigationGraph(
                 viewModel = state.scopedContainer.homeScreenViewModel,
                 navigateToHistory = { navController.navigateToHistory() },
                 navigateToBasket = { navController.navigateToBasket() },
-                scan = { navController.navigate(Navigation.Check) }
+                scan = { unauthorize() }
             )
         }
 
@@ -97,50 +81,6 @@ internal fun NavigationGraph(
             ) { categoryId ->
                 state.transientContainer.productsViewModel(categoryId).fetch()
                 state.transientContainer.stockViewModel(categoryId).fetch()
-            }
-        }
-
-        composable<Navigation.Check> {
-            val graphicsLayer = rememberGraphicsLayer()
-
-            Column(
-                modifier = Modifier
-                    .safeDrawingPadding()
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .drawWithContent {
-                            graphicsLayer.record {
-                                this@drawWithContent.drawContent()
-                            }
-                            drawLayer(graphicsLayer)
-                        },
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    for (i in 1..10) {
-                        Text(text = i.toString())
-                    }
-                }
-
-                VerticalSpacer(16)
-
-                Button(
-                    onClick = {
-                        coroutineScope.launch(Dispatchers.Main) {
-                            printer.print(
-                                bitmap = graphicsLayer
-                                    .toImageBitmap()
-                                    .asAndroidBitmap()
-                                    .copy(Bitmap.Config.ARGB_8888, false)
-                            )
-                        }
-                    }
-                ) {
-                    Text("Print")
-                }
             }
         }
     }

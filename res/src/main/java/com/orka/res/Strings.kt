@@ -16,8 +16,11 @@ object Strings {
     val amount: Int
         get() = R.string.amount
 
-    val app_is_initializing: Int
-        get() = R.string.app_is_initializing
+    val checking_user_credentials: Int
+        get() = R.string.checking_user_credentials
+
+    val finances: Int
+        get() = R.string.finances
 
     val initializing: Int
         get() = R.string.initializing
@@ -42,6 +45,9 @@ object Strings {
 
     val comment: Int
         get() = R.string.comment
+
+    val date: Int
+        get() = R.string.date
 
     val delete: Int
         get() = R.string.delete
@@ -85,6 +91,12 @@ object Strings {
     val home: Int
         get() = R.string.home
 
+    val lorem: Int
+        get() = R.string.lorem
+
+    val n: Int
+        get() = R.string.n
+
     val name: Int
         get() = R.string.name
 
@@ -97,11 +109,20 @@ object Strings {
     val price: Int
         get() = R.string.price
 
+    val print_the_check: Int
+        get() = R.string.print_the_check
+
     val product: Int
         get() = R.string.product
 
     val products: Int
         get() = R.string.products
+
+    val remember_me: Int
+        get() = R.string.remember_me
+
+    val receive: Int
+        get() = R.string.receive
 
     val receive_new_products: Int
         get() = R.string.receive_new_products
@@ -114,12 +135,6 @@ object Strings {
 
     val selling_items: Int
         get() = R.string.selling_items
-
-    val receive: Int
-        get() = R.string.receive
-
-    val remember_me: Int
-        get() = R.string.remember_me
 
     val sale: Int
         get() = R.string.sale
@@ -135,6 +150,9 @@ object Strings {
 
     val table: Int
         get() = R.string.table
+
+    val time: Int
+        get() = R.string.time
 
     val username: Int
         get() = R.string.username

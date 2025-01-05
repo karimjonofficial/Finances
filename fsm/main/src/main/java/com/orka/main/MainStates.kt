@@ -1,7 +1,7 @@
 package com.orka.main
 
+import com.orka.containers.SingletonContainer
 import com.orka.credentials.Credential
-import com.orka.di.SingletonContainer
 
 sealed interface MainStates {
     fun handle(event: MainEvent, fsm: MainFsm)
@@ -9,15 +9,15 @@ sealed interface MainStates {
     data object Initial : MainStates {
 
         override fun handle(event: MainEvent, fsm: MainFsm) {
-            if(event is MainEvent.Initialize) fsm.initialize(this)
+            if(event is MainEvent.Initialize) fsm.checkCredentials(this)
         }
     }
 
-    sealed class WithSingleton(open val singletonContainer: SingletonContainer) : MainStates {
+    sealed class HasSingleton(open val singletonContainer: SingletonContainer) : MainStates {
 
         data class UnAuthorized(
             override val singletonContainer: SingletonContainer
-        ) : WithSingleton(singletonContainer) {
+        ) : HasSingleton(singletonContainer) {
 
             override fun handle(event: MainEvent, fsm: MainFsm) {
                 if(event is MainEvent.Authorize) {
@@ -26,34 +26,36 @@ sealed interface MainStates {
             }
         }
 
-        sealed class WithCredential(
+        sealed class HasCredential(
             open val credential: Credential,
             override val singletonContainer: SingletonContainer
-        ) : WithSingleton(singletonContainer) {
+        ) : HasSingleton(singletonContainer) {
 
-            data class Initializing(
+            data class CreatingContainers(
                 override val credential: Credential,
                 override val singletonContainer: SingletonContainer
-            ) : WithCredential(credential, singletonContainer) {
+            ) : HasCredential(credential, singletonContainer) {
 
                 override fun handle(event: MainEvent, fsm: MainFsm) {
-                    if (event == MainEvent.UnAuthorize) fsm.unauthorize(this)
-                    else if (event is MainEvent.InitContainers) {
+                    if (event == MainEvent.UnAuthorize)
+                        fsm.unauthorize(this)
+                    else if (event is MainEvent.InitContainers)
                         fsm.initContainers(this, event.navigateToWarehouse, event.navigateToStockProduct)
-                    }
                 }
             }
 
-            data class WithContainers(
+            data class HasContainers(
                 override val credential: Credential,
                 override val singletonContainer: SingletonContainer,
                 val scopedContainer: SingletonContainer.ScopedContainer,
                 val transientContainer: SingletonContainer.ScopedContainer.TransientContainer
-            ) : WithCredential(credential, singletonContainer) {
+            ) : HasCredential(credential, singletonContainer) {
+
                 override fun handle(event: MainEvent, fsm: MainFsm) {
                     if (event == MainEvent.UnAuthorize) fsm.unauthorize(this)
                 }
             }
+
         }
     }
 }

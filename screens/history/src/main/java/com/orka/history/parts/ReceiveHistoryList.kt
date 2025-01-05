@@ -11,14 +11,14 @@ import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
 import com.orka.history.components.DateHeader
 import com.orka.history.components.ReceiveCard
-import com.orka.receive.Receive
+import com.orka.history.models.ReceiveModel
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ReceiveHistoryList(
     modifier: Modifier = Modifier,
-    map: Map<LocalDate, List<Receive>>,
+    map: Map<LocalDate, List<ReceiveModel>>,
     state: LazyListState,
     formatter: Formatter
 ) {

@@ -41,7 +41,7 @@ dependencies {
 
     implementation(project(Modules.Lib.log))
 
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
     implementation(project(Modules.ViewModels.core))
 
 

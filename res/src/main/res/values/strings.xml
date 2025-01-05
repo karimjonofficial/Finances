@@ -7,17 +7,17 @@
     <string name="name">Name</string>
     <string name="price">Price</string>
     <string name="description">Comment</string>
-    <string name="search">Qidirish</string>
+    <string name="search">Search</string>
     <string name="home">Home</string>
     <string name="products">Products</string>
     <string name="add_a_category">Add a new category</string>
     <string name="fill_lines_to_add_a_new_category">Fill the lines below to add a new category</string>
     <string name="furniture">Furniture</string>
-    <string name="table">Stol</string>
-    <string name="receive_new_products">Yangi maxsulotlarni qabul qilish</string>
-    <string name="fill_lines_to_receive_a_product">Maxsulotlarni kirim qilish uchun quyidagi maydonlarni to\'ldiring</string>
-    <string name="product">Maxsulot</string>
-    <string name="amount">Miqdori</string>
+    <string name="table">Table</string>
+    <string name="receive_new_products">Receive a new product</string>
+    <string name="fill_lines_to_receive_a_product">Fill lines below to receive a product</string>
+    <string name="product">Product</string>
+    <string name="amount">Amount</string>
     <string name="select_the_product">Select a product</string>
     <string name="enter_to_account">Enter to account</string>
     <string name="username">Username</string>
@@ -26,9 +26,9 @@
     <string name="enter">Enter</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="scan_a_qr_code">Scan a Qr code</string>
-    <string name="uzs">so\'m</string>
-    <string name="comment">Izoh</string>
-    <string name="warehouse">Ombor</string>
+    <string name="uzs">sum</string>
+    <string name="comment">Comment</string>
+    <string name="warehouse">Warehouse</string>
     <string name="history">History</string>
     <string name="chair">Chair</string>
     <string name="delete">Delete</string>
@@ -41,10 +41,16 @@
     <string name="done">Done</string>
     <string name="close">Close</string>
     <string name="receive">Receive</string>
-    <string name="selling_items">Sotilmoqda</string>
-    <string name="loading_data">Loading data...</string>
-    <string name="app_is_initializing">App is initializing...</string>
+    <string name="selling_items">Selling</string>
+    <string name="loading_data">Loading data…</string>
+    <string name="checking_user_credentials">Checking the user\'s credentials…</string>
     <string name="empty_list">Empty list</string>
-    <string name="initializing">Initializing</string>
+    <string name="initializing">Initializing…</string>
     <string name="save">Save</string>
+    <string name="print_the_check">Do you want to print a check?</string>
+    <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+    <string name="finances" translatable="false">Finances</string>
+    <string name="n" translatable="false">№</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
 </resources>

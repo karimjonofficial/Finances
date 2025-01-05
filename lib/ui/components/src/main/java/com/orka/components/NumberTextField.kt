@@ -5,7 +5,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import com.orka.core.Formatter
+import com.orka.core.CurrencyFormatter
 import com.orka.input.CurrencyVisualTransformation
 import com.orka.string.containsOnlyZeroes
 
@@ -14,7 +14,7 @@ fun NumberTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    formatter: Formatter,
+    formatter: CurrencyFormatter,
     label: (@Composable () -> Unit)? = null,
     suffix: (@Composable () -> Unit)? = null
 ) {

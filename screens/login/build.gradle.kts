@@ -45,7 +45,7 @@ dependencies {
     implementation(project(Modules.res))
     implementation(project(Modules.Lib.Ui.components))
     implementation(project(Modules.Lib.log))
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
 
     implementation(project(Modules.Models.credential))
     implementation(project(Modules.DataSources.Credential.core))

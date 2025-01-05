@@ -1,12 +1,11 @@
 package com.orka.main
 
-import com.orka.core.CredentialsManager
+import com.orka.containers.SingletonContainer
+import com.orka.core.CredentialManager
 import com.orka.core.SingleStateViewModel
 import com.orka.core.UserInfoDataSource
 import com.orka.credentials.Credential
-import com.orka.di.SingletonContainer
 import com.orka.info.UserInfo
-import com.orka.unauthorizer.Unauthorizer
 import kotlinx.coroutines.Dispatchers
 
 class MainViewModel(
@@ -14,53 +13,50 @@ class MainViewModel(
 ) : SingleStateViewModel<MainStates>(
     httpService = NullHttpService,
     initialState = MainStates.Initial
-), Unauthorizer, CredentialsManager, MainFsm {
+), CredentialManager, MainFsm {
 
     override fun handle(event: MainEvent) {
         launch { uiState.value.handle(event, this) }
     }
 
-    override fun initialize(state: MainStates.Initial) {
+    override fun checkCredentials(state: MainStates.Initial) {
         launch(Dispatchers.IO) {
-            val credential = get()
+            val credential = getCredential()
             if (credential != null) setStateWithSingleton(credential)
-            else
-                setState(MainStates.WithSingleton.UnAuthorized(SingletonContainer(this, this)))
-        }
-    }
-
-    private fun setStateWithSingleton(credential: Credential) {
-        launch {
-            val singleton = SingletonContainer(this, this)
-            setState(
-                MainStates.WithSingleton.WithCredential.Initializing(credential, singleton)
+            else setState(
+                MainStates.HasSingleton.UnAuthorized(
+                    SingletonContainer(
+                        unauthorize = { handle(MainEvent.UnAuthorize) },
+                        credentialManager = this
+                    )
+                )
             )
         }
     }
 
     override fun setCredential(
         credential: Credential,
-        state: MainStates.WithSingleton.UnAuthorized
+        state: MainStates.HasSingleton.UnAuthorized
     ) {
         launch {
             setState(
-                MainStates.WithSingleton.WithCredential.Initializing(
-                    credential,
-                    state.singletonContainer
+                state = MainStates.HasSingleton.HasCredential.CreatingContainers(
+                    credential = credential,
+                    singletonContainer = state.singletonContainer
                 )
             )
         }
     }
 
-    override fun unauthorize(state: MainStates.WithSingleton.WithCredential) {
+    override fun unauthorize(state: MainStates.HasSingleton.HasCredential) {
         launch {
-            setState(MainStates.WithSingleton.UnAuthorized(state.singletonContainer))
-            unauthorize()
+            setState(MainStates.HasSingleton.UnAuthorized(state.singletonContainer))
+            clearCredential()
         }
     }
 
     override fun initContainers(
-        state: MainStates.WithSingleton.WithCredential.Initializing,
+        state: MainStates.HasSingleton.HasCredential.CreatingContainers,
         navigateToWarehouse: (Int) -> Unit,
         navigateToStockItem: (Int) -> Unit
     ) {
@@ -73,7 +69,7 @@ class MainViewModel(
             val transient = scoped.transientContainer(navigateToStockItem)
 
             setState(
-                MainStates.WithSingleton.WithCredential.WithContainers(
+                MainStates.HasSingleton.HasCredential.HasContainers(
                     credential = state.credential,
                     singletonContainer = state.singletonContainer,
                     scopedContainer = scoped,
@@ -83,13 +79,13 @@ class MainViewModel(
         }
     }
 
-    override fun unauthorize() {
+    private fun clearCredential() {
         launch(Dispatchers.IO) {
             userInfoDataSource.unauthorize()
         }
     }
 
-    override suspend fun get(): Credential? {
+    override suspend fun getCredential(): Credential? {
         val info = userInfoDataSource.get()
         if (info == null) {
             return null
@@ -101,7 +97,7 @@ class MainViewModel(
         }
     }
 
-    override suspend fun set(credential: Credential) {
+    override suspend fun setCredential(credential: Credential) {
         val info = userInfoDataSource.get()
         if (info == null) {
             val new = UserInfo(1, credential.token, credential.refresh)
@@ -113,4 +109,14 @@ class MainViewModel(
             launch { setStateWithSingleton(credential) }
         }
     }
+
+    private fun setStateWithSingleton(credential: Credential) {
+        launch {
+            val singleton = SingletonContainer(this) { handle(MainEvent.UnAuthorize) }
+            setState(
+                MainStates.HasSingleton.HasCredential.CreatingContainers(credential, singleton)
+            )
+        }
+    }
+
 }

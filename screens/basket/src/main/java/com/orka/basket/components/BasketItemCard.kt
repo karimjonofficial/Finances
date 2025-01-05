@@ -28,12 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.orka.basket.BasketItem
 import com.orka.core.Formatter
-import com.orka.core.FormatterImpl
 import com.orka.products.Product
 import com.orka.res.Drawables
 import com.orka.res.Strings
 import com.orka.components.HorizontalSpacer
 import com.orka.components.VerticalSpacer
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 
 @Composable
 internal fun BasketItemCard(
@@ -164,7 +165,25 @@ private fun BasketItemCardPreview() {
             increaseClick = {},
             decreaseClick = {},
             removeClick = {},
-            formatter = FormatterImpl()
+            formatter = object : Formatter {
+
+                override fun formatTime(time: LocalTime): String {
+                    return "12.02.2000"
+                }
+
+                override fun formatDate(date: LocalDate): String {
+                    return "12.02.2000"
+                }
+
+                override fun formatCurrency(value: Double, currencyName: String): String {
+                    return "2 000 000"
+                }
+
+                override fun formatCurrency(value: Double): String {
+                    return "2 000 000"
+                }
+
+            }
         )
     }
 }

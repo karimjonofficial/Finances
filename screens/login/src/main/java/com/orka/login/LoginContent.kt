@@ -14,7 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,14 +26,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.orka.login.fixtures.CredentialsManagerImpl
-import com.orka.login.fixtures.HttpServiceImpl
-import com.orka.login.fixtures.InMemoryCredentialsDataSource
+import com.orka.components.VerticalSpacer
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun LoginContent(
@@ -159,23 +154,5 @@ internal fun LoginContent(
             remember.value = false
             passwordVisible.value = false
         }
-    }
-}
-
-@Preview
-@Composable
-private fun LoginContentPreview() {
-    val dataSource = InMemoryCredentialsDataSource()
-    val viewModel = LoginScreenViewModel(
-        dataSource = dataSource,
-        credentialsManager = CredentialsManagerImpl(),
-        httpService = HttpServiceImpl()
-    )
-
-    Scaffold {
-        LoginContent(
-            modifier = Modifier.padding(it),
-            viewModel = viewModel
-        )
     }
 }

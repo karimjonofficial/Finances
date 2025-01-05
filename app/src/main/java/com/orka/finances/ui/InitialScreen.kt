@@ -39,7 +39,7 @@ internal fun InitialScreen(
             Box(modifier = Modifier.weight(1f)) {
 
                 Text(
-                    text = stringResource(Strings.app_is_initializing),
+                    text = stringResource(Strings.checking_user_credentials),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.align(Alignment.Center)
                 )

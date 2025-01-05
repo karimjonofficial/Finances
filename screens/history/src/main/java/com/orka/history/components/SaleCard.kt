@@ -15,16 +15,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
+import com.orka.history.models.SaleModel
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.sale.Sale
-import com.orka.components.VerticalSpacer
 
 @Composable
 internal fun SaleCard(
     modifier: Modifier = Modifier,
-    item: Sale,
+    item: SaleModel,
     formatter: Formatter
 ) {
 
@@ -37,7 +37,7 @@ internal fun SaleCard(
 
         ListItem(
             modifier = Modifier.weight(1f),
-            overlineContent = { Text(formatter.formatTime(item.datetime)) },
+            overlineContent = { Text(formatter.formatTime(item.time)) },
             headlineContent = {
                 Text(formatter.formatCurrency(item.price, stringResource(Strings.uzs)))
             },
@@ -50,7 +50,7 @@ internal fun SaleCard(
                     if (expanded.value) {
                         Column {
                             item.items.forEach {
-                                Text(text = "${it.product.name} ${it.amount} ta")
+                                Text(text = "${it.name} ${it.amount} ta")
                                 VerticalSpacer(4)
                             }
                         }

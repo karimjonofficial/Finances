@@ -15,14 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.orka.components.VerticalSpacer
 import com.orka.core.Formatter
-import com.orka.receive.Receive
+import com.orka.history.models.ReceiveModel
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.components.VerticalSpacer
 
 @Composable
-internal fun ReceiveCard(item: Receive, formatter: Formatter) {
+internal fun ReceiveCard(item: ReceiveModel, formatter: Formatter) {
 
     val expanded = rememberSaveable { mutableStateOf(false) }
 
@@ -33,7 +33,7 @@ internal fun ReceiveCard(item: Receive, formatter: Formatter) {
 
         ListItem(
             modifier = Modifier.weight(1f),
-            overlineContent = { Text(formatter.formatTime(item.datetime)) },
+            overlineContent = { Text(formatter.formatTime(item.time)) },
             headlineContent = {
                 Text(formatter.formatCurrency(item.price, stringResource(Strings.uzs)))
             },
@@ -45,7 +45,7 @@ internal fun ReceiveCard(item: Receive, formatter: Formatter) {
 
                         Column {
                             item.items.forEach {
-                                Text(text = "${it.product.name} ${it.amount} ta")
+                                Text(text = "${it.name} ${it.amount} ta")
                                 VerticalSpacer(4)
                             }
                         }

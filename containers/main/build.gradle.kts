@@ -37,17 +37,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.print)
 
-    implementation(project(Modules.di))
     implementation(project(Modules.database))
+    implementation(project(Modules.Services.Printer.core))
     implementation(project(Modules.Models.info))
-    implementation(project(Modules.Printer.core))
-    implementation(project(Modules.Models.credential))
     implementation(project(Modules.DataSources.Info.core))
     implementation(project(Modules.ViewModels.main))
 
     testImplementation(libs.junit)
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

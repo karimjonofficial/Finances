@@ -39,7 +39,7 @@ internal fun LoadingScreen(
             Box(modifier = Modifier.weight(1f)) {
 
                 Text(
-                    text = stringResource(Strings.loading_data),
+                    text = stringResource(Strings.initializing),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.align(Alignment.Center)
                 )

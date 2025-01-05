@@ -51,10 +51,11 @@ dependencies {
     implementation(project(Modules.Lib.log))
     implementation(project(Modules.Lib.Extensions.string))
 
-    implementation(project(Modules.unauthorizer))
-    implementation(project(Modules.Formatters.core))
+    implementation(project(Modules.Services.Http.core))
+    implementation(project(Modules.Services.Formatter.Currency.core))
+    implementation(project(Modules.Services.Formatter.Datetime.core))
+    implementation(project(Modules.Services.Formatter.core))
 
-    implementation(project(Modules.Http.Service.core))
     implementation(project(Modules.ViewModels.core))
 
     implementation(project(Modules.Models.receive))

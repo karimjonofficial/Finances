@@ -46,11 +46,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.test)
     implementation(libs.junit.jupiter)
 
+    implementation(project(Modules.Lib.http))
     implementation(project(Modules.Models.credential))
     implementation(project(Modules.Models.category))
     implementation(project(Modules.Models.product))
     implementation(project(Modules.Models.stock))
-    implementation(project(":http:status"))
 
     testImplementation(libs.junit)
 

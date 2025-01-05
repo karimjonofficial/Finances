@@ -40,10 +40,12 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(project(Modules.Lib.log))
+    implementation(project(Modules.Lib.Extensions.datetime))
 
-    implementation(project(Modules.Http.Service.core))
+    implementation(project(Modules.Services.Http.core))
     implementation(project(Modules.ViewModels.core))
 
+    implementation(project(Modules.Models.product))
     implementation(project(Modules.Models.receive))
     implementation(project(Modules.Models.sale))
 

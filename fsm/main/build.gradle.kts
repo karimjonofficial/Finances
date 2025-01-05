@@ -33,6 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.di))
+    implementation(project(Modules.Containers.singleton))
     implementation(project(Modules.Models.credential))
 }

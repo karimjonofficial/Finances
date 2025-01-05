@@ -11,7 +11,6 @@ sealed class Navigation {
     @Serializable data class Warehouse(@SerialName("category_id") val categoryId: Int) : Navigation()
     @Serializable data object History : Navigation()
     @Serializable data object Basket : Navigation()
-    @Serializable data object Check : Navigation()
 }
 
 fun NavController.navigateToHome() {

@@ -4,9 +4,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import com.orka.core.Formatter
+import com.orka.core.CurrencyFormatter
 
-class CurrencyVisualTransformation(private val formatter: Formatter) : VisualTransformation {
+class CurrencyVisualTransformation(private val formatter: CurrencyFormatter) : VisualTransformation {
     private val currencyOffsetMapping = CurrencyOffsetMapping()
     private val zeroOffsetMapping = ZeroOffsetMapping()
 

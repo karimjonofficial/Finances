@@ -18,7 +18,7 @@ fun InitializingScreen(modifier: Modifier = Modifier.fillMaxSize()) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(Strings.initializing))
+        Text(text = stringResource(Strings.loading_data))
         VerticalSpacer(8)
         CircularProgressIndicator()
     }

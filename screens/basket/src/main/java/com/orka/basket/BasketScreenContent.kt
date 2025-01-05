@@ -1,5 +1,6 @@
 package com.orka.basket
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,10 +54,11 @@ internal fun BasketScreenContent(
                 basket = (uiState.value as BasketScreenState.WithBasket.Regular).basket,
                 print = {
                     coroutineScope.launch(Dispatchers.Default) {
-                        printer.print(it.toImageBitmap().asAndroidBitmap())
+                        printer.print(it.toImageBitmap().asAndroidBitmap().copy(Bitmap.Config.ARGB_8888, false))
                     }
                 },
-                sell = { viewModel.sell() }
+                sell = { viewModel.sell() },
+                formatter = formatter
             )
         }
     }
