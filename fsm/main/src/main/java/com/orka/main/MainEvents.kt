@@ -2,12 +2,12 @@ package com.orka.main
 
 import com.orka.credentials.Credential
 
-sealed class MainEvent {
-    data object Initialize : MainEvent()
-    data class Authorize(val credential: Credential) : MainEvent()
-    data object UnAuthorize : MainEvent()
+sealed class AppEvents {
+    data object Initialize : AppEvents()
+    data class Authorize(val credential: Credential) : AppEvents()
+    data object UnAuthorize : AppEvents()
     data class InitContainers(
         val navigateToWarehouse: (Int) -> Unit,
         val navigateToStockProduct: (Int) -> Unit
-    ) : MainEvent()
+    ) : AppEvents()
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.orka.core.Printer
 import com.orka.core.UserInfoDataSource
 import com.orka.database.FinancesDb
-import com.orka.main.MainViewModel
+import com.orka.main.AppManager
 
 class MainContainer(private val context: Context) {
 
@@ -20,5 +20,5 @@ class MainContainer(private val context: Context) {
         UserInfoDataSourceAdapter(db.userInfoDao())
     }
 
-    val mainViewModel by lazy { MainViewModel(userInfoDataSource) }
+    val appManager by lazy { AppManager(userInfoDataSource) }
 }

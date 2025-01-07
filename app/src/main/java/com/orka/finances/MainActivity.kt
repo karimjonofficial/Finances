@@ -31,8 +31,9 @@ class MainActivity : ComponentActivity() {
             val mainContainer = app.container
 
             FinancesTheme {
+
                 FinancesScreen(
-                    viewModel = mainContainer.mainViewModel,
+                    viewModel = mainContainer.appManager,
                     printer = mainContainer.getPrinter(this)
                 )
             }

@@ -1,18 +1,19 @@
 package com.orka.components
 
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.orka.items.NavItem
+import androidx.compose.material3.NavigationBar as MNavigationBar
 
 @Composable
-fun BottomBar(
+fun NavigationBar(
     modifier: Modifier = Modifier,
     navItems: List<NavItem>
 ) {
-    BottomAppBar(modifier = modifier) {
+    MNavigationBar(modifier = modifier) {
         for (i in navItems) {
             NavigationBarItem(
                 selected = i.selected,
@@ -22,7 +23,8 @@ fun BottomBar(
                         painter = i.painter,
                         contentDescription = i.description
                     )
-                }
+                },
+                label = { Text(text = i.name) }
             )
         }
     }

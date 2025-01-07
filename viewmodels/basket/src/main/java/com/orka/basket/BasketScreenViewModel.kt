@@ -88,7 +88,7 @@ class BasketScreenViewModel(
         val state = uiState.value
 
         state.let {
-            if (it is BasketScreenState.WithBasket && it.basket.items.isNotEmpty() && it.basket.price > 0.0) {
+            if (it is BasketScreenState.WithBasket && it.basket.correct()) {
                 setState(BasketScreenState.InProcess)
                 request(
                     request = {
@@ -102,6 +102,8 @@ class BasketScreenViewModel(
             }
         }
     }
+
+    private fun Basket.correct() = this.items.isNotEmpty() && this.price > 0.0 && this.price.toInt() < Int.MAX_VALUE
 
     private suspend fun sell(basket: Basket) {
         saleDataSource.add(

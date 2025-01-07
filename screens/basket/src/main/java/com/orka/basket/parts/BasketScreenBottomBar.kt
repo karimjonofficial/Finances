@@ -1,20 +1,17 @@
 package com.orka.basket.parts
 
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.orka.components.NavigationBar
+import com.orka.items.NavItem
 import com.orka.res.Drawables
 import com.orka.res.Strings
-import com.orka.components.BottomBar
-import com.orka.items.NavItem
-import com.orka.res.Dimensions
 
 @Composable
 internal fun BasketScreenBottomBar(
-    modifier: Modifier = Modifier.height(dimensionResource(Dimensions.bottom_bar_height)),
+    modifier: Modifier = Modifier,
     reloadScreen: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToHistory: () -> Unit,
@@ -44,7 +41,7 @@ internal fun BasketScreenBottomBar(
         )
     )
 
-    BottomBar(
+    NavigationBar(
         modifier = modifier,
         navItems = navItems
     )

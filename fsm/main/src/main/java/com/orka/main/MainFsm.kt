@@ -4,14 +4,14 @@ import com.orka.credentials.Credential
 
 interface MainFsm {
 
-    fun handle(event: MainEvent)
+    fun handle(event: AppEvents)
 
-    fun checkCredentials(state: MainStates.Initial)
-    fun setCredential(credential: Credential, state: MainStates.HasSingleton.UnAuthorized)
-    fun unauthorize(state: MainStates.HasSingleton.HasCredential)
+    fun checkCredentials(state: AppStates.Initial)
+    fun setCredential(credential: Credential, state: AppStates.HasSingleton.UnAuthorized)
+    fun unauthorize(state: AppStates.HasSingleton.HasCredential)
 
     fun initContainers(
-        state: MainStates.HasSingleton.HasCredential.CreatingContainers,
+        state: AppStates.HasSingleton.HasCredential.CreatingContainers,
         navigateToWarehouse: (Int) -> Unit,
         navigateToStockItem: (Int) -> Unit
     )

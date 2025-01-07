@@ -10,14 +10,14 @@ import com.orka.basket.BasketScreen
 import com.orka.core.Printer
 import com.orka.history.HistoryScreen
 import com.orka.home.HomeScreen
-import com.orka.main.MainStates
+import com.orka.main.AppStates
 import com.orka.product.ProductScreen
 import com.orka.warehouse.WarehouseScreen
 
 @Composable
 internal fun NavigationGraph(
     modifier: Modifier = Modifier,
-    state: MainStates.HasSingleton.HasCredential.HasContainers,
+    state: AppStates.HasSingleton.HasCredential.HasContainers,
     navController: NavHostController,
     unauthorize: () -> Unit,
     printer: Printer

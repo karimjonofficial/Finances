@@ -9,46 +9,46 @@ import com.orka.finances.ui.navigation.NavigationGraph
 import com.orka.finances.ui.navigation.navigateToProduct
 import com.orka.finances.ui.navigation.navigateToWarehouse
 import com.orka.login.LoginScreen
-import com.orka.main.MainEvent
-import com.orka.main.MainStates
-import com.orka.main.MainViewModel
+import com.orka.main.AppEvents
+import com.orka.main.AppStates
+import com.orka.main.AppManager
 
 @Composable
 fun FinancesScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel,
+    viewModel: AppManager,
     printer: Printer
 ) {
     val mainState = viewModel.uiState.collectAsState()
 
     when (val state = mainState.value) {
 
-        MainStates.Initial -> {
+        AppStates.Initial -> {
             InitialScreen(modifier = modifier) {
-                viewModel.handle(MainEvent.Initialize)
+                viewModel.handle(AppEvents.Initialize)
             }
         }
 
-        is MainStates.HasSingleton -> {
+        is AppStates.HasSingleton -> {
             val navController = rememberNavController()
 
             when (state) {
 
-                is MainStates.HasSingleton.UnAuthorized -> {
+                is AppStates.HasSingleton.UnAuthorized -> {
                     LoginScreen(modifier, state.singletonContainer.loginScreenViewModel)
                 }
 
-                is MainStates.HasSingleton.HasCredential.CreatingContainers -> {
+                is AppStates.HasSingleton.HasCredential.CreatingContainers -> {
                     LoadingScreen(modifier = modifier) {
-                        viewModel.handle(MainEvent.InitContainers(
+                        viewModel.handle(AppEvents.InitContainers(
                             navigateToWarehouse = { navController.navigateToWarehouse(it) },
                             navigateToStockProduct = { navController.navigateToProduct(it) }
                         ))
                     }
                 }
 
-                is MainStates.HasSingleton.HasCredential.HasContainers -> {
-                    NavigationGraph(modifier, state, navController, { viewModel.handle(MainEvent.UnAuthorize) }, printer)
+                is AppStates.HasSingleton.HasCredential.HasContainers -> {
+                    NavigationGraph(modifier, state, navController, { viewModel.handle(AppEvents.UnAuthorize) }, printer)
                 }
             }
         }

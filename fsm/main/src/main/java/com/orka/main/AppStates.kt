@@ -3,24 +3,24 @@ package com.orka.main
 import com.orka.containers.SingletonContainer
 import com.orka.credentials.Credential
 
-sealed interface MainStates {
-    fun handle(event: MainEvent, fsm: MainFsm)
+sealed interface AppStates {
+    fun handle(event: AppEvents, fsm: MainFsm)
 
-    data object Initial : MainStates {
+    data object Initial : AppStates {
 
-        override fun handle(event: MainEvent, fsm: MainFsm) {
-            if(event is MainEvent.Initialize) fsm.checkCredentials(this)
+        override fun handle(event: AppEvents, fsm: MainFsm) {
+            if(event is AppEvents.Initialize) fsm.checkCredentials(this)
         }
     }
 
-    sealed class HasSingleton(open val singletonContainer: SingletonContainer) : MainStates {
+    sealed class HasSingleton(open val singletonContainer: SingletonContainer) : AppStates {
 
         data class UnAuthorized(
             override val singletonContainer: SingletonContainer
         ) : HasSingleton(singletonContainer) {
 
-            override fun handle(event: MainEvent, fsm: MainFsm) {
-                if(event is MainEvent.Authorize) {
+            override fun handle(event: AppEvents, fsm: MainFsm) {
+                if(event is AppEvents.Authorize) {
                     fsm.setCredential(event.credential, this)
                 }
             }
@@ -36,10 +36,10 @@ sealed interface MainStates {
                 override val singletonContainer: SingletonContainer
             ) : HasCredential(credential, singletonContainer) {
 
-                override fun handle(event: MainEvent, fsm: MainFsm) {
-                    if (event == MainEvent.UnAuthorize)
+                override fun handle(event: AppEvents, fsm: MainFsm) {
+                    if (event == AppEvents.UnAuthorize)
                         fsm.unauthorize(this)
-                    else if (event is MainEvent.InitContainers)
+                    else if (event is AppEvents.InitContainers)
                         fsm.initContainers(this, event.navigateToWarehouse, event.navigateToStockProduct)
                 }
             }
@@ -51,8 +51,8 @@ sealed interface MainStates {
                 val transientContainer: SingletonContainer.ScopedContainer.TransientContainer
             ) : HasCredential(credential, singletonContainer) {
 
-                override fun handle(event: MainEvent, fsm: MainFsm) {
-                    if (event == MainEvent.UnAuthorize) fsm.unauthorize(this)
+                override fun handle(event: AppEvents, fsm: MainFsm) {
+                    if (event == AppEvents.UnAuthorize) fsm.unauthorize(this)
                 }
             }
 

@@ -28,7 +28,7 @@ fun StickyHeader(
             modifier = Modifier
                 .padding(8.dp)
                 .clip(RoundedCornerShape(percent = 50))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 20f))
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = .7f))
                 .padding(horizontal = 12.dp, vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {

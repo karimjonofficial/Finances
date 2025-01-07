@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.orka.basket.BasketScreenState
@@ -68,6 +69,7 @@ private fun RegularPriceContent(
     Row(verticalAlignment = Alignment.CenterVertically) {
 
         Text(
+            modifier = Modifier.weight(1f),
             text = formatter.formatCurrency(price, stringResource(Strings.uzs)),
             style = MaterialTheme.typography.titleLarge
         )
@@ -97,7 +99,7 @@ private fun EditPriceContent(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
-        val text = remember { mutableStateOf(price.toInt().toString()) }
+        val text = remember { mutableStateOf(price.toULong().toString()) }
 
         NumberTextField(
             value = text.value,
