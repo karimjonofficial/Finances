@@ -2,6 +2,7 @@ package com.orka.containers
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.orka.basket.BasketScreenViewModel
+import com.orka.containers.res.baseUrl
 import com.orka.core.CategoriesDataSource
 import com.orka.core.CredentialManager
 import com.orka.core.Formatter
