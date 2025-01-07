@@ -34,8 +34,6 @@ class SingletonContainer(
     private val unauthorize: () -> Unit
 ) {
 
-    private val baseUrl = "http://16.171.10.164/api/"
-
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl).build()
