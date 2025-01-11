@@ -77,6 +77,9 @@
             <option value="$PROJECT_DIR$/models/receive" />
             <option value="$PROJECT_DIR$/models/sale" />
             <option value="$PROJECT_DIR$/models/stock" />
+            <option value="$PROJECT_DIR$/repositories" />
+            <option value="$PROJECT_DIR$/repositories/basket" />
+            <option value="$PROJECT_DIR$/repositories/basket/core" />
             <option value="$PROJECT_DIR$/res" />
             <option value="$PROJECT_DIR$/screens" />
             <option value="$PROJECT_DIR$/screens/basket" />
