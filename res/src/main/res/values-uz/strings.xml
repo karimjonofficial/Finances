@@ -54,4 +54,5 @@
     <string name="print_the_check">Chek chop etilsinmi?</string>
     <string name="no_connection_to_internet">Internetga ulanish mavjud emas</string>
     <string name="no_comment">Izoh mavjud emas</string>
+    <string name="processing_the_request">So\'rov qayta ishlanmoqda</string>
 </resources>

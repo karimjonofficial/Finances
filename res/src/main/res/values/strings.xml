@@ -55,4 +55,5 @@
     <string name="time">Time</string>
     <string name="no_connection_to_internet">No connection to internet</string>
     <string name="no_comment">No comment</string>
+    <string name="processing_the_request">Processing the request</string>
 </resources>
