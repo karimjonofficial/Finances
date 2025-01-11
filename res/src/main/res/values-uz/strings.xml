@@ -52,4 +52,6 @@
     <string name="initializing">Ishga tushirilmoqda…</string>
     <string name="save">Saqlash</string>
     <string name="print_the_check">Chek chop etilsinmi?</string>
+    <string name="no_connection_to_internet">Internetga ulanish mavjud emas</string>
+    <string name="no_comment">Izoh mavjud emas</string>
 </resources>

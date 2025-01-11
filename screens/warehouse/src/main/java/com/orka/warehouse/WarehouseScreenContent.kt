@@ -11,16 +11,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.core.Formatter
-import com.orka.products.ProductsScreenViewModel
+import com.orka.products.Product
 import com.orka.res.Strings
-import com.orka.stock.StockScreenViewModel
+import com.orka.stock.StockItem
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun WarehouseScreenContent(
     modifier: Modifier,
-    stockScreenViewModel: StockScreenViewModel,
-    productsScreenViewModel: ProductsScreenViewModel,
+    stockContentState: StockContentStates,
+    productsContentState: ProductsContentStates,
+    initializeProductsContent: ProductsContentStates.Initial.() -> Unit,
+    initializeStockItemsContent: StockContentStates.Initial.() -> Unit,
+    processProductsContent: ProductsContentStates.Processing.() -> Unit,
+    processStockContent: StockContentStates.Processing.() -> Unit,
+    refreshStockContent: StockContentStates.Empty.() -> Unit,
+    retryStockContent: StockContentStates.Failure.() -> Unit,
+    refreshProductContent: ProductsContentStates.Empty.() -> Unit,
+    retryProductContent: ProductsContentStates.Failure.() -> Unit,
+    selectProduct: ProductsContentStates.Success.(Product) -> Unit,
+    addToBasket: StockContentStates.Success.(StockItem) -> Unit,
     formatter: Formatter
 ) {
     val tabIndex = rememberSaveable { mutableIntStateOf(0) }
@@ -46,15 +56,25 @@ internal fun WarehouseScreenContent(
         when (tabIndex.intValue) {
             0 -> {
                 StockContent(
-                    viewModel = stockScreenViewModel,
+                    state = stockContentState,
+                    initialize = initializeStockItemsContent,
+                    process = processStockContent,
+                    addToBasket = addToBasket,
+                    refresh = refreshStockContent,
+                    retry = retryStockContent,
                     formatter = formatter
                 )
             }
 
             1 -> {
                 ProductsContent(
-                    viewModel = productsScreenViewModel,
-                    formatter = formatter
+                    state = productsContentState,
+                    formatter = formatter,
+                    initialize = initializeProductsContent,
+                    process = processProductsContent,
+                    selectProduct = selectProduct,
+                    retry = retryProductContent,
+                    refresh = refreshProductContent
                 )
             }
         }

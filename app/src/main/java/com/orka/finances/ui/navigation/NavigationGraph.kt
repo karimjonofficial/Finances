@@ -1,6 +1,7 @@
 package com.orka.finances.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -61,14 +62,32 @@ internal fun NavigationGraph(
         }
 
         composable<Navigation.Warehouse> {
+
             val destination: Navigation.Warehouse = it.toRoute()
+            val viewModel = state.transientContainer.warehouseViewModel(destination.categoryId)
+            val productsState = viewModel.productsUiState.collectAsState()
+            val stockState = viewModel.stockUiState.collectAsState()
 
             WarehouseScreen(
-                stockScreenViewModel = state.transientContainer
-                    .stockViewModel(destination.categoryId),
-                productsScreenViewModel = state.transientContainer
-                    .productsViewModel(destination.categoryId),
-                formatter = state.singletonContainer.formatter
+                formatter = state.singletonContainer.formatter,
+                productsContentState = productsState.value,
+                stockContentState = stockState.value,
+                initializeProductsContent = { this.initialize(viewModel) },
+                initializeStockItemsContent = { this.initialize(viewModel) },
+                processProductsContent = { this.process(viewModel) },
+                processStockContent = { this.process(viewModel) },
+                selectProduct = { product -> this.selectProduct(product, viewModel) },
+                addToBasket = { stockItem -> this.addToBasket(stockItem, viewModel) },
+                addReceive = { productId, amount, price, comment ->
+                    stockState.value.receive(productId, amount, price, comment, viewModel)
+                },
+                addProduct = { name, price, comment ->
+                    productsState.value.addProduct(name, price, comment, viewModel)
+                },
+                refreshStockContent = { this.refresh(viewModel) },
+                retryStockContent = { this.retry(viewModel) },
+                retryProductContent = { this.retry(viewModel) },
+                refreshProductContent = { this.refresh(viewModel) }
             )
         }
 
@@ -78,10 +97,7 @@ internal fun NavigationGraph(
             ProductScreen(
                 viewModel = state.transientContainer.productViewModel(destination.productId),
                 formatter = state.singletonContainer.formatter
-            ) { categoryId ->
-                state.transientContainer.productsViewModel(categoryId).fetch()
-                state.transientContainer.stockViewModel(categoryId).fetch()
-            }
+            ) { categoryId -> state.transientContainer.warehouseViewModel(categoryId).refresh() }
         }
     }
 }

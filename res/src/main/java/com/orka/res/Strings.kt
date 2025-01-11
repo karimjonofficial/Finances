@@ -100,6 +100,12 @@ object Strings {
     val name: Int
         get() = R.string.name
 
+    val no_comment: Int
+        get() = R.string.no_comment
+
+    val no_connection_to_internet: Int
+        get() = R.string.no_connection_to_internet
+
     val overall_price: Int
         get() = R.string.overall_price
 

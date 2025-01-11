@@ -93,16 +93,22 @@ dependencies {
     implementation(project(Modules.Fsm.main))
 
     implementation(project(Modules.Models.credential))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.stock))
+    implementation(project(Modules.Models.basket))
+    implementation(project(Modules.Models.sale))
+    implementation(project(Modules.Models.category))
+    implementation(project(Modules.Models.receive))
+    implementation(project(Modules.Models.info))
 
     implementation(project(Modules.ViewModels.core))
     implementation(project(Modules.ViewModels.main))
     implementation(project(Modules.ViewModels.login))
     implementation(project(Modules.ViewModels.home))
-    implementation(project(Modules.ViewModels.stock))
-    implementation(project(Modules.ViewModels.products))
     implementation(project(Modules.ViewModels.product))
     implementation(project(Modules.ViewModels.history))
     implementation(project(Modules.ViewModels.basket))
+    implementation(project(Modules.ViewModels.warehouse))
 
     implementation(project(Modules.Screens.login))
     implementation(project(Modules.Screens.home))
@@ -110,6 +116,7 @@ dependencies {
     implementation(project(Modules.Screens.history))
     implementation(project(Modules.Screens.product))
     implementation(project(Modules.Screens.basket))
+    implementation(project(Modules.Screens.warehouse))
 
 
     testImplementation(libs.junit)

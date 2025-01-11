@@ -144,8 +144,7 @@ object Modules {
         val login = "$viewModels${ScreenFamilies.login}"
         val main = "$viewModels:main"
         val product = "$viewModels${ScreenFamilies.product}"
-        val products = "$viewModels${ScreenFamilies.products}"
-        val stock = "$viewModels${ScreenFamilies.stock}"
+        val warehouse = "$viewModels${ScreenFamilies.warehouse}"
     }
 }
 
@@ -176,7 +175,5 @@ data object ScreenFamilies {
     val home = ":home"
     val login = ":login"
     val product = ":product"
-    val products = ":products"
-    val stock = ":stock"
     val warehouse = ":warehouse"
 }

@@ -78,11 +78,10 @@ dependencies {
     implementation(project(Modules.ViewModels.core))
     implementation(project(Modules.ViewModels.login))
     implementation(project(Modules.ViewModels.home))
-    implementation(project(Modules.ViewModels.products))
     implementation(project(Modules.ViewModels.product))
-    implementation(project(Modules.ViewModels.stock))
     implementation(project(Modules.ViewModels.history))
     implementation(project(Modules.ViewModels.basket))
+    implementation(project(Modules.ViewModels.warehouse))
 
     testImplementation(libs.junit)
 

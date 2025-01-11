@@ -53,4 +53,6 @@
     <string name="n" translatable="false">№</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="no_connection_to_internet">No connection to internet</string>
+    <string name="no_comment">No comment</string>
 </resources>

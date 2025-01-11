@@ -12,13 +12,17 @@ import androidx.compose.ui.res.stringResource
 import com.orka.res.Strings
 
 @Composable
-fun InitializingScreen(modifier: Modifier = Modifier.fillMaxSize()) {
+fun InitializingScreen(
+    modifier: Modifier = Modifier.fillMaxSize(),
+    text: String = stringResource(Strings.loading_data)
+) {
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(Strings.loading_data))
+        Text(text = text)
         VerticalSpacer(8)
         CircularProgressIndicator()
     }

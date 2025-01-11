@@ -109,8 +109,7 @@
             <option value="$PROJECT_DIR$/viewmodels/login" />
             <option value="$PROJECT_DIR$/viewmodels/main" />
             <option value="$PROJECT_DIR$/viewmodels/product" />
-            <option value="$PROJECT_DIR$/viewmodels/products" />
-            <option value="$PROJECT_DIR$/viewmodels/stock" />
+            <option value="$PROJECT_DIR$/viewmodels/warehouse" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

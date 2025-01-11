@@ -24,8 +24,7 @@ import com.orka.network.RemoteReceiveDataSource
 import com.orka.network.RemoteSaleDataSource
 import com.orka.network.RemoteStockDataSource
 import com.orka.product.ProductScreenViewModel
-import com.orka.products.ProductsScreenViewModel
-import com.orka.stock.StockScreenViewModel
+import com.orka.warehouse.WarehouseScreenViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -94,31 +93,8 @@ class SingletonContainer(
             private val navigateToProduct: (Int) -> Unit
         ) {
 
-            private val stockViewModels = emptyMap<Int, StockScreenViewModel>().toMutableMap()
-            private val productsViewModels =
-                emptyMap<Int, ProductsScreenViewModel>().toMutableMap()
-            private val productViewModels =
-                emptyMap<Int, ProductScreenViewModel>().toMutableMap()
-
-            fun stockViewModel(categoryId: Int): StockScreenViewModel {
-                return stockViewModels[categoryId] ?: StockScreenViewModel(
-                    categoryId = categoryId,
-                    httpService = httpService,
-                    stockDataSource = stockDataSource,
-                    receiveDataSource = receiveDataSource,
-                    productsDataSource = productsDataSource,
-                    basketDataSource = basketDataSource
-                ).apply { stockViewModels[categoryId] = this }
-            }
-
-            fun productsViewModel(categoryId: Int): ProductsScreenViewModel {
-                return productsViewModels[categoryId] ?: ProductsScreenViewModel(
-                    dataSource = productsDataSource,
-                    categoryId = categoryId,
-                    httpService = httpService,
-                    navigate = navigateToProduct
-                ).apply { productsViewModels[categoryId] = this }
-            }
+            private val warehouseViewModels = emptyMap<Int, WarehouseScreenViewModel>().toMutableMap()
+            private val productViewModels = emptyMap<Int, ProductScreenViewModel>().toMutableMap()
 
             fun productViewModel(id: Int): ProductScreenViewModel {
                 return productViewModels[id] ?: ProductScreenViewModel(
@@ -126,6 +102,19 @@ class SingletonContainer(
                     productId = id,
                     httpService = httpService
                 ).apply { productViewModels[id] = this }
+            }
+
+            fun warehouseViewModel(categoryId: Int): WarehouseScreenViewModel {
+                return warehouseViewModels[categoryId] ?:
+                    WarehouseScreenViewModel(
+                        categoryId = categoryId,
+                        httpService = httpService,
+                        productsDataSource = productsDataSource,
+                        stockDataSource = stockDataSource,
+                        receiveDataSource = receiveDataSource,
+                        basketDataSource = basketDataSource,
+                        navigateToProductScreen = navigateToProduct
+                    ). apply { warehouseViewModels[categoryId] = this }
             }
         }
 

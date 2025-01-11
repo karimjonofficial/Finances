@@ -32,6 +32,8 @@
       <module name="Finances.sefvices.printer.core" target="21" />
       <module name="Finances.test" target="21" />
       <module name="Finances.test.testLib" target="21" />
+      <module name="Finances.viewmodels.products" target="21" />
+      <module name="Finances.viewmodels.stock" target="21" />
       <module name="Kotlin.Finances.test.testLib" target="21" />
     </bytecodeTargetLevel>
   </component>

@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -37,29 +36,21 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.kotlinx.datetime)
 
-    implementation(project(Modules.res))
-    implementation(project(Modules.Lib.Extensions.string))
-    implementation(project(Modules.Lib.Ui.components))
-    implementation(project(Modules.Lib.Ui.input))
     implementation(project(Modules.Lib.log))
 
     implementation(project(Modules.Services.Http.core))
-    implementation(project(Modules.Services.Formatter.Currency.core))
-    implementation(project(Modules.Services.Formatter.Datetime.core))
-    implementation(project(Modules.Services.Formatter.core))
-
     implementation(project(Modules.ViewModels.core))
 
-    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.receive))
     implementation(project(Modules.Models.stock))
+    implementation(project(Modules.Models.product))
+    implementation(project(Modules.Models.basket))
 
-    implementation(project(Modules.ViewModels.warehouse))
+    implementation(project(Modules.DataSources.Receive.core))
+    implementation(project(Modules.DataSources.Product.core))
+    implementation(project(Modules.DataSources.Basket.core))
+    implementation(project(Modules.DataSources.Stock.core))
 
     testImplementation(libs.junit)
 
