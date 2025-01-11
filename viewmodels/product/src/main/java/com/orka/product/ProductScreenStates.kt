@@ -29,7 +29,7 @@ sealed class ProductScreenStates(internal open val id: Int) : FsmState() {
     ) : ProductScreenStates(id) {
 
         override suspend fun process(event: FsmEvent, fsm: SingleStateFsm): ProductScreenStates {
-            return if(event is ProductScreenEvents.Process) {
+            return if (event is ProductScreenEvents.Process) {
                 fsm.viewModelScope.async(Dispatchers.Default) { produce() }.await()
             } else Initial(id)
         }
@@ -47,8 +47,14 @@ sealed class ProductScreenStates(internal open val id: Int) : FsmState() {
 
             return if (event is ProductScreenEvents.Save) {
                 Processing(id) {
-                    (fsm as ProductScreenViewModel).update(event.name, event.price, event.description, product.categoryId)
-                    event.reloadWarehouse(product.categoryId)
+                    val result = (fsm as ProductScreenViewModel).update(
+                        name = event.name,
+                        price = event.price,
+                        description = event.description,
+                        categoryId = product.categoryId
+                    )
+                    if (result != null)
+                        event.reloadWarehouse(product.categoryId)
                     Initial(id)
                 }
             } else Initial(id)
