@@ -1,18 +1,20 @@
 package com.orka.warehouse
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.orka.products.Product
 import com.orka.stock.StockItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import com.orka.res.Strings
 import com.orka.warehouse.WarehouseScreenViewModel as Fsm
 
 sealed interface ProductsContentStates {
     fun addProduct(name: String, price: Double, comment: String, fsm: Fsm) {
         fsm.setProductsState(
             Processing(
-                message = "Processing",//TODO
+                messageRes = Strings.processing_the_request,
                 process = {
                     fsm.viewModelScope.launch(Dispatchers.IO) {
                         val result = fsm.addProduct(name, price, comment)
@@ -35,14 +37,14 @@ sealed interface ProductsContentStates {
     data object Initial : ProductsContentStates {
         fun initialize(fsm: Fsm) {
             fsm.setProductsState(Processing(
-                message = "Initializing",
+                messageRes = Strings.initializing,
                 process = { fsm.fetchProducts() }
             ))
         }
     }
 
     data class Processing(
-        val message: String,
+        @StringRes val messageRes: Int,
         private val process: suspend () -> Unit
     ) : ProductsContentStates {
         fun process(fsm: Fsm) {
@@ -56,7 +58,7 @@ sealed interface ProductsContentStates {
         override fun refresh(fsm: Fsm) {
 
             fsm.setProductsState(Processing(
-                message = "Initializing",
+                messageRes = Strings.initializing,
                 process = { fsm.fetchProducts() }
             ))
         }
@@ -66,6 +68,7 @@ sealed interface ProductsContentStates {
         val productsMap: Map<Char, List<Product>>,
         val products: List<Product>
     ) : ProductsContentStates {
+
         override fun refresh(fsm: Fsm) {
             fsm.viewModelScope.launch(Dispatchers.Main) {
                 fsm.viewModelScope.async(Dispatchers.IO) { fsm.getProducts() }.await()?.let {
@@ -76,7 +79,6 @@ sealed interface ProductsContentStates {
                 }
             }
         }
-
         fun selectProduct(product: Product, fsm: Fsm) {
             fsm.selectProduct(product)
         }
@@ -87,7 +89,7 @@ sealed interface ProductsContentStates {
     ) : ProductsContentStates {
         fun retry(fsm: Fsm) {
             fsm.setProductsState(Processing(
-                message = "Initializing",
+                messageRes = Strings.initializing,
                 process = { fsm.fetchProducts() }
             ))
         }
@@ -157,7 +159,6 @@ sealed interface StockContentStates {
                 }
             }
         }
-
         fun addToBasket(stockItem: StockItem, fsm: Fsm) {
             fsm.addToBasket(stockItem)
         }

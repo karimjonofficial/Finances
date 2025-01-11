@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
+    implementation(project(Modules.res))
     implementation(project(Modules.Lib.log))
 
     implementation(project(Modules.Services.Http.core))

@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.orka.components.EmptyScreen
 import com.orka.components.InitialScreen
 import com.orka.components.InitializingScreen
@@ -47,7 +48,7 @@ fun ProductsContent(
         }
 
         is ProductsContentStates.Processing -> {
-            InitializingScreen(text = state.message)
+            InitializingScreen(text = stringResource(state.messageRes))
             state.process()
         }
 

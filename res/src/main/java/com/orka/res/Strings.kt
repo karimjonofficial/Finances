@@ -118,6 +118,9 @@ object Strings {
     val print_the_check: Int
         get() = R.string.print_the_check
 
+    val processing_the_request: Int
+        get() = R.string.processing_the_request
+
     val product: Int
         get() = R.string.product
 
