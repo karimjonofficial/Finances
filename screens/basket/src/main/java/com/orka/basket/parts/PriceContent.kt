@@ -103,7 +103,11 @@ private fun EditPriceContent(
 
         NumberTextField(
             value = text.value,
-            onValueChange = { text.value = it },
+            onValueChange = {
+                if ((text.value.toDoubleOrNull() ?: 0.0) <= price) {
+                    text.value = it
+                }
+            },
             formatter = formatter,
             label = { Text(text = stringResource(Strings.overall_price)) },
             suffix = { Text(text = stringResource(Strings.uzs)) },
