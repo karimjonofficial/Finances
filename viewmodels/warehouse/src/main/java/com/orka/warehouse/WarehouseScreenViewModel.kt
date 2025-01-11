@@ -41,6 +41,14 @@ class WarehouseScreenViewModel(
         _productsUiState.value.refresh(this)
     }
 
+    fun selectProduct(product: Product) {
+        navigateToProductScreen(product.id)
+    }
+
+    fun addToBasket(stockItem: StockItem) {
+        basketDataSource.add(BasketItem(stockItem.product, 1))
+    }
+
     internal fun setProductsState(state: ProductsContentStates) {
         viewModelScope.launch(Dispatchers.Default) {
             _productsUiState.value = state
@@ -54,18 +62,17 @@ class WarehouseScreenViewModel(
     }
 
     internal suspend fun receive(productId: Int, amount: Int, price: Double, comment: String): Receive? {
-        if (amount > 0 && price > 0.0) {
-            return request {
+        return if (amount > 0 && price > 0.0) {
+            request {
                 receiveDataSource.add(
                     PostReceiveRequestModel(
                         items = listOf(PostReceiveRequestModelItem(productId, amount)),
                         price = price.toString(),
-                        comment = comment.ifBlank { "No comment" }//TODO
+                        comment = comment
                     )
                 )
             }
-        }
-        return null
+        } else null
     }
 
     internal suspend fun getProducts(): List<Product>? {
@@ -76,14 +83,6 @@ class WarehouseScreenViewModel(
 
     internal suspend fun getStockItems(): List<StockItem>? {
         return stockDataSource.get(categoryId)
-    }
-
-    fun selectProduct(product: Product) {
-        navigateToProductScreen(product.id)
-    }
-
-    fun addToBasket(stockItem: StockItem) {
-        basketDataSource.add(BasketItem(stockItem.product, 1))
     }
 
     internal suspend fun addProduct(name: String, price: Double, comment: String): Product? {
