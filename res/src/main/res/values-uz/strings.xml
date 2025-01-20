@@ -18,8 +18,6 @@
     <string name="fill_lines_to_receive_a_product">Maxsulotlarni kirim qilish uchun quyidagi maydonlarni to\'ldiring</string>
     <string name="amount">Miqdor</string>
     <string name="select_the_product">Maxsulotni tanlang</string>
-    <string name="finances">Finances</string>
-    <string name="n">№</string>
     <string name="date">Sana</string>
     <string name="time">Vaqt</string>
     <string name="product">Maxsulot</string>
@@ -51,8 +49,10 @@
     <string name="empty_list">Bo\'sh ro\'yhat</string>
     <string name="initializing">Ishga tushirilmoqda…</string>
     <string name="save">Saqlash</string>
-    <string name="print_the_check">Chek chop etilsinmi?</string>
+    <string name="do_you_want_print_the_check">Chek chop etilsinmi?</string>
     <string name="no_connection_to_internet">Internetga ulanish mavjud emas</string>
     <string name="no_comment">Izoh mavjud emas</string>
     <string name="processing_the_request">So\'rov qayta ishlanmoqda</string>
+    <string name="no">Yo\'q</string>
+    <string name="yes">Ha</string>
 </resources>
