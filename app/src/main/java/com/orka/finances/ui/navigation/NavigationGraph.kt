@@ -64,7 +64,7 @@ internal fun NavigationGraph(
         composable<Navigation.Warehouse> {
 
             val destination: Navigation.Warehouse = it.toRoute()
-            val viewModel = state.transientContainer.warehouseViewModel(destination.categoryId)
+            val viewModel = state.scopedContainer.warehouseViewModel(destination.categoryId)
             val productsState = viewModel.productsUiState.collectAsState()
             val stockState = viewModel.stockUiState.collectAsState()
 
@@ -95,9 +95,9 @@ internal fun NavigationGraph(
             val destination: Navigation.Product = it.toRoute()
 
             ProductScreen(
-                viewModel = state.transientContainer.productViewModel(destination.productId),
+                viewModel = state.scopedContainer.productViewModel(destination.productId),
                 formatter = state.singletonContainer.formatter
-            ) { categoryId -> state.transientContainer.warehouseViewModel(categoryId).refresh() }
+            ) { categoryId -> state.scopedContainer.warehouseViewModel(categoryId).refresh() }
         }
     }
 }

@@ -33,7 +33,7 @@ internal fun SellDialog(
     basket: Basket,
     formatter: Formatter,
     print: (GraphicsLayer) -> Unit,
-    sell: () -> Unit
+    sellProducts: () -> Unit
 ) {
     val graphicsLayer = rememberGraphicsLayer()
 
@@ -41,12 +41,14 @@ internal fun SellDialog(
         modifier = modifier,
         dismissRequest = dismissRequest,
         title = stringResource(Strings.sell),
-        supportingText = stringResource(Strings.print_the_check),
+        supportingText = stringResource(Strings.do_you_want_print_the_check),
+        cancelTitle = stringResource(Strings.no),
+        successTitle = stringResource(Strings.yes),
         onSuccess = {
             print(graphicsLayer)
-            sell()
+            sellProducts()
         },
-        onCancel = { sell() }
+        onCancel = { sellProducts() }
     ) {
 
         VerticalSpacer(
@@ -117,7 +119,7 @@ private fun DialogPreview() {
 
             },
             print = {},
-            sell = {}
+            sellProducts = {}
         )
     }
 }

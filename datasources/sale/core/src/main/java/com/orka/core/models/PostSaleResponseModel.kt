@@ -9,4 +9,6 @@ data class PostSaleResponseModel(
     @SerialName("datetime") val datetime: String,
     @SerialName("price") val price: String,
     @SerialName("comment") val comment: String
-)
+) {
+
+}
