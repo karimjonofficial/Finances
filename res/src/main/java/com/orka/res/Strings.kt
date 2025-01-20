@@ -100,6 +100,9 @@ object Strings {
     val name: Int
         get() = R.string.name
 
+    val no: Int
+        get() = R.string.no
+
     val no_comment: Int
         get() = R.string.no_comment
 
@@ -115,8 +118,8 @@ object Strings {
     val price: Int
         get() = R.string.price
 
-    val print_the_check: Int
-        get() = R.string.print_the_check
+    val do_you_want_print_the_check: Int
+        get() = R.string.do_you_want_print_the_check
 
     val processing_the_request: Int
         get() = R.string.processing_the_request
@@ -171,4 +174,7 @@ object Strings {
 
     val warehouse: Int
         get() = R.string.warehouse
+
+    val yes: Int
+        get() = R.string.yes
 }

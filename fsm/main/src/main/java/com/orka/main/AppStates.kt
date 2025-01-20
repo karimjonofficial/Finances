@@ -47,8 +47,7 @@ sealed interface AppStates {
             data class HasContainers(
                 override val credential: Credential,
                 override val singletonContainer: SingletonContainer,
-                val scopedContainer: SingletonContainer.ScopedContainer,
-                val transientContainer: SingletonContainer.ScopedContainer.TransientContainer
+                val scopedContainer: SingletonContainer.ScopedContainer
             ) : HasCredential(credential, singletonContainer) {
 
                 override fun handle(event: AppEvents, fsm: MainFsm) {
