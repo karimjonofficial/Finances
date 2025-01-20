@@ -45,33 +45,31 @@ class SingletonContainer(
     val loginScreenViewModel by lazy {
         LoginScreenViewModel(credentialsDataSource, credentialManager, httpService)
     }
-
     val formatter: Formatter by lazy { LocalFormatter() }
 
     inner class ScopedContainer internal constructor(
         private val credential: Credential,
-        private val navigateToWarehouse: (Int) -> Unit
+        private val navigateToWarehouse: (Int) -> Unit,
+        private val navigateToProduct: (Int) -> Unit
     ) {
 
         private val categoriesDataSource: CategoriesDataSource by lazy {
             RemoteCategoriesDataSource.create(retrofit, credential)
         }
-
         private val receiveDataSource: ReceiveDataSource by lazy {
             RemoteReceiveDataSource.create(retrofit, credential)
         }
-
         private val stockDataSource: StockDataSource by lazy {
             RemoteStockDataSource.create(retrofit, credential)
         }
-
         private val productsDataSource: ProductsDataSource by lazy {
             RemoteProductsDataSource.create(retrofit, credential)
         }
-
         private val saleDataSource: SaleDataSource by lazy {
             RemoteSaleDataSource.create(retrofit, credential)
         }
+        private val warehouseViewModels = emptyMap<Int, WarehouseScreenViewModel>().toMutableMap()
+        private val productViewModels = emptyMap<Int, ProductScreenViewModel>().toMutableMap()
 
         val homeScreenViewModel: HomeScreenViewModel by lazy {
             HomeScreenViewModel(
@@ -80,53 +78,41 @@ class SingletonContainer(
                 navigate = navigateToWarehouse
             )
         }
-
         val basketViewModel: BasketScreenViewModel by lazy {
-            BasketScreenViewModel(httpService, basketDataSource, saleDataSource)
+            BasketScreenViewModel(httpService, basketDataSource, saleDataSource) {
+                warehouseViewModels.forEach { map -> map.value.refresh() }
+            }
         }
-
         val historyViewModel: HistoryScreenViewModel by lazy {
             HistoryScreenViewModel(receiveDataSource, saleDataSource, httpService)
         }
 
-        inner class TransientContainer internal constructor(
-            private val navigateToProduct: (Int) -> Unit
-        ) {
-
-            private val warehouseViewModels = emptyMap<Int, WarehouseScreenViewModel>().toMutableMap()
-            private val productViewModels = emptyMap<Int, ProductScreenViewModel>().toMutableMap()
-
-            fun productViewModel(id: Int): ProductScreenViewModel {
-                return productViewModels[id] ?: ProductScreenViewModel(
-                    dataSource = productsDataSource,
-                    productId = id,
-                    httpService = httpService
-                ).apply { productViewModels[id] = this }
-            }
-
-            fun warehouseViewModel(categoryId: Int): WarehouseScreenViewModel {
-                return warehouseViewModels[categoryId] ?:
-                    WarehouseScreenViewModel(
-                        categoryId = categoryId,
-                        httpService = httpService,
-                        productsDataSource = productsDataSource,
-                        stockDataSource = stockDataSource,
-                        receiveDataSource = receiveDataSource,
-                        basketDataSource = basketDataSource,
-                        navigateToProductScreen = navigateToProduct
-                    ). apply { warehouseViewModels[categoryId] = this }
-            }
+        fun productViewModel(id: Int): ProductScreenViewModel {
+            return productViewModels[id] ?: ProductScreenViewModel(
+                dataSource = productsDataSource,
+                productId = id,
+                httpService = httpService
+            ).apply { productViewModels[id] = this }
         }
 
-        fun transientContainer(navigateToStockItem: (Int) -> Unit): TransientContainer {
-            return TransientContainer(navigateToStockItem)
+        fun warehouseViewModel(categoryId: Int): WarehouseScreenViewModel {
+            return warehouseViewModels[categoryId] ?: WarehouseScreenViewModel(
+                categoryId = categoryId,
+                httpService = httpService,
+                productsDataSource = productsDataSource,
+                stockDataSource = stockDataSource,
+                receiveDataSource = receiveDataSource,
+                basketDataSource = basketDataSource,
+                navigateToProductScreen = navigateToProduct
+            ).apply { warehouseViewModels[categoryId] = this }
         }
     }
 
     fun scopedContainer(
         credential: Credential,
-        navigateToWarehouse: (Int) -> Unit
+        navigateToWarehouse: (Int) -> Unit,
+        navigateToProduct: (Int) -> Unit
     ): ScopedContainer {
-        return ScopedContainer(credential, navigateToWarehouse)
+        return ScopedContainer(credential, navigateToWarehouse, navigateToProduct)
     }
 }

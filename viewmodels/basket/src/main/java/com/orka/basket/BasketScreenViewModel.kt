@@ -6,12 +6,14 @@ import com.orka.core.SaleDataSource
 import com.orka.core.SingleStateViewModel
 import com.orka.core.models.PostSaleRequestModel
 import com.orka.core.models.PostSaleRequestModelItem
+import com.orka.core.models.PostSaleResponseModel
 import com.orka.log.Log
 
 class BasketScreenViewModel(
     httpService: HttpService,
     private val basketDataSource: BasketDataSource,
-    private val saleDataSource: SaleDataSource
+    private val saleDataSource: SaleDataSource,
+    private val refresh: () -> Unit,
 ) : SingleStateViewModel<BasketScreenState>(
     httpService = httpService,
     BasketScreenState.Initial
@@ -88,12 +90,15 @@ class BasketScreenViewModel(
         val state = uiState.value
 
         state.let {
-            if (it is BasketScreenState.WithBasket && it.basket.correct()) {
+            if (it is BasketScreenState.WithBasket && it.basket.isCorrect()) {
                 setState(BasketScreenState.InProcess)
                 request(
                     request = {
-                        sell(basketDataSource.get())
-                        clear()
+                        val result = sell(basketDataSource.get())
+                        if(result != null) {
+                            refresh()
+                            clear()
+                        }
                     },
                     onException = { exception ->
                         Log("BasketScreenViewModel.Http", exception.message ?: "No message")
@@ -103,10 +108,10 @@ class BasketScreenViewModel(
         }
     }
 
-    private fun Basket.correct() = this.items.isNotEmpty() && this.price > 0.0 && this.price.toInt() < Int.MAX_VALUE
+    private fun Basket.isCorrect() = this.items.isNotEmpty() && this.price > 0.0 && this.price.toInt() < Int.MAX_VALUE
 
-    private suspend fun sell(basket: Basket) {
-        saleDataSource.add(
+    private suspend fun sell(basket: Basket): PostSaleResponseModel? {
+        return saleDataSource.add(
             body = PostSaleRequestModel(
                 items = basket.items.map {
                     PostSaleRequestModelItem(

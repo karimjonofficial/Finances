@@ -13,6 +13,6 @@ interface MainFsm {
     fun initContainers(
         state: AppStates.HasSingleton.HasCredential.CreatingContainers,
         navigateToWarehouse: (Int) -> Unit,
-        navigateToStockItem: (Int) -> Unit
+        navigateToProduct: (Int) -> Unit
     )
 }

@@ -58,22 +58,20 @@ class AppManager(
     override fun initContainers(
         state: AppStates.HasSingleton.HasCredential.CreatingContainers,
         navigateToWarehouse: (Int) -> Unit,
-        navigateToStockItem: (Int) -> Unit
+        navigateToProduct: (Int) -> Unit
     ) {
         launch {
             val scoped = state.singletonContainer.scopedContainer(
                 credential = state.credential,
                 navigateToWarehouse = navigateToWarehouse,
+                navigateToProduct = navigateToProduct
             )
-
-            val transient = scoped.transientContainer(navigateToStockItem)
 
             setState(
                 AppStates.HasSingleton.HasCredential.HasContainers(
                     credential = state.credential,
                     singletonContainer = state.singletonContainer,
-                    scopedContainer = scoped,
-                    transientContainer = transient
+                    scopedContainer = scoped
                 )
             )
         }

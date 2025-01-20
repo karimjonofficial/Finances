@@ -28,7 +28,7 @@ internal fun ReceiveCard(item: ReceiveModel, formatter: Formatter) {
 
     Row(
         modifier = Modifier.animateContentSize(),
-        verticalAlignment = if (expanded.value) Alignment.Bottom else Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
 
         ListItem(

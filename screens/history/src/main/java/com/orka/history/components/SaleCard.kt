@@ -32,7 +32,7 @@ internal fun SaleCard(
 
     Row(
         modifier = modifier.animateContentSize(),
-        verticalAlignment = if (expanded.value) Alignment.Bottom else Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
 
         ListItem(

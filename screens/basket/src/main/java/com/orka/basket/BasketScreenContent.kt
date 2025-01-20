@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.orka.basket.parts.PriceContent
 import com.orka.basket.parts.BasketItemsList
+import com.orka.basket.parts.PriceContent
 import com.orka.basket.parts.SellDialog
 import com.orka.core.Formatter
 import com.orka.core.Printer
@@ -47,8 +47,8 @@ internal fun BasketScreenContent(
     val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
 
     if(dialogVisible.value) {
-        if(uiState.value is BasketScreenState.WithBasket.Regular) {
 
+        if(uiState.value is BasketScreenState.WithBasket.Regular) {
             SellDialog(
                 dismissRequest = { dialogVisible.value = false },
                 basket = (uiState.value as BasketScreenState.WithBasket.Regular).basket,
@@ -57,7 +57,7 @@ internal fun BasketScreenContent(
                         printer.print(it.toImageBitmap().asAndroidBitmap().copy(Bitmap.Config.ARGB_8888, false))
                     }
                 },
-                sell = { viewModel.sell() },
+                sellProducts = { viewModel.sell() },
                 formatter = formatter
             )
         }
