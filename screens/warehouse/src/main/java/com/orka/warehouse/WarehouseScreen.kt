@@ -8,13 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.orka.components.AppScaffold
 import com.orka.core.Formatter
+import com.orka.input.CurrencyVisualTransformation
+import com.orka.stock.StockItem
 import com.orka.warehouse.parts.AddProductDialog
 import com.orka.warehouse.parts.ReceiveDialog
-import com.orka.components.AppScaffold
-import com.orka.input.CurrencyVisualTransformation
-import com.orka.products.Product
-import com.orka.stock.StockItem
 import com.orka.warehouse.parts.WarehouseScreenTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,18 +23,12 @@ fun WarehouseScreen(
     formatter: Formatter,
     productsContentState: ProductsContentStates,
     stockContentState: StockContentStates,
-    initializeProductsContent: ProductsContentStates.Initial.() -> Unit,
     initializeStockItemsContent: StockContentStates.Initial.() -> Unit,
-    processProductsContent: ProductsContentStates.Processing.() -> Unit,
     processStockContent: StockContentStates.Processing.() -> Unit,
     refreshStockContent: StockContentStates.Empty.() -> Unit,
     retryStockContent: StockContentStates.Failure.() -> Unit,
-    refreshProductContent: ProductsContentStates.Empty.() -> Unit,
-    retryProductContent: ProductsContentStates.Failure.() -> Unit,
-    selectProduct: ProductsContentStates.Success.(Product) -> Unit,
     addToBasket: StockContentStates.Success.(StockItem) -> Unit,
     addReceive: StockContentStates.(Int, Int, Double, String) -> Unit,
-    addProduct: ProductsContentStates.(String, Double, String) -> Unit,
 ) {
 
     val receiveDialogVisible = rememberSaveable { mutableStateOf(false) }
@@ -71,11 +64,12 @@ fun WarehouseScreen(
 
             AddProductDialog(
                 dismissRequest = { productsDialogVisible.value = false },
-                onSuccess = { name, price, description ->
-                    productsContentState.addProduct(name, price, description)
+                onSuccess = { name, price, description, amount ->
+                    productsContentState.addProductAndReceive(name, price, description, amount)
                     productsDialogVisible.value = false
                 },
-                currencyVisualTransformation = currencyVisualTransformation
+                currencyVisualTransformation = currencyVisualTransformation,
+                formatter = formatter
             )
         }
 
@@ -84,16 +78,11 @@ fun WarehouseScreen(
             productsContentState = productsContentState,
             stockContentState = stockContentState,
             formatter = formatter,
-            initializeProductsContent = initializeProductsContent,
             initializeStockItemsContent = initializeStockItemsContent,
-            processProductsContent = processProductsContent,
             processStockContent = processStockContent,
-            selectProduct = selectProduct,
             addToBasket = addToBasket,
             refreshStockContent = refreshStockContent,
             retryStockContent = retryStockContent,
-            retryProductContent = retryProductContent,
-            refreshProductContent = refreshProductContent
         )
     }
 }

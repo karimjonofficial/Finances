@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.core.Formatter
-import com.orka.products.Product
 import com.orka.res.Strings
 import com.orka.stock.StockItem
 
@@ -21,15 +20,10 @@ internal fun WarehouseScreenContent(
     modifier: Modifier,
     stockContentState: StockContentStates,
     productsContentState: ProductsContentStates,
-    initializeProductsContent: ProductsContentStates.Initial.() -> Unit,
     initializeStockItemsContent: StockContentStates.Initial.() -> Unit,
-    processProductsContent: ProductsContentStates.Processing.() -> Unit,
     processStockContent: StockContentStates.Processing.() -> Unit,
     refreshStockContent: StockContentStates.Empty.() -> Unit,
     retryStockContent: StockContentStates.Failure.() -> Unit,
-    refreshProductContent: ProductsContentStates.Empty.() -> Unit,
-    retryProductContent: ProductsContentStates.Failure.() -> Unit,
-    selectProduct: ProductsContentStates.Success.(Product) -> Unit,
     addToBasket: StockContentStates.Success.(StockItem) -> Unit,
     formatter: Formatter
 ) {
@@ -69,12 +63,7 @@ internal fun WarehouseScreenContent(
             1 -> {
                 ProductsContent(
                     state = productsContentState,
-                    formatter = formatter,
-                    initialize = initializeProductsContent,
-                    process = processProductsContent,
-                    selectProduct = selectProduct,
-                    retry = retryProductContent,
-                    refresh = refreshProductContent
+                    formatter = formatter
                 )
             }
         }

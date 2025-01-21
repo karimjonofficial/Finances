@@ -10,18 +10,12 @@ import com.orka.components.InitialScreen
 import com.orka.components.InitializingScreen
 import com.orka.components.OfflineScreen
 import com.orka.core.Formatter
-import com.orka.products.Product
 import com.orka.warehouse.parts.ProductsList
 
 @Composable
 fun ProductsContent(
     modifier: Modifier = Modifier,
     state: ProductsContentStates,
-    initialize: ProductsContentStates.Initial.() -> Unit,
-    process: ProductsContentStates.Processing.() -> Unit,
-    selectProduct: ProductsContentStates.Success.(Product) -> Unit,
-    refresh: ProductsContentStates.Empty.() -> Unit,
-    retry: ProductsContentStates.Failure.() -> Unit,
     lazyListState: LazyListState = rememberLazyListState(),
     formatter: Formatter
 ) {

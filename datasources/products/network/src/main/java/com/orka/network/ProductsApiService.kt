@@ -12,6 +12,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface ProductsApiService {
+
     @Headers("accept: application/json")
     @GET("v1/products/")
     suspend fun getAll(
