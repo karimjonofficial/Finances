@@ -30,7 +30,8 @@ class WarehouseScreenViewModel(
     private val navigateToProductScreen: (Int) -> Unit
 ) : ViewModel() {
 
-    private val _productsUiState = MutableStateFlow<ProductsContentStates>(ProductsContentStates.Initial)
+    private val _productsUiState =
+        MutableStateFlow<ProductsContentStates>(ProductsContentStates.Initial(this))
     val productsUiState = _productsUiState.asStateFlow()
 
     private val _stockUiState = MutableStateFlow<StockContentStates>(StockContentStates.Initial)
@@ -38,7 +39,7 @@ class WarehouseScreenViewModel(
 
     fun refresh() {
         _stockUiState.value.refresh(this)
-        _productsUiState.value.refresh(this)
+        _productsUiState.value.refresh()
     }
 
     fun selectProduct(product: Product) {
@@ -54,13 +55,11 @@ class WarehouseScreenViewModel(
             _productsUiState.value = state
         }
     }
-
     internal fun setStockState(state: StockContentStates) {
         viewModelScope.launch(Dispatchers.Default) {
             _stockUiState.value = state
         }
     }
-
     internal suspend fun receive(productId: Int, amount: Int, price: Double, comment: String): Receive? {
         return if (amount > 0 && price > 0.0) {
             request {
@@ -74,30 +73,26 @@ class WarehouseScreenViewModel(
             }
         } else null
     }
-
     internal suspend fun getProducts(): List<Product>? {
         return httpService.invoke {
             productsDataSource.getAll(categoryId)
         }
     }
-
     internal suspend fun getStockItems(): List<StockItem>? {
         return stockDataSource.get(categoryId)
     }
-
-    internal suspend fun addProduct(name: String, price: Double, comment: String): Product? {
+    private suspend fun addProduct(name: String, price: Double, comment: String): Product? {
         return request {
-            productsDataSource.add(
-                AddProductModel(
-                    name = name,
-                    price = price,
-                    description = comment,
-                    categoryId = categoryId
+                productsDataSource.add(
+                    AddProductModel(
+                        name = name,
+                        price = price,
+                        description = comment,
+                        categoryId = categoryId
+                    )
                 )
-            )
-        }
+            }
     }
-
     private suspend fun <T> request(request: suspend () -> T?): T? {
         return httpService.invoke(
             request = request,
@@ -106,5 +101,31 @@ class WarehouseScreenViewModel(
                 null
             }
         )
+    }
+
+    internal suspend fun addProductAndReceive(
+        name: String,
+        price: Double,
+        comment: String,
+        amount: Int
+    ): Pair<Product?, Receive?> {
+        val product = addProduct(name, price, comment)
+
+        if (product != null) {
+            if (amount > 0) {
+                val receive = receive(
+                    product.id,
+                    amount,
+                    (product.price * amount),
+                    "Initial amount"
+                )
+
+                if(receive != null) {
+                    return Pair(product, receive)
+                } else Pair(product, null)
+            }
+            return Pair(product, null)
+        }
+        return Pair(null, null)
     }
 }

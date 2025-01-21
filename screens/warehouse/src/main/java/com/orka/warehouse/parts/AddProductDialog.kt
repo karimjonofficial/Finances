@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -11,7 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.orka.components.Dialog
+import com.orka.components.NumberTextField
 import com.orka.components.VerticalSpacer
+import com.orka.core.Formatter
 import com.orka.res.Strings
 import com.orka.string.containsOnlyZeroes
 
@@ -19,12 +22,14 @@ import com.orka.string.containsOnlyZeroes
 fun AddProductDialog(
     modifier: Modifier = Modifier,
     dismissRequest: () -> Unit,
-    onSuccess: (String, Double, String) -> Unit,
-    currencyVisualTransformation: VisualTransformation
+    onSuccess: (String, Double, String, Int) -> Unit,
+    currencyVisualTransformation: VisualTransformation,
+    formatter: Formatter
 ) {
     val name = rememberSaveable { mutableStateOf("") }
     val price = rememberSaveable { mutableStateOf("") }
     val description = rememberSaveable { mutableStateOf("") }
+    val amount = rememberSaveable { mutableIntStateOf(0) }
     val noComment = stringResource(Strings.no_comment)
 
     Dialog(
@@ -34,7 +39,12 @@ fun AddProductDialog(
         supportingText = stringResource(Strings.fill_lines_to_add_a_new_product),
         onSuccess = {
             if(price.value.isNotBlank()) {
-                onSuccess(name.value, price.value.toDouble(), description.value.ifBlank { noComment })
+                onSuccess(
+                    name.value,
+                    price.value.toDouble(),
+                    description.value.ifBlank { noComment },
+                    amount.intValue
+                )
             }
         }
     ) {
@@ -62,6 +72,14 @@ fun AddProductDialog(
             value = description.value,
             onValueChange = { description.value = it },
             label = { Text(stringResource(Strings.description)) }
+        )
+
+        VerticalSpacer(8)
+
+        NumberTextField(
+            value = amount.intValue,
+            onValueChange = { amount.intValue = it },
+            formatter = formatter
         )
     }
 }

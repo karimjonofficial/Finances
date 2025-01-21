@@ -72,22 +72,14 @@ internal fun NavigationGraph(
                 formatter = state.singletonContainer.formatter,
                 productsContentState = productsState.value,
                 stockContentState = stockState.value,
-                initializeProductsContent = { this.initialize(viewModel) },
                 initializeStockItemsContent = { this.initialize(viewModel) },
-                processProductsContent = { this.process(viewModel) },
                 processStockContent = { this.process(viewModel) },
-                selectProduct = { product -> this.selectProduct(product, viewModel) },
                 addToBasket = { stockItem -> this.addToBasket(stockItem, viewModel) },
                 addReceive = { productId, amount, price, comment ->
                     stockState.value.receive(productId, amount, price, comment, viewModel)
                 },
-                addProduct = { name, price, comment ->
-                    productsState.value.addProduct(name, price, comment, viewModel)
-                },
                 refreshStockContent = { this.refresh(viewModel) },
-                retryStockContent = { this.retry(viewModel) },
-                retryProductContent = { this.retry(viewModel) },
-                refreshProductContent = { this.refresh(viewModel) }
+                retryStockContent = { this.retry(viewModel) }
             )
         }
 
