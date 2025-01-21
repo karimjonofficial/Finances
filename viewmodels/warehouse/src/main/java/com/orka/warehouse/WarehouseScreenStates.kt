@@ -102,12 +102,14 @@ sealed interface ProductsContentStates {
 }
 
 sealed interface StockContentStates {
+    val fsm: Fsm
 
-    fun receive(productId: Int, amount: Int, price: Double, comment: String, fsm: Fsm) {
+    fun receive(productId: Int, amount: Int, price: Double, comment: String) {
         fsm.setStockState(
             state = Processing(
-                message = "Processing",
-                process = {
+                fsm = fsm,
+                messageRes = Strings.processing_the_request,
+                callback = {
                     val result = fsm.receive(productId, amount, price, comment)
                     if (result != null) {
                         fsm.fetchStock()
@@ -118,64 +120,69 @@ sealed interface StockContentStates {
             )
         )
     }
-
-    fun refresh(fsm: Fsm) {
+    fun refresh() {
         fsm.viewModelScope.launch(Dispatchers.IO) {
             fsm.fetchStock()
         }
     }
 
-    data object Initial : StockContentStates {
-        fun initialize(fsm: Fsm) {
+    data class Initial(override val fsm: Fsm) : StockContentStates {
+        fun initialize() {
             fsm.setStockState(Processing(
-                message = "Initializing",
-                process = { fsm.fetchStock() }
+                fsm = fsm,
+                messageRes = Strings.initializing,
+                callback = { fsm.fetchStock() }
             ))
         }
     }
 
     data class Processing(
-        val message: String,
-        private val process: suspend () -> Unit
+        override val fsm: Fsm,
+        @StringRes val messageRes: Int,
+        private val callback: suspend () -> Unit
     ) : StockContentStates {
-        fun process(fsm: Fsm) {
+        fun process() {
             fsm.viewModelScope.launch(Dispatchers.Default) {
-                process()
+                callback()
             }
         }
     }
 
-    data object Empty : StockContentStates {
-        override fun refresh(fsm: Fsm) {
+    data class Empty(override val fsm: Fsm) : StockContentStates {
+        override fun refresh() {
 
             fsm.setStockState(Processing(
-                message = "Initializing",
-                process = { fsm.fetchStock() }
+                fsm = fsm,
+                messageRes = Strings.initializing,
+                callback = { fsm.fetchStock() }
             ))
         }
     }
 
-    data class Success(val stockItemsMap: Map<Char, List<StockItem>>) : StockContentStates {
-        override fun refresh(fsm: Fsm) {
+    data class Success(
+        override val fsm: Fsm,
+        val stockItemsMap: Map<Char, List<StockItem>>
+    ) : StockContentStates {
+        override fun refresh() {
             fsm.viewModelScope.launch(Dispatchers.Main) {
                 fsm.viewModelScope.async(Dispatchers.IO) { fsm.getStockItems() }.await()?.let {
                     if (it.isNotEmpty()) {
-                        fsm.setStockState(Success(it.mapStockItems()))
+                        fsm.setStockState(Success(fsm, it.mapStockItems()))
                     }
                 }
             }
         }
-
-        fun addToBasket(stockItem: StockItem, fsm: Fsm) {
+        fun addToBasket(stockItem: StockItem) {
             fsm.addToBasket(stockItem)
         }
     }
 
-    data class Failure(val message: String) : StockContentStates {
-        fun retry(fsm: Fsm) {
+    data class Failure(override val fsm: Fsm, val message: String) : StockContentStates {
+        fun retry() {
             fsm.setStockState(Processing(
-                message = "Initializing",
-                process = { fsm.fetchStock() }
+                fsm = fsm,
+                messageRes = Strings.initializing,
+                callback = { fsm.fetchStock() }
             ))
         }
     }
@@ -184,10 +191,10 @@ sealed interface StockContentStates {
 private suspend fun Fsm.fetchStock() {
     try {
         val r = viewModelScope.async(Dispatchers.IO) { getStockItems() }.await()
-        if (r?.isNotEmpty() == true) setStockState(StockContentStates.Success(r.mapStockItems()))
-        else setStockState(StockContentStates.Empty)
+        if (r?.isNotEmpty() == true) setStockState(StockContentStates.Success(this, r.mapStockItems()))
+        else setStockState(StockContentStates.Empty(this))
     } catch (e: Exception) {
-        setStockState(StockContentStates.Failure(e.message ?: "No message provided"))
+        setStockState(StockContentStates.Failure(this, e.message ?: "No message provided"))
     }
 }
 private suspend fun Fsm.fetchProducts() {

@@ -11,7 +11,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.orka.components.AppScaffold
 import com.orka.core.Formatter
 import com.orka.input.CurrencyVisualTransformation
-import com.orka.stock.StockItem
 import com.orka.warehouse.parts.AddProductDialog
 import com.orka.warehouse.parts.ReceiveDialog
 import com.orka.warehouse.parts.WarehouseScreenTopBar
@@ -23,14 +22,8 @@ fun WarehouseScreen(
     formatter: Formatter,
     productsContentState: ProductsContentStates,
     stockContentState: StockContentStates,
-    initializeStockItemsContent: StockContentStates.Initial.() -> Unit,
-    processStockContent: StockContentStates.Processing.() -> Unit,
-    refreshStockContent: StockContentStates.Empty.() -> Unit,
-    retryStockContent: StockContentStates.Failure.() -> Unit,
-    addToBasket: StockContentStates.Success.(StockItem) -> Unit,
-    addReceive: StockContentStates.(Int, Int, Double, String) -> Unit,
+    addReceive: StockContentStates.(Int, Int, Double, String) -> Unit
 ) {
-
     val receiveDialogVisible = rememberSaveable { mutableStateOf(false) }
     val productsDialogVisible = rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -77,12 +70,7 @@ fun WarehouseScreen(
             modifier = Modifier.padding(innerPadding),
             productsContentState = productsContentState,
             stockContentState = stockContentState,
-            formatter = formatter,
-            initializeStockItemsContent = initializeStockItemsContent,
-            processStockContent = processStockContent,
-            addToBasket = addToBasket,
-            refreshStockContent = refreshStockContent,
-            retryStockContent = retryStockContent,
+            formatter = formatter
         )
     }
 }
