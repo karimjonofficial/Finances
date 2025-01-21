@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.orka.core.Formatter
 import com.orka.res.Strings
-import com.orka.stock.StockItem
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,11 +19,6 @@ internal fun WarehouseScreenContent(
     modifier: Modifier,
     stockContentState: StockContentStates,
     productsContentState: ProductsContentStates,
-    initializeStockItemsContent: StockContentStates.Initial.() -> Unit,
-    processStockContent: StockContentStates.Processing.() -> Unit,
-    refreshStockContent: StockContentStates.Empty.() -> Unit,
-    retryStockContent: StockContentStates.Failure.() -> Unit,
-    addToBasket: StockContentStates.Success.(StockItem) -> Unit,
     formatter: Formatter
 ) {
     val tabIndex = rememberSaveable { mutableIntStateOf(0) }
@@ -51,11 +45,6 @@ internal fun WarehouseScreenContent(
             0 -> {
                 StockContent(
                     state = stockContentState,
-                    initialize = initializeStockItemsContent,
-                    process = processStockContent,
-                    addToBasket = addToBasket,
-                    refresh = refreshStockContent,
-                    retry = retryStockContent,
                     formatter = formatter
                 )
             }

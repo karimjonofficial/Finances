@@ -34,11 +34,11 @@ class WarehouseScreenViewModel(
         MutableStateFlow<ProductsContentStates>(ProductsContentStates.Initial(this))
     val productsUiState = _productsUiState.asStateFlow()
 
-    private val _stockUiState = MutableStateFlow<StockContentStates>(StockContentStates.Initial)
+    private val _stockUiState = MutableStateFlow<StockContentStates>(StockContentStates.Initial(this))
     val stockUiState = _stockUiState.asStateFlow()
 
     fun refresh() {
-        _stockUiState.value.refresh(this)
+        _stockUiState.value.refresh()
         _productsUiState.value.refresh()
     }
 
